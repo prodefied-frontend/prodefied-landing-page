@@ -1,10 +1,20 @@
+import { Routes, Route } from "react-router-dom"
+import NavBar from "./components/NavBar"
+import Homepage from "./pages/Homepage"
 
 
 function App() {
 
   return (
     <>
-    <h1 className="text-3xl text-blue-800 text-center">Welcome To Prodefied home page</h1>
+    <NavBar />
+    <div className="pt-[120px] max-w-7xl mx-auto">
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+      </Routes>
+      
+    </div>
+    
     </>
   )
 }
