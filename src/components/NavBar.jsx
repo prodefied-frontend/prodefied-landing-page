@@ -65,7 +65,7 @@ export default function NavBar() {
         <div className="flex items-center justify-between px-4 pt-6">
           <Link to="/" className="flex items-end space-x-1" onClick={() => setMenuOpen(false)}>
             <img src="/logo-white.svg" alt="Prodefied Logo" className="w-10 h-10" />
-            <span className="text-xl font-semibold">rodefied</span>
+            <span className="text-xl font-semibold -ml-2.5">rodefied</span>
           </Link>
 
           <svg
@@ -84,7 +84,7 @@ export default function NavBar() {
         </div>
 
         {/* Mobile nav links + Apply Now */}
-        <div className="flex flex-col justify-between min-h-[calc(100vh-72px)] py-12 px-6">
+        <div className="flex flex-col justify-center min-h-[calc(90vh-72px)] py-12 px-6">
           <div className="flex flex-col items-center space-y-6 text-lg">
             <Link to="/sign-up" onClick={() => setMenuOpen(false)} className="cursor-pointer">Sign Up</Link>
             <Link to="/login" onClick={() => setMenuOpen(false)} className="cursor-pointer">Log In</Link>

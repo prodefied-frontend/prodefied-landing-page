@@ -86,7 +86,7 @@ export default function HeroSection() {
 
       <div className="py-8 px-8 md:py-12 md:px-20 flex flex-col md:flex-row gap-6 md:justify-between md:items-center ">
         <div className="text-[#4D4D4D] text-left md:max-w-md">
-          <p className="block mb-2 text-lg md:text-2xl font-medium">
+          <p className="block mb-2 text-lg font-semibold md:text-2xl ">
             Still unsure about becoming a Product Manager in 2025?
           </p>
           <p className="text-sm md:text-lg">
