@@ -8,7 +8,7 @@ import BookmarkIcon from "../assets/icons/book.svg";
 
 export default function HeroSection() {
   return (
-    <main className="bg-white md:mt-6">
+    <main className="bg-white pt-[110px]">
       <div className="flex flex-col items-center gap-4 px-10 md:px-20 md:flex-row md:justify-between">
         <div className="text-center flex flex-col items-start gap-3 md:text-left md:items-start max-w-lg md:gap-4">
           <div className="text-left">

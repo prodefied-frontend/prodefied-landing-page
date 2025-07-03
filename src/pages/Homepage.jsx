@@ -11,19 +11,19 @@ import WhatMakesUsUniqueSection from "../components/WhatMakesUsUniqueSection";
 import WhoWeAreSection from "../components/WhoWeAreSection";
 
 export default function Homepage() {
-    return (
-        <>
-        <HeroSection />
-        <WhoWeAreSection />
-        <LearningPathSection />
-        <WhatMakesUsUniqueSection />
-        <EarnCertificate />
-        <IndustryProsSection />
-        <OurTalentsSection />
-        <OurFounderSection />
-        <PartnerWithUsSection />
-        <HireSection />
-        <OtherServicesSection />
-        </>
-    )
+  return (
+    <div>
+      <HeroSection />
+      <WhoWeAreSection />
+      <LearningPathSection />
+      <WhatMakesUsUniqueSection />
+      <EarnCertificate />
+      <IndustryProsSection />
+      <OurTalentsSection />
+      <OurFounderSection />
+      <PartnerWithUsSection />
+      <HireSection />
+      <OtherServicesSection />
+    </div>
+  );
 }
