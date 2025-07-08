@@ -4,8 +4,9 @@ import { Facebook, google } from "../assets/icons/index";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase"; // adjust path if needed
-import axios from "axios";
+// import axios from "axios";
 import { Link } from "react-router-dom";
+import { authenticateWithBackend } from "../constant/util";
 
 const LoginRightSection = () => {
   const [formData, setFormData] = useState({
@@ -26,18 +27,10 @@ const LoginRightSection = () => {
 
       const idToken = await userCredential.user.getIdToken();
 
-      const response = await axios.post(
-        "https://your-backend-domain.com/api/auth/authenticate/",
-        { token: idToken },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const user = await authenticateWithBackend(idToken);
 
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-      console.log("Logged in user:", response.data.user);
+      localStorage.setItem("user", JSON.stringify(user));
+      console.log("Logged in user:", user);
 
       setFormData({ email: "", password: "" });
     } catch (error) {
@@ -83,7 +76,7 @@ const LoginRightSection = () => {
 
           <button
             type="submit"
-            className="w-full bg-[#000F84] text-white py-2 rounded-md font-medium hover:bg-blue-900 transition"
+            className="w-full bg-[#000F84] text-white py-2 rounded-md font-medium hover:bg-blue-900 transition cursor-pointer"
           >
             Log In
           </button>

@@ -8,6 +8,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase"; // adjust path as needed
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { authenticateWithBackend } from "../constant/util";
 
 const SignupRightSection = () => {
   const [selectedCountry, setSelectedCountry] = useState(countryCodes[0]);
@@ -30,6 +31,7 @@ const SignupRightSection = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const fullPhoneNumber = `${selectedCountry.dial_code}${formData.phone}`;
 
     try {
@@ -41,18 +43,10 @@ const SignupRightSection = () => {
 
       const idToken = await userCredential.user.getIdToken();
 
-      const response = await axios.post(
-        "https://your-backend-domain.com/api/auth/authenticate/",
-        { token: idToken },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const user = await authenticateWithBackend(idToken);
 
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-      console.log("User created and stored:", response.data.user);
+      localStorage.setItem("user", JSON.stringify(user));
+      console.log("User created and stored:", user);
 
       setFormData({
         firstName: "",
@@ -63,7 +57,14 @@ const SignupRightSection = () => {
         confirmPassword: "",
       });
     } catch (error) {
-      console.error("Signup error", error.response?.data || error.message);
+      if (error.code === "auth/email-already-in-use") {
+        alert(
+          "This email is already registered. Please log in or use another email."
+        );
+      } else {
+        console.error("Signup error:", error);
+        alert("An unexpected error occurred. Please try again.");
+      }
     }
   };
 
@@ -184,7 +185,7 @@ const SignupRightSection = () => {
 
           <button
             type="submit"
-            className="w-full bg-[#000F84] text-white py-2 rounded-md font-medium hover:bg-blue-900 transition"
+            className="w-full bg-[#000F84] text-white py-2 rounded-md font-medium hover:bg-blue-900 transition cursor-pointer"
           >
             Get Started
           </button>
