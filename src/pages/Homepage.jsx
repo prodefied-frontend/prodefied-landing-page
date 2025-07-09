@@ -12,7 +12,7 @@ import WhoWeAreSection from "../components/WhoWeAreSection";
 
 export default function Homepage() {
   return (
-    <div>
+    <div className="pt-[120px]">
       <HeroSection />
       <WhoWeAreSection />
       <LearningPathSection />

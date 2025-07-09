@@ -1,4 +1,4 @@
-import CertificateImage from "../assets/images/certificate.jpg";
+import CertificateImage from "/certificate.svg";
 
 export default function EarnCertificate() {
   return (

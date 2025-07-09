@@ -1,4 +1,3 @@
-
 export default function OtherServicesSection() {
   const services = [
     {
@@ -18,16 +17,23 @@ export default function OtherServicesSection() {
   return (
     <section className="py-12 px-6 md:px-12 bg-white">
       <div className="max-w-6xl mx-auto flex flex-col items-center">
-        <h2 className="text-lg md:text-4xl font-semibold mb-8">Other Services We Offer</h2>
+        <h2 className="text-lg md:text-4xl font-semibold mb-8 text-center">
+          Other Services We Offer
+        </h2>
 
-        <div className="flex flex-col items-center gap-4 md:flex-row md:gap-8">
+        {/* Grid layout for better tablet scaling */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full">
           {services.map((service, index) => (
             <div
               key={index + 1}
-              className="rounded-lg text-center px-8 py-8 w-xs md:w-sm"
+              className="rounded-lg text-center px-6 py-8 flex flex-col items-center justify-center shadow-sm"
               style={{ backgroundColor: service.color }}
             >
-              <img src="/people-icon.svg" alt={`${service.title} Icon`} className="mx-auto mb-4" />
+              <img
+                src="/people-icon.svg"
+                alt={`${service.title} Icon`}
+                className="w-12 h-12 mb-4"
+              />
               <p className="font-medium text-lg">{service.title}</p>
             </div>
           ))}
@@ -36,32 +42,3 @@ export default function OtherServicesSection() {
     </section>
   );
 }
-
-
-
-// export default function OtherServicesSection() {
-//   return (
-//     <section className="py-12">
-//       <div className="flex flex-col items-center">
-//         <h2 className="text-lg md:text-4xl mb-8">Other Services We Offer</h2>
-
-//         <div className="flex flex-col items-center justify-center gap-4 md:flex-row md:gap-8">
-//           <div className="bg-[#DEFCDE] text-center px-10 py-8 flex flex-col items-center rounded-lg w-xs">
-//             <img src="/people-icon.svg" alt="" />
-//             <p>Structured Training</p>
-//           </div>
-
-//           <div className="bg-[#FFDBDB] text-center px-10 py-8 flex flex-col items-center rounded-lg w-xs">
-//             <img src="/people-icon.svg" alt="" />
-//             <p>Structured Training</p>
-//           </div>
-
-//           <div className="bg-[#FFFDCC] text-center px-10 py-8 flex flex-col items-center w-xs">
-//             <img src="/people-icon.svg" alt="" />
-//             <p>Structured Training</p>
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }

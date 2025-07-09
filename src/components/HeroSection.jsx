@@ -8,7 +8,7 @@ import BookmarkIcon from "../assets/icons/book.svg";
 
 export default function HeroSection() {
   return (
-    <main className="bg-white pt-[110px]">
+    <main className="bg-white md:mt-6">
       <div className="flex flex-col items-center gap-4 px-10 md:px-20 md:flex-row md:justify-between">
         <div className="text-center flex flex-col items-start gap-3 md:text-left md:items-start max-w-lg md:gap-4">
           <div className="text-left">
@@ -95,7 +95,7 @@ export default function HeroSection() {
           </p>
         </div>
 
-        <div className="flex items-center justify-center gap-4 md:gap-16">
+        {/* <div className="flex items-center justify-center gap-4 md:gap-16">
           <div className="flex flex-col items-center gap-2 md:gap-4 border-[1px] border-[#B3B3B3] p-2 py-4 rounded-sm md:px-8">
             <img
               src={BookmarkIcon}
@@ -114,6 +114,31 @@ export default function HeroSection() {
               className="w-14 h-14 md:w-20 md:h-20"
             />
             <span className="text-xs md:text-base text-[#000F84] border-[1px] border-[#000F84] px-4 py-2 md:px-8 md:py-4 rounded-md">
+              Free Clarity Call
+            </span>
+          </div>
+        </div> */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-12 lg:gap-16">
+          {/* Product Guide Book */}
+          <div className="flex flex-col items-center gap-2 sm:gap-3 md:gap-4 border border-[#B3B3B3] p-4 rounded-md w-full sm:w-auto">
+            <img
+              src={BookmarkIcon}
+              alt="Bookmark Icon"
+              className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20"
+            />
+            <span className="text-xs sm:text-sm md:text-base text-white bg-[#FF9D00] border border-[#FF9D00] px-4 py-2 sm:px-6 sm:py-2 md:px-8 md:py-3 rounded-md text-center">
+              Product Guide Book
+            </span>
+          </div>
+
+          {/* Free Clarity Call */}
+          <div className="flex flex-col items-center gap-2 sm:gap-3 md:gap-4 border border-[#B3B3B3] p-4 rounded-md w-full sm:w-auto">
+            <img
+              src={CallIcon}
+              alt="Call Icon"
+              className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20"
+            />
+            <span className="text-xs sm:text-sm md:text-base text-[#000F84] border border-[#000F84] px-4 py-2 sm:px-6 sm:py-2 md:px-8 md:py-3 rounded-md text-center">
               Free Clarity Call
             </span>
           </div>
