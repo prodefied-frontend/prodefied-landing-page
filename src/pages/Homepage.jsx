@@ -9,10 +9,13 @@ import OurTalentsSection from "../components/OurTalentsSection";
 import PartnerWithUsSection from "../components/PartnerWithUsSection";
 import WhatMakesUsUniqueSection from "../components/WhatMakesUsUniqueSection";
 import WhoWeAreSection from "../components/WhoWeAreSection";
+import FaqSection from "../components/FaqSection";
+import FooterSection from "../components/FooterSection";
+
 
 export default function Homepage() {
     return (
-        <>
+      <>
         <HeroSection />
         <WhoWeAreSection />
         <LearningPathSection />
@@ -24,6 +27,8 @@ export default function Homepage() {
         <PartnerWithUsSection />
         <HireSection />
         <OtherServicesSection />
-        </>
-    )
+        <FaqSection />
+        <FooterSection />
+      </>
+    );
 }
