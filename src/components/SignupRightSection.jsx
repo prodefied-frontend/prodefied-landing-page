@@ -9,6 +9,7 @@ import { auth } from "../firebase"; // adjust path as needed
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { authenticateWithBackend } from "../constant/util";
+import { toast } from "react-toastify";
 
 const SignupRightSection = () => {
   const [selectedCountry, setSelectedCountry] = useState(countryCodes[0]);
@@ -48,6 +49,8 @@ const SignupRightSection = () => {
       localStorage.setItem("user", JSON.stringify(user));
       console.log("User created and stored:", user);
 
+      toast.success("✅ Successfully signed up!");
+
       setFormData({
         firstName: "",
         lastName: "",
@@ -58,12 +61,12 @@ const SignupRightSection = () => {
       });
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
-        alert(
+        toast.error(
           "This email is already registered. Please log in or use another email."
         );
       } else {
         console.error("Signup error:", error);
-        alert("An unexpected error occurred. Please try again.");
+        toast.error("An unexpected error occurred. Please try again.");
       }
     }
   };
