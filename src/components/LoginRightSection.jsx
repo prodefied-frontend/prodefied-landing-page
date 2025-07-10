@@ -4,9 +4,9 @@ import { Facebook, google } from "../assets/icons/index";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase"; // adjust path if needed
-// import axios from "axios";
 import { Link } from "react-router-dom";
 import { authenticateWithBackend } from "../constant/util";
+import { toast } from "react-toastify";
 
 const LoginRightSection = () => {
   const [formData, setFormData] = useState({
@@ -32,9 +32,23 @@ const LoginRightSection = () => {
       localStorage.setItem("user", JSON.stringify(user));
       console.log("Logged in user:", user);
 
+      toast.success("✅ Successfully Logged in!");
+
       setFormData({ email: "", password: "" });
     } catch (error) {
-      console.error("Login error:", error.response?.data || error.message);
+      const errorCode = error.code;
+
+      if (errorCode === "auth/user-not-found") {
+        toast.error("This email is not registered. Please sign up first.");
+      } else if (errorCode === "auth/wrong-password") {
+        toast.error("Incorrect password. Please try again.");
+      } else if (errorCode === "auth/invalid-email") {
+        toast.error("Invalid email format. Please check and try again.");
+      } else {
+        toast.error("Login failed. Please try again.");
+      }
+
+      console.error("Login error:", error.message);
     }
   };
 
