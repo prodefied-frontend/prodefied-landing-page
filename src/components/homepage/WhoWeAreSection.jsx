@@ -1,6 +1,6 @@
-import image1 from "../assets/images/who-we-are1.jpg";
-import image2 from "../assets/images/who-we-are2.jpg";
-import image3 from "../assets/images/who-we-are3.jpg";
+import image1 from "../../assets/images/homepage/who-we-are1.jpg";
+import image2 from "../../assets/images/homepage/who-we-are2.jpg";
+import image3 from "../../assets/images/homepage/who-we-are3.jpg";
 
 export default function WhoWeAreSection() {
   return (

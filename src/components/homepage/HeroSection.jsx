@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import image1 from "../assets/images/hero-image1.jpg";
-import image2 from "../assets/images/hero-image2.jpg";
-import image3 from "../assets/images/hero-image3.jpg";
-import image4 from "../assets/images/hero-image4.jpg";
-import CallIcon from "../assets/icons/phone.svg";
-import BookmarkIcon from "../assets/icons/book.svg";
+import image1 from "../../assets/images/homepage/hero-image1.jpg";
+import image2 from "../../assets/images/homepage/hero-image2.jpg";
+import image3 from "../../assets/images/homepage/hero-image3.jpg";
+import image4 from "../../assets/images/homepage/hero-image4.jpg";
+import CallIcon from "../../assets/icons/phone.svg";
+import BookmarkIcon from "../../assets/icons/book.svg";
 
 export default function HeroSection() {
   return (

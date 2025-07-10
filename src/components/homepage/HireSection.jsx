@@ -1,6 +1,6 @@
 // HireSection.jsx
 import { Link } from 'react-router-dom';
-import HireImage from '../assets/images/hire-image.jpg';
+import HireImage from '../../assets/images/homepage/hire-image.jpg';
 
 export  default function HireSection() {
   return (

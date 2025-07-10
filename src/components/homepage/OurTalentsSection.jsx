@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
-import StarIcon from "../assets/icons/star-icon.svg";
-import Avatar1 from "../assets/images/our-talents/eniola.jpg";
-import Avatar2 from "../assets/images/our-talents/toby.jpg";
-import Avatar3 from "../assets/images/our-talents/harry.jpg";
-import Avatar4 from "../assets/images/our-talents/toby.jpg";
-import Avatar5 from "../assets/images/our-talents/eniola.jpg";
+import StarIcon from "../../assets/icons/star-icon.svg";
+import Avatar1 from "../../assets/images/homepage/our-talents/eniola.jpg";
+import Avatar2 from "../../assets/images/homepage/our-talents/toby.jpg";
+import Avatar3 from "../../assets/images/homepage/our-talents/harry.jpg";
+import Avatar4 from "../../assets/images/homepage/our-talents/toby.jpg";
+import Avatar5 from "../../assets/images/homepage/our-talents/eniola.jpg";
 
 const testimonials = [
   {

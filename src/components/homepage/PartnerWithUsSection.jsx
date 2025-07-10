@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import Image1 from "../assets/images/partner-with-us/image1.jpg";
-import Image2 from "../assets/images/partner-with-us/image2.jpg";
+import Image1 from "../../assets/images/homepage/partner-with-us/image1.jpg";
+import Image2 from "../../assets/images/homepage/partner-with-us/image2.jpg";
 
 export default function PartnerWithUsSection() {
   return (

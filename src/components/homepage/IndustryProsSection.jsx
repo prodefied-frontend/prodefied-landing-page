@@ -1,7 +1,7 @@
-import Image1 from "../assets/images/industry-pros/image1.jpg";
-import Image2 from "../assets/images/industry-pros/image2.jpg";
-import Image3 from "../assets/images/industry-pros/image3.jpg";
-import Image4 from "../assets/images/industry-pros/image4.jpg";
+import Image1 from "../../assets/images/homepage/industry-pros/image1.jpg";
+import Image2 from "../../assets/images/homepage/industry-pros/image2.jpg";
+import Image3 from "../../assets/images/homepage/industry-pros/image3.jpg";
+import Image4 from "../../assets/images/homepage/industry-pros/image4.jpg";
 
 export default function IndustryProsSection() {
   const images = [Image1, Image2, Image3, Image4];

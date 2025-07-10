@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 
-import PeaceAvatar from "../assets/images/our-founders/peace.jpg";
-import ObinnaAvatar from "../assets/images/our-founders/obinna.jpg";
-import KehindeAvatar from "../assets/images/our-founders/kehinde.jpg";
-import FavourAvatar from "../assets/images/our-founders/favour.jpg";
-import Avatar1 from "../assets/images/our-founders/avatar1.jpg";
-import Avatar2 from "../assets/images/our-founders/avatar2.jpg";
-import Avatar3 from "../assets/images/our-founders/avatar3.jpg";
-import Avatar4 from "../assets/images/our-founders/avatar4.jpg";
-import Avatar5 from "../assets/images/our-founders/avatar5.jpg";
+import PeaceAvatar from "../../assets/images/homepage/our-founders/peace.jpg";
+import ObinnaAvatar from "../../assets/images/homepage/our-founders/obinna.jpg";
+import KehindeAvatar from "../../assets/images/homepage/our-founders/kehinde.jpg";
+import FavourAvatar from "../../assets/images/homepage/our-founders/favour.jpg";
+import Avatar1 from "../../assets/images/homepage/our-founders/avatar1.jpg";
+import Avatar2 from "../../assets/images/homepage/our-founders/avatar2.jpg";
+import Avatar3 from "../../assets/images/homepage/our-founders/avatar3.jpg";
+import Avatar4 from "../../assets/images/homepage/our-founders/avatar4.jpg";
+import Avatar5 from "../../assets/images/homepage/our-founders/avatar5.jpg";
 
 const teamDetailsOne = [
   {

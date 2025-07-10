@@ -1,12 +1,12 @@
-import Image1 from "../assets/images/make-us-unique1.jpg";
-import Icon1 from "../assets/icons/make-us-unique/icon1.svg";
-import Icon2 from "../assets/icons/make-us-unique/icon2.svg";
-import Icon3 from "../assets/icons/make-us-unique/icon3.svg";
-import Icon4 from "../assets/icons/make-us-unique/icon4.svg";
-import Icon5 from "../assets/icons/make-us-unique/icon5.svg";
-import Icon6 from "../assets/icons/make-us-unique/icon6.svg";
-import Icon7 from "../assets/icons/make-us-unique/icon7.svg";
-import Icon8 from "../assets/icons/make-us-unique/icon8.svg";
+import Image1 from "../../assets/images/homepage/make-us-unique1.jpg";
+import Icon1 from "../../assets/icons/make-us-unique/icon1.svg";
+import Icon2 from "../../assets/icons/make-us-unique/icon2.svg";
+import Icon3 from "../../assets/icons/make-us-unique/icon3.svg";
+import Icon4 from "../../assets/icons/make-us-unique/icon4.svg";
+import Icon5 from "../../assets/icons/make-us-unique/icon5.svg";
+import Icon6 from "../../assets/icons/make-us-unique/icon6.svg";
+import Icon7 from "../../assets/icons/make-us-unique/icon7.svg";
+import Icon8 from "../../assets/icons/make-us-unique/icon8.svg";
 
 const features = [
   {
