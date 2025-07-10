@@ -1,18 +1,20 @@
-import EarnCertificate from "../components/EarnCertificate";
-import HeroSection from "../components/HeroSection";
-import HireSection from "../components/HireSection";
-import IndustryProsSection from "../components/IndustryProsSection";
-import LearningPathSection from "../components/LearningPathSection";
-import OtherServicesSection from "../components/OtherServicesSection";
-import OurFounderSection from "../components/OurFounderSection";
-import OurTalentsSection from "../components/OurTalentsSection";
-import PartnerWithUsSection from "../components/PartnerWithUsSection";
-import WhatMakesUsUniqueSection from "../components/WhatMakesUsUniqueSection";
-import WhoWeAreSection from "../components/WhoWeAreSection";
+import HeroSection from "../components/homepage/HeroSection";
+
+import EarnCertificate from "../components/homepage/EarnCertificate";
+
+import HireSection from "../components/homepage/HireSection";
+import IndustryProsSection from "../components/homepage/IndustryProsSection";
+import LearningPathSection from "../components/homepage/LearningPathSection";
+import OtherServicesSection from "../components/homepage/OtherServicesSection";
+import OurFounderSection from "../components/homepage/OurFounderSection";
+import OurTalentsSection from "../components/homepage/OurTalentsSection";
+import PartnerWithUsSection from "../components/homepage/PartnerWithUsSection";
+import WhatMakesUsUniqueSection from "../components/homepage/WhatMakesUsUniqueSection";
+import WhoWeAreSection from "../components/homepage/WhoWeAreSection";
 
 export default function Homepage() {
   return (
-    <div>
+    <div className="pt-[120px]">
       <HeroSection />
       <WhoWeAreSection />
       <LearningPathSection />

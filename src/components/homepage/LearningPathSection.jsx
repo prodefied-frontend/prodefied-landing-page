@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import ArrowIcon from "../assets/icons/arrow-right-blue.svg";
-import LearningPathImage2 from "../assets/images/learning-path2.jpg";
+import ArrowIcon from "../../assets/icons/arrow-right-blue.svg";
+import LearningPathImage2 from "../../assets/images/homepage/learning-path2.jpg";
 
 export default function LearningPathSection() {
   return (
