@@ -11,6 +11,7 @@ import OurTalentsSection from "../components/homepage/OurTalentsSection";
 import PartnerWithUsSection from "../components/homepage/PartnerWithUsSection";
 import WhatMakesUsUniqueSection from "../components/homepage/WhatMakesUsUniqueSection";
 import WhoWeAreSection from "../components/homepage/WhoWeAreSection";
+import FaqSection from "../components/homepage/FaqSection";
 
 export default function Homepage() {
   return (
@@ -26,6 +27,7 @@ export default function Homepage() {
       <PartnerWithUsSection />
       <HireSection />
       <OtherServicesSection />
+      <FaqSection />
     </div>
   );
 }
