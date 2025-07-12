@@ -28,6 +28,9 @@ export default function Footer() {
           <Link to="/blog" className={footerLinkClass}>
             Blog
           </Link>
+          <Link to="/terms-conditions" className={footerLinkClass}>
+            Terms and Conditions
+          </Link>
         </div>
 
         {/* Column 2 */}
@@ -75,21 +78,33 @@ export default function Footer() {
       <div className="flex justify-between items-center w-full  m-4">
         {/* Left-aligned icons */}
         <div className="flex space-x-3">
-          <a href="#">
+          <a
+            href="prodefied@gmail.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <img
               src="/src/assets/images/gmail.png"
               alt="Gmail"
               className="h-6"
             />
           </a>
-          <a href="#">
+          <a
+            href="https://www.instagram.com/prodefied?igsh=dXZhYW5rdjRhc2dj"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <img
               src="/src/assets/icons/make-us-unique/instagram logo.svg"
               alt="Instagram"
               className="h-6"
             />
           </a>
-          <a href="#">
+          <a
+            href="https://www.linkedin.com/company/prodefied.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <img
               src="/src/assets/icons/make-us-unique/linkedin.svg"
               alt="Linkedin"
@@ -97,14 +112,44 @@ export default function Footer() {
             />
           </a>
 
-          <a href="#">
+          <a
+            href="https://facebook.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <img
               src="/src/assets/icons/Facebook.png"
               alt="Facebook"
               className="h-6"
             />
           </a>
-          <a href="#">
+          <a
+            href="https://youtube.com/@prodefied?si=8WLp9bf8rANWp4S-"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="/src/assets/icons/youtube.svg"
+              alt="ouTube"
+              className="h-6"
+            />
+          </a>
+          <a
+            href="https://www.tiktok.com/@prodefied?_t=ZM-8xAVuQj6Uem&_r=1"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="/src/assets/icons/titok.svg"
+              alt="Titok"
+              className="h-6"
+            />
+          </a>
+          <a
+            href="https://x.com/prodefied/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <img
               src="/src/assets/icons/make-us-unique/X.svg"
               alt="X"
@@ -121,3 +166,6 @@ export default function Footer() {
     </div>
   );
 }
+
+
+
