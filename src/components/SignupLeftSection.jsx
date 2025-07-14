@@ -1,3 +1,4 @@
+import {Link} from 'react-router-dom'
 import signuplogo from "../assets/images/signuplogo.png";
 
 const SignupLeftSection = () => {
@@ -30,7 +31,8 @@ const SignupLeftSection = () => {
         </p>
         <p className="text-sm mt-[200px]">
           Already have an account?{" "}
-          <span className="underline cursor-pointer">Sign in</span>
+          <Link to='/login'><span className="underline cursor-pointer">Sign in</span></Link>
+          
         </p>
       </div>
     </div>
