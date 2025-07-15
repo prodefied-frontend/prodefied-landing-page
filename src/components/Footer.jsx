@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import logoBlue from "/logo-blue.svg";
+import { Facebook, Mail, Instagram, Linkedin, Twitter } from "../assets/icons";
 
 export default function Footer() {
-  const footerLinkClass = "text-sm lg:text-base hover:text-[#000F84] transition cursor-pointer";
+  const footerLinkClass =
+    "text-sm lg:text-base hover:text-[#000F84] transition cursor-pointer";
   return (
     <div className="w-full bg-[#E5E8FF] px-4 py-4">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-10 px-4 py-8 ">
@@ -76,40 +78,20 @@ export default function Footer() {
         {/* Left-aligned icons */}
         <div className="flex space-x-3">
           <a href="#">
-            <img
-              src="/src/assets/images/gmail.png"
-              alt="Gmail"
-              className="h-6"
-            />
+            <img src={Mail} alt="Gmail" className="w-6 h-6" />
           </a>
           <a href="#">
-            <img
-              src="/src/assets/icons/make-us-unique/instagram logo.svg"
-              alt="Instagram"
-              className="h-6"
-            />
+            <img src={Instagram} alt="Instagram" className=" w-6 h-6" />
           </a>
           <a href="#">
-            <img
-              src="/src/assets/icons/make-us-unique/linkedin.svg"
-              alt="Linkedin"
-              className="h-6"
-            />
+            <img src={Linkedin} alt="Linkedin" className="w-6 h-6" />
           </a>
 
           <a href="#">
-            <img
-              src="/src/assets/icons/Facebook.png"
-              alt="Facebook"
-              className="h-6"
-            />
+            <img src={Facebook} alt="Facebook" className="w-6 h-6" />
           </a>
           <a href="#">
-            <img
-              src="/src/assets/icons/make-us-unique/X.svg"
-              alt="X"
-              className="h-6"
-            />
+            <img src={Twitter} alt="X" className="w-6 h-6" />
           </a>
         </div>
 

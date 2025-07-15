@@ -13,10 +13,18 @@ import Group1 from "./Group1.png";
 import Group2 from "./Group2.png";
 import Group3 from "./Group3.png";
 import Group4 from "./Group4.png";
+import Mail from "./Mail.png";
+import Twitter from "./Twitter.png";
+import Linkedin from "./Linkedin.png";
+import Instagram from "./Instagram.png";
 
 export {
   Facebook,
   google,
+  Mail,
+  Twitter,
+  Linkedin,
+  Instagram,
   icon1,
   icon2,
   icon4,
