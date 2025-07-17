@@ -69,7 +69,7 @@ const WorkTogether = () => {
             className="min-h-[200px] lg:min-h-[300px]"
           />
           <button
-            className="w-[30%] py-4 rounded-md mt-4 bg-[#ff9d00] text-white"
+            className="w-[60%] md:w-[30%] py-4 rounded-md mt-4 bg-[#ff9d00] text-white"
             type="submit"
           >
             Let Hear From You
