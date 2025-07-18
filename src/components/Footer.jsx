@@ -4,9 +4,7 @@ import { Link } from "react-router-dom";
 import whiteLogo from "../assets/icons/whitelogo.svg";
 
 export default function Footer() {
-  const footerLinkClass =
-    "text-sm lg:text-base hover:text-[#000F84] transition cursor-pointer";
-
+  const footerLinkClass = "text-sm lg:text-base hover:text-[#000F84] transition cursor-pointer";
   return (
     <div className="w-full bg-[#E5E8FF] px-4 py-4">
       <div className="w-full grid grid-cols-1 md:grid-cols-7 gap-4 px-4 py-4">
@@ -174,15 +172,46 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Footer Bottom */}
+      <div className="flex justify-between items-center w-full  m-4">
+        {/* Left-aligned icons */}
+        <div className="flex space-x-3">
+          <a href="#">
+            <img
+              src="/src/assets/images/gmail.png"
+              alt="Gmail"
+              className="h-6"
+            />
+          </a>
+          <a href="#">
+            <img
+              src="/src/assets/icons/make-us-unique/instagram logo.svg"
+              alt="Instagram"
+              className="h-6"
+            />
+          </a>
+          <a href="#">
+            <img
+              src="/src/assets/icons/make-us-unique/linkedin.svg"
+              alt="Linkedin"
+              className="h-6"
+            />
+          </a>
 
-      <div className="relative mt-6 px-4">
-        {/* Background Logo */}
-        <img
-          src="/src/assets/icons/footerbackgroundlogo.svg"
-          alt=""
-          className="absolute bottom-0 right-0 w-[500px] pointer-events-none"
-        />
+          <a href="#">
+            <img
+              src="/src/assets/icons/Facebook.png"
+              alt="Facebook"
+              className="h-6"
+            />
+          </a>
+          <a href="#">
+            <img
+              src="/src/assets/icons/make-us-unique/X.svg"
+              alt="X"
+              className="h-6"
+            />
+          </a>
+        </div>
 
         <div className="max-w-7xl mx-auto text-sm text-gray-900 text-left">
           All Rights Reserved. {new Date().getFullYear()} Prodefied.

@@ -3,7 +3,9 @@ import SignupPage from "../pages/SignupPage";
 import LoginPage from "../pages/LoginPage";
 import Homepage from "../pages/Homepage";
 import Layout from "../components/Layout";
+import PartnershipPage from "../pages/PartnershipPage";
 import AboutUsPage from "../pages/AboutUsPage";
+import ProgramDetails from "../pages/ProgramDetails";
 import TermsConditionsPage from "../pages/TermsConditionsPage";
 
 const AppRoutes = () => {
@@ -11,10 +13,11 @@ const AppRoutes = () => {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Homepage />} />
+        <Route path="/partnership" element={<PartnershipPage />} />
         <Route path="/about-us" element={<AboutUsPage />} />
-         <Route path="/terms-conditions" element={<TermsConditionsPage />} />
+        <Route path="/program-details" element={<ProgramDetails />} />
+        <Route path="/terms-conditions" element={<TermsConditionsPage />} />
       </Route>
-
       <Route path="/login" element={<LoginPage />} />
       <Route path="/sign-up" element={<SignupPage />} />
     </Routes>
