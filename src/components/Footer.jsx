@@ -1,6 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
+// Logo & Icons
 import whiteLogo from "../assets/icons/whitelogo.svg";
+import gmailIcon from "../assets/images/gmail.png";
+import instagramIcon from "../assets/icons/make-us-unique/instagram logo.svg";
+import linkedinIcon from "../assets/icons/make-us-unique/linkedin.svg";
+import facebookIcon from "../assets/icons/Facebook.png";
+import youtubeIcon from "../assets/icons/youtube.svg";
+import tiktokIcon from "../assets/icons/titok.svg";
+import xIcon from "../assets/icons/make-us-unique/X.svg";
+import footerBgLogo from "../assets/icons/footerbackgroundlogo.svg";
 
 export default function Footer() {
   const footerLinkClass =
@@ -75,7 +85,6 @@ export default function Footer() {
         </div>
 
         {/* Column 5 - Social Icons */}
-
         <div className="flex flex-col space-y-2">
           <h3 className="font-semibold text-gray-800 mb-1">Follow Us</h3>
           <div className="flex flex-wrap gap-3">
@@ -84,77 +93,49 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img
-                src="/src/assets/images/gmail.png"
-                alt="Gmail"
-                className="h-4 w-4"
-              />
+              <img src={gmailIcon} alt="Gmail" className="h-4 w-4" />
             </a>
             <a
               href="https://www.instagram.com/prodefied?igsh=dXZhYW5rdjRhc2dj"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img
-                src="/src/assets/icons/make-us-unique/instagram logo.svg"
-                alt="Instagram"
-                className="hh-4 w-4"
-              />
+              <img src={instagramIcon} alt="Instagram" className="h-4 w-4" />
             </a>
             <a
               href="https://www.linkedin.com/company/prodefied.com/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img
-                src="/src/assets/icons/make-us-unique/linkedin.svg"
-                alt="Linkedin"
-                className="h-4 w-4"
-              />
+              <img src={linkedinIcon} alt="LinkedIn" className="h-4 w-4" />
             </a>
             <a
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img
-                src="/src/assets/icons/Facebook.png"
-                alt="Facebook"
-                className="h-4 w-4"
-              />
+              <img src={facebookIcon} alt="Facebook" className="h-4 w-4" />
             </a>
             <a
               href="https://youtube.com/@prodefied?si=8WLp9bf8rANWp4S-"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img
-                src="/src/assets/icons/youtube.svg"
-                alt="YouTube"
-                className="h-4 w-4"
-              />
+              <img src={youtubeIcon} alt="YouTube" className="h-4 w-4" />
             </a>
             <a
               href="https://www.tiktok.com/@prodefied?_t=ZM-8xAVuQj6Uem&_r=1"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img
-                src="/src/assets/icons/titok.svg"
-                alt="TikTok"
-                className="h-4 w-4"
-              />
+              <img src={tiktokIcon} alt="TikTok" className="h-4 w-4" />
             </a>
             <a
               href="https://x.com/prodefied/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img
-                src="/src/assets/icons/make-us-unique/X.svg"
-                alt="X"
-                className="h-4 w-4"
-              />
+              <img src={xIcon} alt="X" className="h-4 w-4" />
             </a>
           </div>
         </div>
@@ -174,15 +155,12 @@ export default function Footer() {
       </div>
 
       {/* Footer Bottom */}
-
       <div className="relative mt-6 px-4">
-        {/* Background Logo */}
         <img
-          src="/src/assets/icons/footerbackgroundlogo.svg"
-          alt=""
+          src={footerBgLogo}
+          alt="Footer Logo Background"
           className="absolute bottom-0 right-0 w-[500px] pointer-events-none"
         />
-
         <div className="max-w-7xl mx-auto text-sm text-gray-900 text-left">
           All Rights Reserved. {new Date().getFullYear()} Prodefied.
         </div>
