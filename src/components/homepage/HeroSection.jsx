@@ -29,17 +29,17 @@ export default function HeroSection() {
 
           <div className="flex gap-3 text-xs mb-4 md:text-lg">
             <Link
-              to="/learn-more"
+              to="/"
               className="border-[1px] border-[#000F84] bg-white text-[#000F84] px-6 py-3 rounded-lg"
             >
               Learn More
             </Link>
 
             <Link
-              to="/learn-more"
+              to="/"
               className="border-[1px] text-white bg-[#000F84] px-6 py-3 rounded-lg"
             >
-              Learn More
+              Apply Now
             </Link>
           </div>
         </div>

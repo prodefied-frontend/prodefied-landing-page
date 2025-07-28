@@ -7,6 +7,7 @@ import PartnershipPage from "../pages/PartnershipPage";
 import AboutUsPage from "../pages/AboutUsPage";
 import ProgramDetails from "../pages/ProgramDetails";
 import TermsConditionsPage from "../pages/TermsConditionsPage";
+import PaymentRegistrationPage from "../pages/PaymentRegistrationPage";
 
 const AppRoutes = () => {
   return (
@@ -20,6 +21,7 @@ const AppRoutes = () => {
       </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/sign-up" element={<SignupPage />} />
+      <Route path="/payment-registration" element={<PaymentRegistrationPage />} />
     </Routes>
   );
 };
