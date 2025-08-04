@@ -6,6 +6,7 @@ import Layout from "../components/Layout";
 import PartnershipPage from "../pages/PartnershipPage";
 import AboutUsPage from "../pages/AboutUsPage";
 import ProgramDetails from "../pages/ProgramDetails";
+import Blog from "../pages/Blog";
 import TermsConditionsPage from "../pages/TermsConditionsPage";
 import PaymentRegistrationPage from "../pages/PaymentRegistrationPage";
 
@@ -17,6 +18,7 @@ const AppRoutes = () => {
         <Route path="/partnership" element={<PartnershipPage />} />
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/program-details" element={<ProgramDetails />} />
+        <Route path="/blog" element={<Blog />} />
         <Route path="/terms-conditions" element={<TermsConditionsPage />} />
       </Route>
       <Route path="/login" element={<LoginPage />} />
