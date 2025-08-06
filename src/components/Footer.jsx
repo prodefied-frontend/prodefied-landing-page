@@ -191,7 +191,7 @@ export default function Footer() {
     "text-sm lg:text-base hover:text-[#000F84] transition cursor-pointer";
 
   return (
-    <div className="w-full bg-[#E5E8FF] px-4 py-4 relative overflow-hidden min-h-[300px]">
+    <div className="w-full bg-[#E5E8FF] px-4 py-4 relative overflow-hidden min-h-[300px] text-center md:text-left">
       {/* Background logo behind everything */}
       <img
         src={footerBgLogo}
@@ -203,7 +203,7 @@ export default function Footer() {
         {/* Column 1 - Logo */}
         <div className="flex flex-col space-y-1">
           <Link to="/" className="flex items-start">
-            <img src={whiteLogo} alt="Prodefied Logo" className="h-12 w-auto" />
+            <img src={whiteLogo} alt="Prodefied Logo" className="h-12 w-auto mx-auto md:mx-0" />
           </Link>
         </div>
 
@@ -265,7 +265,7 @@ export default function Footer() {
         </div>
 
         {/* Column 6 - Social Icons */}
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-2 mx-auto lg:mx-0">
           <h3 className="font-semibold text-gray-800 mb-1">Follow Us</h3>
           <div className="flex flex-wrap gap-3">
             <a
@@ -335,7 +335,7 @@ export default function Footer() {
       </div>
 
       {/* Footer Bottom Text */}
-      <div className="relative z-10 mt-6 px-4 text-sm text-gray-900 text-left max-w-7xl mx-auto">
+      <div className="relative z-10 mt-6 px-4 text-sm text-gray-900 md:text-left text-center max-w-7xl mx-auto">
         All Rights Reserved. {new Date().getFullYear()} Prodefied.
       </div>
     </div>

@@ -10,7 +10,7 @@ const WhyPartner = () => {
       </h3>
       <div className="">
         <div className="w-[90%] mx-auto">
-          <img src={partner} />
+          <img src={partner} className="mx-auto" />
         </div>
 
         <div className="w-[90%] mx-auto mt-8 flex flex-wrap justify-center gap-6">
