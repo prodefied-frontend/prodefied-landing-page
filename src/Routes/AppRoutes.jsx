@@ -8,10 +8,13 @@ import AboutUsPage from "../pages/AboutUsPage";
 import ProgramDetails from "../pages/ProgramDetails";
 import TermsConditionsPage from "../pages/TermsConditionsPage";
 import PaymentRegistrationPage from "../pages/PaymentRegistrationPage";
+import ProtectedLayout from "../components/ProtectedLayout";
+import PortalPage from "../pages/PortalPage";
 
 const AppRoutes = () => {
   return (
     <Routes>
+      {/* PUBLIC ROUTES */}
       <Route element={<Layout />}>
         <Route path="/" element={<Homepage />} />
         <Route path="/partnership" element={<PartnershipPage />} />
@@ -19,9 +22,18 @@ const AppRoutes = () => {
         <Route path="/program-details" element={<ProgramDetails />} />
         <Route path="/terms-conditions" element={<TermsConditionsPage />} />
       </Route>
+
+      <Route element={<ProtectedLayout />}>
+      <Route path="/portal" element={<PortalPage />} />
+        <Route
+          path="/payment-registration"
+          element={<PaymentRegistrationPage />}
+        />
+      </Route>
+
+      {/* AUTH ROUTES */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/sign-up" element={<SignupPage />} />
-      <Route path="/payment-registration" element={<PaymentRegistrationPage />} />
     </Routes>
   );
 };

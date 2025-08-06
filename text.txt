@@ -1,0 +1,36 @@
+/src
+  /assets
+    /icons
+    /images
+  /components
+    - Navbar.jsx
+    - Footer.jsx
+    - MakePaymentPopup.jsx
+    - PaymentConfirmation.jsx
+    - PhoneInput.jsx
+    - SignUp.jsx
+    - Login.jsx
+    - ProtectedLayout.jsx
+    - SideBar.jsx
+  /pages
+    - AboutUsPage.jsx
+    - AssessmentPage.jsx
+    - BlogPage.jsx
+    - Homepage.jsx
+    - LoginPage.jsx
+    - Signup.jsx
+    - PartnershipPage.jsx
+    - PaymentRegistration.jsx
+    - PortalPage.jsx
+    - ProgramDetails.jsx
+    - TermsCondtionsPage
+    - PortalPage.jsx
+  /Routes
+    - AppRoutes.jsx
+  firebase.js
+  App.css  
+  App.jsx
+  firebase.js
+  index.css
+  main.jsx
+

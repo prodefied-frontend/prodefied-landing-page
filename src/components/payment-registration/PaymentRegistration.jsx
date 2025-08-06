@@ -1,30 +1,30 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import MakePaymentPopUp from "./MakePaymentPopUp";
 import PaymentConfirmation from "./PaymentConfirmation";
+import PhoneNumberField from "../PhoneInputBlock";
 
 export default function PaymentRegistration() {
   const [showPaymentPopup, setShowPaymentPopup] = useState(false);
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
-  const navigate = useNavigate();
 
   return (
     <main className="relative px-4 py-8 max-w-4xl mx-auto text-[#1A1A1A]">
-      <h1 className="text-2xl font-semibold mb-6 text-[#000F84]">
+      <h1 className="text-2xl md:text-3xl font-semibold mb-6 text-[#4D4D4D]">
         Registration
       </h1>
 
-      <div className="bg-[#F5F5F5] p-4 rounded-md space-y-2 mb-6 text-sm md:text-base">
-        <div className="flex justify-between">
-          <span className="font-medium">Reg fee:</span>
-          <span className="text-[#000F84] font-semibold">N 150,000</span>
+      <div className="p-4 pb-8 rounded-md space-y-2 mb-6 text-sm md:text-base border-b-[1px] border-[#B3B3B3]">
+        <div className="flex flex-col">
+          <span className="font-medium text-xs text-[#666666]">Reg fee:</span>
+          <span className="text-[#4D4D4D] font-semibold text-base md:text-lg">
+            N 150,000
+          </span>
         </div>
-        <div className="text-right text-[#000F84] text-sm italic">
-          Have a Coupon Code?
-        </div>
+        <div className="text-[#0018CC] text-xs">Have a Coupon Code?</div>
       </div>
 
-      <p className="mb-6 text-sm md:text-base">
+      <p className="mb-6 text-sm md:text-base text-[#FF3333]">
         Please enter your personal information to proceed
       </p>
 
@@ -50,7 +50,8 @@ export default function PaymentRegistration() {
 
         {/* Phone */}
         <div>
-          <label className="block text-sm font-medium mb-2">
+          <PhoneNumberField />
+          {/* <label className="block text-sm font-medium mb-2">
             Phone Number <span className="text-[#B30505]">*</span>
           </label>
           <div className="flex items-center gap-2 border border-gray-300 rounded px-3 py-2">
@@ -65,7 +66,7 @@ export default function PaymentRegistration() {
               placeholder="906712141226"
               className="w-full outline-none"
             />
-          </div>
+          </div> */}
         </div>
 
         {/* Email */}
@@ -93,20 +94,22 @@ export default function PaymentRegistration() {
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 mt-6">
+        <div className="flex flex-col sm:flex-row gap-4 mt-6 md:justify-between">
           <button
             type="button"
-            className="bg-[#000F84] text-white px-6 py-3 rounded hover:opacity-90"
+            className="bg-[#000F84] text-white px-6 py-3 rounded hover:opacity-90 cursor-pointer"
             onClick={() => setShowPaymentPopup(true)}
           >
             Make Payment
           </button>
-          <button
-            type="button"
-            className="bg-[#E4E4E4] text-[#1A1A1A] px-6 py-3 rounded hover:bg-gray-300"
-          >
-            View Program Details
-          </button>
+          <Link to="/program-details">
+            <button
+              type="button"
+              className="bg-[#E4E4E4] text-[#1A1A1A] px-6 py-3 rounded hover:bg-gray-300 cursor-pointer"
+            >
+              View Program Details
+            </button>
+          </Link>
         </div>
       </form>
 
@@ -126,7 +129,6 @@ export default function PaymentRegistration() {
           close={() => setShowConfirmationPopup(false)}
           complete={() => {
             setShowConfirmationPopup(false);
-            navigate("/"); // Redirect to homepage
           }}
         />
       )}
