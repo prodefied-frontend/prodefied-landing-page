@@ -12,6 +12,8 @@
     - Login.jsx
     - ProtectedLayout.jsx
     - SideBar.jsx
+    - Layout.jsx
+    - ProtectedLayout.jsx
   /pages
     - AboutUsPage.jsx
     - AssessmentPage.jsx
@@ -27,7 +29,6 @@
     - PortalPage.jsx
   /Routes
     - AppRoutes.jsx
-  firebase.js
   App.css  
   App.jsx
   firebase.js
