@@ -12,6 +12,7 @@ import PartnerWithUsSection from "../components/homepage/PartnerWithUsSection";
 import WhatMakesUsUniqueSection from "../components/homepage/WhatMakesUsUniqueSection";
 import WhoWeAreSection from "../components/homepage/WhoWeAreSection";
 import FaqSection from "../components/homepage/FaqSection";
+import SubscribeToOurNewsletter from "../components/homepage/SubscribeToOurNewsletter";
 
 export default function Homepage() {
   return (
@@ -28,6 +29,7 @@ export default function Homepage() {
       <HireSection />
       <OtherServicesSection />
       <FaqSection />
+      <SubscribeToOurNewsletter />
     </div>
   );
 }
