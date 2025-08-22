@@ -3,7 +3,7 @@ import image1 from "../../assets/images/homepage/hero-image1.jpg";
 import image2 from "../../assets/images/homepage/hero-image2.jpg";
 import image3 from "../../assets/images/homepage/hero-image3.jpg";
 import image4 from "../../assets/images/homepage/hero-image4.jpg";
-import Typewriter from "../TypeWriter";
+import Typewriter from "./Typewriter";
 
 export default function HeroSection() {
   const messages = [
@@ -29,6 +29,7 @@ export default function HeroSection() {
                 We give you less theory and more of:
               </p>
               <p className="text-base md:text-xl text-[#3427FD]">
+                {/* <Typewriter texts={messages} speed={100} pause={2200} /> */}
                 <Typewriter texts={messages} speed={100} pause={2200} />
               </p>
             </div>
