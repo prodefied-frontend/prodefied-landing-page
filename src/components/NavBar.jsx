@@ -92,7 +92,7 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
               <Link to="/about" className={navLinkClass}>
                 About Us
               </Link>
-              <Link to="/program" className={navLinkClass}>
+              <Link to="/program-details" className={navLinkClass}>
                 Program Details
               </Link>
               <Link to="/blog" className={navLinkClass}>
@@ -113,7 +113,7 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
               <Link to="/about" className={navLinkClass}>
                 About Us
               </Link>
-              <Link to="/program" className={navLinkClass}>
+              <Link to="/program-details" className={navLinkClass}>
                 Program Details
               </Link>
               <Link to="/blog" className={navLinkClass}>
@@ -133,7 +133,7 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
         <div className="flex items-center gap-4">
           {!isAuthenticated && (
             <Link
-              to="/payment-registration"
+              to="/registration"
               className="hidden md:flex bg-[#000F84] text-white text-sm md:text-base py-2 md:py-3 px-4 md:px-6 rounded-lg hover:bg-[#0018a8] transition"
             >
               Apply Now
