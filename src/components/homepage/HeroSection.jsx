@@ -29,7 +29,7 @@ export default function HeroSection() {
                 We give you less theory and more of:
               </p>
               <p className="text-base md:text-xl text-[#3427FD]">
-                <Typewriter texts={messages} speed={100} pause={2300} />
+                <Typewriter texts={messages} speed={100} pause={2200} />
               </p>
             </div>
           </div>
