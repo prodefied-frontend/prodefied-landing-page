@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "../components/Layout";
+
 import ProtectedLayout from "../components/ProtectedLayout";
 import ProtectedRoutes from "./ProtectedRoutes";
 
@@ -24,7 +25,7 @@ export default function AppRoutes() {
         <Route path="/about" element={<AboutUsPage />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/partnership" element={<PartnershipPage />} />
-        <Route path="/program" element={<ProgramDetails />} />
+        <Route path="/program-details" element={<ProgramDetails />} />
         <Route path="/terms" element={<TermsConditionsPage />} />
         <Route path="/registration" element={<RegistrationPage />} />
       </Route>
@@ -34,10 +35,7 @@ export default function AppRoutes() {
         <Route element={<ProtectedLayout />}>
           <Route path="/portal" element={<PortalPage />} />
           {/* <Route path="/profile" element={<ProfilePage />} /> */}
-          <Route
-            path="/payment-registration"
-            element={<PaymentRegistrationPage />}
-          />
+          <Route path="/payment-registration" element={<PaymentRegistrationPage />} />
         </Route>
       </Route>
 

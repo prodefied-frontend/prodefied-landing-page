@@ -63,7 +63,7 @@
 import React from "react";
 
 const SectionHeading = ({ children }) => (
-  <h3 className="hidden md:block text-xl md:text-2xl mb-3 text-[#4D4D4D] font-semibold">
+  <h3 className="hidden text-xl md:text-2xl mb-3 text-[#4D4D4D] font-semibold">
     {children}
   </h3>
 );
