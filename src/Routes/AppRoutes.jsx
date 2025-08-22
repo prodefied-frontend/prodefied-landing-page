@@ -1,43 +1,49 @@
 import { Routes, Route } from "react-router-dom";
-import SignupPage from "../pages/SignupPage";
-import LoginPage from "../pages/LoginPage";
-import Homepage from "../pages/Homepage";
 import Layout from "../components/Layout";
-import PartnershipPage from "../pages/PartnershipPage";
-import AboutUsPage from "../pages/AboutUsPage";
-import ProgramDetails from "../pages/ProgramDetails";
-import Blog from "../pages/Blog";
-import TermsConditionsPage from "../pages/TermsConditionsPage";
-import PaymentRegistrationPage from "../pages/PaymentRegistrationPage";
 import ProtectedLayout from "../components/ProtectedLayout";
-import PortalPage from "../pages/PortalPage";
+import ProtectedRoutes from "./ProtectedRoutes";
 
-const AppRoutes = () => {
+import Homepage from "../pages/Homepage";
+import AboutUsPage from "../pages/AboutUsPage";
+import Blog from "../pages/Blog";
+import LoginPage from "../pages/LoginPage";
+import SignupPage from "../pages/SignupPage";
+import PartnershipPage from "../pages/PartnershipPage";
+import PaymentRegistrationPage from "../pages/PaymentRegistrationPage";
+import PortalPage from "../pages/PortalPage";
+import ProgramDetails from "../pages/ProgramDetails";
+import TermsConditionsPage from "../pages/TermsConditionsPage";
+import RegistrationPage from "../pages/RegistrationPage";
+
+export default function AppRoutes() {
   return (
     <Routes>
-      {/* PUBLIC ROUTES */}
+      {/* Public Pages with Layout */}
       <Route element={<Layout />}>
         <Route path="/" element={<Homepage />} />
-        <Route path="/partnership" element={<PartnershipPage />} />
-        <Route path="/about-us" element={<AboutUsPage />} />
-        <Route path="/program-details" element={<ProgramDetails />} />
+        <Route path="/about" element={<AboutUsPage />} />
         <Route path="/blog" element={<Blog />} />
-        <Route path="/terms-conditions" element={<TermsConditionsPage />} />
+        <Route path="/partnership" element={<PartnershipPage />} />
+        <Route path="/program" element={<ProgramDetails />} />
+        <Route path="/terms" element={<TermsConditionsPage />} />
+        <Route path="/registration" element={<RegistrationPage />} />
       </Route>
 
-      <Route element={<ProtectedLayout />}>
-      <Route path="/portal" element={<PortalPage />} />
-        <Route
-          path="/payment-registration"
-          element={<PaymentRegistrationPage />}
-        />
+      {/* Protected Pages with Sidebar */}
+      <Route element={<ProtectedRoutes />}>
+        <Route element={<ProtectedLayout />}>
+          <Route path="/portal" element={<PortalPage />} />
+          {/* <Route path="/profile" element={<ProfilePage />} /> */}
+          <Route
+            path="/payment-registration"
+            element={<PaymentRegistrationPage />}
+          />
+        </Route>
       </Route>
 
-      {/* AUTH ROUTES */}
+      {/* AUTH */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/sign-up" element={<SignupPage />} />
     </Routes>
   );
-};
-
-export default AppRoutes;
+}

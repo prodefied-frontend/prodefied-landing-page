@@ -19,8 +19,8 @@ export default function AboutHeroSection() {
           placement, we guide every step of the journey.
         </p>
         <Link
-          to="/sign-up"
-          className="bg-[#000F84] text-white text-xs px-10 py-3 mt-2 rounded-lg md:px-14 md:py-4 md:text-lg"
+          to="/registration"
+          className="bg-[#000F84] text-white text-xs px-8 py-2 mt-2 rounded-lg md:px-14 md:py-4 md:text-lg"
         >
           Apply Now
         </Link>

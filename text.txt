@@ -14,6 +14,9 @@
     - SideBar.jsx
     - Layout.jsx
     - ProtectedLayout.jsx
+  /constant
+    - data.jsx
+    - util.jsx
   /pages
     - AboutUsPage.jsx
     - AssessmentPage.jsx
@@ -27,8 +30,14 @@
     - ProgramDetails.jsx
     - TermsCondtionsPage
     - PortalPage.jsx
+    - ProfilePage.jsx
+    - AssessmentPage.jsx
+    - SuggestionPage.jsx
   /Routes
     - AppRoutes.jsx
+    - ProtectedRoutes.jsx
+  /services
+    - payments.js
   App.css  
   App.jsx
   firebase.js

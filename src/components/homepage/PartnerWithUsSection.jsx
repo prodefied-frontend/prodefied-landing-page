@@ -34,7 +34,7 @@ export default function PartnerWithUsSection() {
             </p>
 
             <Link
-              to="/"
+              to="/partnership"
               className="bg-[#FF9D00] text-white text-xs md:text-base py-2 px-4 md:py-3 md:px-6 rounded-lg"
             >
               Become a Partner

@@ -65,13 +65,13 @@ export const contactItems = [
     text: "No.53 bla bla bla",
   },
   {
-    id: 1,
+    id: 2,
     img: Group1,
     title: "Email",
     text: "Prodefied@gmail.com",
   },
   {
-    id: 1,
+    id: 3,
     img: Group2,
     title: "Call Us",
     text: "+23408134094272",

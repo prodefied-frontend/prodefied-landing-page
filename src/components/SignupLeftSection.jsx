@@ -1,6 +1,7 @@
 import {Link} from 'react-router-dom'
 import signuplogo from "../assets/images/signuplogo.png";
 
+
 const SignupLeftSection = () => {
   return (
     //   npm run dev
@@ -21,7 +22,7 @@ const SignupLeftSection = () => {
       {/* Glassmorphism Card */}
       <div className="relative z-10 bg-white/10 backdrop-blur-lg rounded-xl p-10 max-w-[420px] text-white">
         <h2 className="text-sm mb-2">
-          Welcome to <span className="text-[#FF9D00] font-bold">Prodefied</span>
+          Welcome to <span className="text-[#FF9D00] text-lg font-bold"><Link to='/'>Prodefied</Link></span>
         </h2>
         <h1 className="text-3xl font-bold mb-4 leading-tight">
           Ready to launch your career in Product Management?

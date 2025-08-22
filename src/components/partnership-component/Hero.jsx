@@ -1,9 +1,10 @@
 import React from "react";
+import {Link} from 'react-router-dom';
 import handshake from "../../assets/images/partnership-images/handshake.jpg";
 
 const Hero = () => {
   return (
-    <div className="pt-[80px] sm:pt-[97px]">
+    <div className="pt-[120px]">
       <div
         style={{
           backgroundImage: `url(${handshake})`,
@@ -24,12 +25,12 @@ const Hero = () => {
           </p>
 
           <div className="flex  sm:flex-row gap-3 sm:gap-4 justify-center mt-4">
-            <button className="px-6 py-2 rounded-md text-sm text-[#000F84] bg-white">
+            <Link to='/program-details' className="px-6 py-2 rounded-md text-sm text-[#000F84] bg-white">
               Learn More
-            </button>
-            <button className="px-6 py-2 rounded-md text-sm text-white bg-[#000F84]">
+            </Link>
+            <Link to='/registration' className="px-6 py-2 rounded-md text-sm text-white bg-[#000F84]">
               Apply Now
-            </button>
+            </Link>
           </div>
         </div>
       </div>

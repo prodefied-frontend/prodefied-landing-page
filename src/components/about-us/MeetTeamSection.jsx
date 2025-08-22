@@ -77,7 +77,7 @@ const teamDetails = [
   {
     id: 9,
     image: FavourImage,
-    name: "Allison Favour",
+    name: "Favour Allison",
     role: "Lead Frontend Developer",
     portfolio: "https://allison-favour-portfolio-darkmode.vercel.app/",
   },
