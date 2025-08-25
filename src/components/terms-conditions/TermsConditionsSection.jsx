@@ -63,13 +63,15 @@
 import React from "react";
 
 const SectionHeading = ({ children }) => (
-  <h3 className="hidden text-xl md:text-2xl mb-3 text-[#4D4D4D] font-semibold">
+  <h3 className="block text-xl md:text-2xl mb-3 text-[#4D4D4D] font-semibold">
     {children}
   </h3>
 );
 
 const SectionParagraph = ({ children }) => (
-  <p className="text-[#4D4D4D] text-sm md:text-lg mb-3 md:mb-5">{children}</p>
+  <p className="text-[#4D4D4D] text-sm md:text-lg mb-3 md:mb-5 leading-relaxed">
+    {children}
+  </p>
 );
 
 const SectionList = ({ items }) => (
@@ -89,32 +91,43 @@ export default function TermsConditionsSection() {
   ];
 
   return (
-    <div className="py-4 px-8 space-y-10 ">
+    <div className="py-4 px-4 md:px-8 space-y-10">
+      {/* Image */}
       <img
-         src="/terms.jpg"
+        src="/terms.jpg"
         alt="Terms and Conditions"
-        className="w-full h-auto object-cover rounded-lg"
+        className="w-full h-auto object-cover rounded-lg shadow"
       />
 
-      <SectionHeading>Privacy Policy</SectionHeading>
-      <SectionParagraph>
-        We collect personal information such as email, CV, and LinkedIn profiles
-        to facilitate the application process and program participation. This
-        information is stored securely and used solely for program-related
-        purposes. We comply with all relevant data protection laws and do not
-        share your information with third parties without your consent.
-      </SectionParagraph>
+      {/* Privacy Policy */}
+      <section>
+        <SectionHeading>Privacy Policy</SectionHeading>
+        <SectionParagraph>
+          We collect personal information such as email, CV, and LinkedIn
+          profiles to facilitate the application process and program
+          participation. This information is stored securely and used solely for
+          program-related purposes. We comply with all relevant data protection
+          laws and do not share your information with third parties without your
+          consent.
+        </SectionParagraph>
+      </section>
 
-      <SectionHeading>Terms and Conditions</SectionHeading>
-      <SectionList items={termsList} />
+      {/* Terms and Conditions */}
+      <section>
+        <SectionHeading>Terms and Conditions</SectionHeading>
+        <SectionList items={termsList} />
+      </section>
 
-      <SectionHeading>Cookie Policy</SectionHeading>
-      <SectionParagraph>
-        Your website uses cookies to enhance user experience and analyze site
-        traffic. By using our site, you consent to our use of cookies in
-        accordance with our Cookie Policy. You can manage your cookie
-        preferences through your browser settings.
-      </SectionParagraph>
+      {/* Cookie Policy */}
+      <section>
+        <SectionHeading>Cookie Policy</SectionHeading>
+        <SectionParagraph>
+          Your website uses cookies to enhance user experience and analyze site
+          traffic. By using our site, you consent to our use of cookies in
+          accordance with our Cookie Policy. You can manage your cookie
+          preferences through your browser settings.
+        </SectionParagraph>
+      </section>
     </div>
   );
 }
