@@ -5,7 +5,7 @@ import MeetTeamSection from "../components/about-us/MeetTeamSection";
 import IconCardSection from "../components/about-us/IconCardSection";
 
 
-export default function AboutUs() {
+export default function AboutUsPage() {
     return (
         <div className="pt-[60px] md:pt-[100px]">
             <AboutHeroSection />
