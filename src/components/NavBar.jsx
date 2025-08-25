@@ -70,7 +70,9 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
           */}
           <Link
             to="/"
-            className={`items-center ${isAuthenticated ? "hidden md:flex" : "flex"}`}
+            className={`items-center ${
+              isAuthenticated ? "hidden md:flex" : "flex"
+            }`}
           >
             <img src={logoBlue} alt="Prodefied Logo" className="w-10 h-10" />
             <span className="text-lg font-semibold text-[#1B1A1A] -ml-1">
@@ -89,7 +91,7 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
               <Link to="/login" className={navLinkClass}>
                 Log In
               </Link>
-              <Link to="/about" className={navLinkClass}>
+              <Link to="/about-us" className={navLinkClass}>
                 About Us
               </Link>
               <Link to="/program-details" className={navLinkClass}>
@@ -110,7 +112,7 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
               {/* <Link to="/profile" className={navLinkClass}>
                 Profile
               </Link> */}
-              <Link to="/about" className={navLinkClass}>
+              <Link to="/about-us" className={navLinkClass}>
                 About Us
               </Link>
               <Link to="/program-details" className={navLinkClass}>
