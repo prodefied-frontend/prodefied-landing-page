@@ -26,7 +26,7 @@ export default function AppRoutes() {
       {/* Public Pages with Layout */}
       <Route element={<Layout />}>
         <Route path="/" element={<Homepage />} />
-        <Route path="/about" element={<AboutUsPage />} />
+        <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/partnership" element={<PartnershipPage />} />
         <Route path="/program-details" element={<ProgramDetails />} />
