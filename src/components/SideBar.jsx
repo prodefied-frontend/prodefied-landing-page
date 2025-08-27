@@ -60,12 +60,12 @@ export default function Sidebar() {
             <SidebarLink
               icon={HelpCenterIcon}
               text="Help Center"
-              to="/portal/help-center"
+              to="/help-centre"
             />
             <SidebarLink
               icon={SuggestionIcon}
               text="Suggestions"
-              to="/portal/suggestions"
+              to="/suggestions"
             />
           </nav>
         </div>

@@ -12,8 +12,12 @@ import SignupPage from "../pages/SignupPage";
 import PartnershipPage from "../pages/PartnershipPage";
 import PaymentRegistrationPage from "../pages/PaymentRegistrationPage";
 import PortalPage from "../pages/PortalPage";
+import ProfilePage from "../pages/ProfilePage";
+import HelpCentrePage from "../pages/HelpCentrePage";
+import SuggestionsPage from "../pages/SuggestionsPage";
 import ProgramDetails from "../pages/ProgramDetails";
 import TermsConditionsPage from "../pages/TermsConditionsPage";
+import HireOurTalentsPage from "../pages/HireOurTalentsPage";
 import RegistrationPage from "../pages/RegistrationPage";
 
 export default function AppRoutes() {
@@ -22,11 +26,12 @@ export default function AppRoutes() {
       {/* Public Pages with Layout */}
       <Route element={<Layout />}>
         <Route path="/" element={<Homepage />} />
-        <Route path="/about" element={<AboutUsPage />} />
+        <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/partnership" element={<PartnershipPage />} />
         <Route path="/program-details" element={<ProgramDetails />} />
-        <Route path="/terms" element={<TermsConditionsPage />} />
+        <Route path="/terms-conditions" element={<TermsConditionsPage />} />
+        <Route path="/hire-our-talents" element={<HireOurTalentsPage />} />
         <Route path="/registration" element={<RegistrationPage />} />
       </Route>
 
@@ -35,7 +40,13 @@ export default function AppRoutes() {
         <Route element={<ProtectedLayout />}>
           <Route path="/portal" element={<PortalPage />} />
           {/* <Route path="/profile" element={<ProfilePage />} /> */}
-          <Route path="/payment-registration" element={<PaymentRegistrationPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/help-centre" element={<HelpCentrePage />} />
+          <Route path="/suggestions" element={<SuggestionsPage />} />
+          <Route
+            path="/payment-registration"
+            element={<PaymentRegistrationPage />}
+          />
         </Route>
       </Route>
 

@@ -1,5 +1,3 @@
-
-
 import React from "react";
 
 export default function SubscribeToOurNewsletter() {
@@ -9,7 +7,7 @@ export default function SubscribeToOurNewsletter() {
         Subscribe to our newsletter
       </h3>
 
-      <div className="flex items-center w-[700px] mt-4">
+      <div className="flex items-center w-full max-w-md md:max-w-lg lg:max-w-xl mt-4">
         <input
           type="email"
           placeholder="Enter your email"
@@ -29,4 +27,3 @@ export default function SubscribeToOurNewsletter() {
     </div>
   );
 }
-

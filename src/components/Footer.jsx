@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -16,25 +14,26 @@ import footerBgLogo from "../assets/icons/footerbackgroundlogo.svg";
 
 export default function Footer() {
   const footerLinkClass =
-    "text-sm lg:text-base hover:text-[#000F84] transition cursor-pointer";
+    "text-sm sm:text-base hover:text-[#000F84] transition cursor-pointer";
 
   return (
-    <div className="w-full bg-[#E5E8FF] px-4 py-4 relative overflow-hidden min-h-[300px] text-center md:text-left">
-      {/* Background logo behind everything */}
+    <div className="w-full bg-[#E5E8FF] px-4 py-6 relative overflow-hidden min-h-[300px] text-center sm:text-left">
+      {/* Background Logo */}
       <img
         src={footerBgLogo}
         alt="Footer Logo Background"
-        className="absolute bottom-0 right-0 w-[500px] z-0 opacity-100 pointer-events-none hidden sm:block max-w-full"
+        className="absolute bottom-0 right-0 w-[400px] md:w-[500px] z-0 opacity-100 pointer-events-none hidden sm:block max-w-full"
       />
 
-      <div className="w-full grid grid-cols-1 md:grid-cols-7 gap-4 px-4 py-4 relative z-10">
+      {/* Responsive Grid */}
+      <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6 px-4 py-4 relative z-10">
         {/* Column 1 - Logo */}
-        <div className="flex flex-col space-y-1">
+        <div className="flex flex-col space-y-2 items-center sm:items-start">
           <Link to="/" className="flex items-start">
             <img
               src={whiteLogo}
               alt="Prodefied Logo"
-              className="h-12 w-auto mx-auto md:mx-0"
+              className="h-12 w-auto mx-auto sm:mx-0"
             />
           </Link>
         </div>
@@ -43,10 +42,9 @@ export default function Footer() {
         <div className="flex flex-col space-y-2">
           <h3 className="font-semibold text-gray-800 mb-1">Find Us</h3>
           <p className="text-sm text-gray-600">
-            fdcxh <br />
-            shixbxh stcxsxhsxsv <br />
-            xhvshcxscxggcfxhxihsix <br />
-            ixbhsvysxsuxuxxu
+            fdcxhshixbx <br />
+            hstcxsxhsxsv <br />
+            ixbhsvysxsu
           </p>
         </div>
 
@@ -59,9 +57,6 @@ export default function Footer() {
           <Link to="/about-us" className={footerLinkClass}>
             About Us
           </Link>
-          <Link to="/out-talents" className={footerLinkClass}>
-            Our Talents
-          </Link>
           <Link to="/sign-up" className={footerLinkClass}>
             Registration
           </Link>
@@ -72,7 +67,7 @@ export default function Footer() {
 
         {/* Column 4 - Program Details */}
         <div className="flex flex-col space-y-2">
-          <h3 className="font-bold text-gray-800 mb-1">Program Details</h3>
+          <h3 className="font-semibold text-gray-800 mb-1">Program Details</h3>
           <p>Product Guide Book</p>
           <p>Freebie</p>
           <p>Certification</p>
@@ -99,69 +94,54 @@ export default function Footer() {
         </div>
 
         {/* Column 6 - Social Icons */}
-        <div className="flex flex-col space-y-2 mx-auto lg:mx-0">
+        <div className="flex flex-col space-y-2 items-center sm:items-start">
           <h3 className="font-semibold text-gray-800 mb-1">Follow Us</h3>
-          <div className="flex flex-wrap gap-3">
-            <a
-              href="mailto:prodefied@gmail.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={gmailIcon} alt="Gmail" className="h-4 w-4" />
-            </a>
-            <a
-              href="https://www.instagram.com/prodefied?igsh=dXZhYW5rdjRhc2dj"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={instagramIcon} alt="Instagram" className="h-4 w-4" />
-            </a>
-            <a
-              href="https://www.linkedin.com/company/prodefied.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={linkedinIcon} alt="LinkedIn" className="h-4 w-4" />
-            </a>
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={facebookIcon} alt="Facebook" className="h-4 w-4" />
-            </a>
-            <a
-              href="https://youtube.com/@prodefied?si=8WLp9bf8rANWp4S-"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={youtubeIcon} alt="YouTube" className="h-4 w-4" />
-            </a>
-            <a
-              href="https://www.tiktok.com/@prodefied?_t=ZM-8xAVuQj6Uem&_r=1"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={tiktokIcon} alt="TikTok" className="h-4 w-4" />
-            </a>
-            <a
-              href="https://x.com/prodefied/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={xIcon} alt="X" className="h-4 w-4" />
-            </a>
+          <div className="flex gap-3 items-center flex-wrap">
+            {[
+              { img: gmailIcon, link: "mailto:prodefied@gmail.com" },
+              {
+                img: instagramIcon,
+                link: "https://www.instagram.com/prodefied?igsh=dXZhYW5rdjRhc2dj",
+              },
+              {
+                img: linkedinIcon,
+                link: "https://www.linkedin.com/company/prodefied.com/",
+              },
+              { img: facebookIcon, link: "https://facebook.com" },
+              {
+                img: youtubeIcon,
+                link: "https://youtube.com/@prodefied?si=8WLp9bf8rANWp4S-",
+              },
+              {
+                img: tiktokIcon,
+                link: "https://www.tiktok.com/@prodefied?_t=ZM-8xAVuQj6Uem&_r=1",
+              },
+              { img: xIcon, link: "https://x.com/prodefied/" },
+            ].map((item, idx) => (
+              <a
+                key={idx}
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src={item.img}
+                  alt="icon"
+                  className="h-6 w-6 sm:h-7 sm:w-7 hover:scale-110 transition-transform duration-300"
+                />
+              </a>
+            ))}
           </div>
         </div>
 
         {/* Column 7 - CTA */}
-        <div className="relative z-10 flex flex-col items-center space-y-4 text-center">
+        <div className="flex flex-col items-center sm:items-start space-y-3 text-center sm:text-left">
           <h3 className="font-semibold text-gray-800">
-            Ready to kickstart your <br /> Product Management journey
+            Ready to kickstart your Product Management journey?
           </h3>
           <Link
             to="/"
-            className="bg-[#000F84] text-white text-sm px-4 py-2 rounded-lg hover:bg-[#0018a8]"
+            className="bg-[#000F84] text-white text-sm sm:text-base px-4 py-2 rounded-lg hover:bg-[#0018a8]"
           >
             Start Learning
           </Link>
@@ -175,4 +155,3 @@ export default function Footer() {
     </div>
   );
 }
-
