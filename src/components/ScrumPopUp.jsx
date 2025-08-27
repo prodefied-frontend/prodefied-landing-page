@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 import ScrumImage from "../assets/images/homepage/scrum-image.jpg";
 
@@ -48,7 +47,7 @@ export default function ScrumPopUp({ isOpen, onClose }) {
       aria-modal="true"
     >
       <div
-        className="bg-white rounded-2xl shadow-lg max-w-4xl w-[90%] overflow-hidden transform opacity-0 animate-popSlideIn"
+        className="bg-[#001EFF] rounded-2xl shadow-lg max-w-4xl w-[90%] overflow-hidden transform opacity-0 animate-popSlideIn"
         onClick={stopPropagation}
       >
         <div className="flex flex-col md:flex-row">
@@ -59,25 +58,28 @@ export default function ScrumPopUp({ isOpen, onClose }) {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="p-6 md:w-1/2 w-full flex flex-col justify-center">
-            <h2 className="text-2xl font-bold mb-3">Get Free Scrum Certificate</h2>
-            <p className="text-gray-600 mb-6">
-              Before you join Prodefied, take this free Scrum course we found for you,
-              and earn a certificate at no cost. It's a great foundation for the real work you'll do with us.
+          <div className="p-6 md:w-1/2 w-full flex flex-col justify-center md:items-start">
+            <h2 className="text-[#F5F4F4] text-2xl font-bold mb-3">
+              Get Free Scrum Certificate
+            </h2>
+            <p className="text-[#F4F4F4] mb-6">
+              Before you join Prodefied, take this free Scrum course we found
+              for you, and earn a certificate at no cost. It's a great
+              foundation for the real work you'll do with us.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:justify-end">
               <a
                 target="_blank"
                 rel="noopener noreferrer"
                 href="https://simpli-web.app.link/e/7x9f12dtrVb"
-                className="px-4 py-2 bg-[#000F84] text-white rounded-lg hover:opacity-90 transition text-center"
+                className="px-4 py-2 bg-white text-[#000F84] rounded-lg hover:bg-[#001EFF] hover:text-white hover:border hover:border-white transition text-center"
                 onClick={onClose}
               >
                 Get Scrum Certificate
               </a>
               <button
                 onClick={onClose}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+                className="px-4 py-2 border border-white text-white rounded-lg hover:bg-white hover:text-[#000F84] transition cursor-pointer"
               >
                 Maybe later
               </button>
@@ -89,15 +91,29 @@ export default function ScrumPopUp({ isOpen, onClose }) {
       {/* Tailwind animations */}
       <style jsx>{`
         @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
         }
         @keyframes popSlideIn {
-          0% { opacity: 0; transform: translateY(20px) scale(0.95); }
-          100% { opacity: 1; transform: translateY(0) scale(1); }
+          0% {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
         }
-        .animate-fadeIn { animation: fadeIn 0.35s ease-out forwards; }
-        .animate-popSlideIn { animation: popSlideIn 0.35s ease-out forwards; }
+        .animate-fadeIn {
+          animation: fadeIn 0.35s ease-out forwards;
+        }
+        .animate-popSlideIn {
+          animation: popSlideIn 0.35s ease-out forwards;
+        }
       `}</style>
     </div>
   );

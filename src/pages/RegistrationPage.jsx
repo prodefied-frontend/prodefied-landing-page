@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import FullIcon from "../assets/icons/registration/full-icon.svg";
+import TwoPartIcon from "../assets/icons/registration/two-part.svg";
+import BiWeeklyIcon from "../assets/icons/registration/bi-weekly.svg";
 
 const paymentPlanData = [
   {
@@ -10,13 +12,13 @@ const paymentPlanData = [
   },
   {
     type: "2-Part Installment ",
-    icon: FullIcon,
+    icon: TwoPartIcon,
     details:
       "Secure your spot with a N100,000 deposit and pay the balance within 8 weeks (with weekly reminders from our team)",
   },
   {
     type: "Bi-Weekly Plan",
-    icon: FullIcon,
+    icon: BiWeeklyIcon,
     details:
       "Spread your payments over 8 weeks, paying every 2 weeks (available on request)",
   },

@@ -44,7 +44,7 @@ export default function OurFounderSection() {
         {/* Founder Avatar + Story combined section */}
         <div className="flex-[1.5] flex flex-col md:flex-row md:gap-8 md:items-start w-full">
           {/* Founder Avatar */}
-          <div className="md:basis-[35%] flex-shrink-0 flex flex-col items-center text-center md:text-left md:items-start">
+          <div className="md:basis-[35%] flex-shrink-0 flex flex-col items-center text-center md:text-left md:items-center">
             <img
               src={PeaceAvatar}
               alt="Peace Avatar"
@@ -63,15 +63,15 @@ export default function OurFounderSection() {
               become one, she came from a non-traditional background. She
               dabbled in copywriting, digital marketing, content writing,
               affiliate marketing... you name it.
-              <span className="text-[#000F84] cursor-pointer block md:hidden">
+              {/* <span className="text-[#000F84] cursor-pointer block md:hidden">
                 Read More
-              </span>
+              </span> */}
             </p>
             <p className="hidden md:block">
               She experienced the confusion, the rejections, the imposter
               syndrome, and the lack of structure that makes one break into
               product management feel overwhelming.{" "}
-              <span className="text-[#000F84] cursor-pointer">Read More</span>
+              {/* <span className="text-[#000F84] cursor-pointer">Read More</span> */}
             </p>
           </div>
         </div>
@@ -122,8 +122,8 @@ export default function OurFounderSection() {
 
           {/* Meet the Team Link */}
           <Link
-            to="/team"
-            className="text-[#000F84] font-semibold hover:underline text-sm md:text-base px-4 py-2 border-[#000F84] border-[1px] rounded-md"
+            to="/about"
+            className="text-[#000F84] font-semibold text-sm md:text-base px-4 py-2 border-[#000F84] border-[1px] rounded-md"
           >
             Meet the Team
           </Link>
