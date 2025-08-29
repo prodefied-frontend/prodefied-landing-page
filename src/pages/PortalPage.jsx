@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import LockIcon from "../assets/icons/portal-page/lock.svg";
 import ResourcesIcon from "../assets/icons/portal-page/resources.svg";
 import AssessmentIcon from "../assets/icons/portal-page/assessment.svg";
 import CurriculumIcon from "../assets/icons/portal-page/curriculum.svg";
+import StudentIcon from '../assets/icons/portal-page/student-icon.svg';
+import AlumniIcon from '../assets/icons/portal-page/alumni-icon.svg';
 
 // Reusable Phase Card
 const PhaseCard = ({ title, label, labelBg, courseProgress, locked }) => (
@@ -22,7 +25,6 @@ const PhaseCard = ({ title, label, labelBg, courseProgress, locked }) => (
       <span>{courseProgress}% Complete</span>
     </div>
 
-    {/* Progress Bar */}
     <div className="w-full bg-gray-200 rounded-full h-2 mt-2 overflow-hidden">
       <div
         className="h-full bg-gradient-to-r from-[#001299] to-blue-500 transition-all duration-500"
@@ -57,37 +59,107 @@ const QuickActionCard = ({ icon, label, to }) => (
 );
 
 export default function PortalPage() {
+  const { user } = useAuth();
+
+  const name = user?.first_name || "User";
+  const studentId = user?.id || "N/A";
+  const hasPaid = user?.hasPaid || false;
+  const isGraduated = user?.isGraduated || false;
+
+  // 🧠 Progress tracking
+  const courseProgressPhase1 = user?.learningProgress || 0;
+  const courseProgressPhase2 = user?.internshipProgress || 0;
+  const courseProgressPhase3 = user?.careerProgress || 0;
+
+  // 🧠 Unlock logic
+  const phaseLocked = [
+    false,
+    courseProgressPhase1 < 100,
+    courseProgressPhase2 < 100,
+  ];
+
+  // 🧠 Determine application status
+  let applicationStatus = "Pending";
+  let statusBg = "#FFEBCC";
+  let statusIcon = "/brown-mark.svg";
+  let statusTextColor = "#7A4E00";
+
+  if (isGraduated) {
+    applicationStatus = "Graduated";
+    statusBg = "#E6F0FF";
+    statusIcon = "/blue-mark.svg";
+    statusTextColor = "#003366";
+  } else if (hasPaid) {
+    applicationStatus = "Accepted";
+    statusBg = "#E0FAE3";
+    statusIcon = "/green-mark.svg";
+    statusTextColor = "#15480C";
+  }
+
+  // 🧠 Determine user role
+  const userRole = isGraduated ? "Alumni" : "Student";
+  const roleIcon = isGraduated ? AlumniIcon : StudentIcon;
+
+  // 🧠 Phase data
+  const phases = [
+    {
+      title: "Phase 1",
+      label: "Learning",
+      bg: "#F5FBB8",
+      progress: courseProgressPhase1,
+      locked: phaseLocked[0],
+    },
+    {
+      title: "Phase 2",
+      label: "Internship",
+      bg: "#CCF6FF",
+      progress: courseProgressPhase2,
+      locked: phaseLocked[1],
+    },
+    {
+      title: "Phase 3",
+      label: "Career",
+      bg: "#EECCFF",
+      progress: courseProgressPhase3,
+      locked: phaseLocked[2],
+    },
+  ];
+
   return (
     <main className="-m-4 bg-[#FBFBFB]">
       {/* Top Status Bar */}
       <div className="px-8 mb-4 flex justify-between items-center">
-        <div className="bg-[#E0FAE3] inline-flex gap-2 p-2 rounded">
-          <img
-            src="/green-mark.svg"
-            alt="Green checkmark"
-            className="w-4 h-4"
-          />
-          <span className="text-[#15480C] text-xs font-medium">
-            Application status: Accepted
+        <div
+          className="inline-flex gap-2 p-2 rounded"
+          style={{ backgroundColor: statusBg }}
+        >
+          <img src={statusIcon} alt="Status icon" className="w-4 h-4" />
+          <span
+            className="text-xs font-medium"
+            style={{ color: statusTextColor }}
+          >
+            Application status: {applicationStatus}
           </span>
         </div>
-        <span className="text-sm font-semibold">ID: 445</span>
+        <span className="text-sm font-semibold">ID: {studentId}</span>
       </div>
 
       {/* Welcome Section */}
       <section className="bg-[#001299] text-white p-6">
-        <h1 className="font-semibold text-2xl">Welcome back, Peace</h1>
+        <div className="text-[#CCD2FF] flex items-center gap-1 mb-2">
+          <img src={roleIcon} alt={`${userRole} Icon`} />
+          <p className="text-white text-xs">{userRole}</p>
+        </div>
+        <h1 className="font-semibold text-2xl">Welcome back, {name}</h1>
         <p className="text-[#E6E6E6] text-xs my-2">
           Kickstart your product management journey!
         </p>
 
         <div className="my-6">
-          <span className="text-[#FF9D00] text-xs">Phase 1: Learning</span>
+          <span className="text-[#FF9D00] text-xs">
+            Phase 1: {phases[0].label}
+          </span>
         </div>
-
-        <button className="bg-[#FF9D00] text-sm py-2 px-4 rounded-md hover:bg-[#e88c00] transition">
-          Continue Learning
-        </button>
       </section>
 
       {/* My Learning Section */}
@@ -96,27 +168,16 @@ export default function PortalPage() {
           My Learning
         </h2>
 
-        <PhaseCard
-          title="Phase 1"
-          label="Learning"
-          labelBg="#F5FBB8"
-          courseProgress={0}
-          locked={false}
-        />
-        <PhaseCard
-          title="Phase 2"
-          label="Internship"
-          labelBg="#CCF6FF"
-          courseProgress={0}
-          locked={true}
-        />
-        <PhaseCard
-          title="Phase 3"
-          label="Career"
-          labelBg="#EECCFF"
-          courseProgress={0}
-          locked={true}
-        />
+        {phases.map((phase) => (
+          <PhaseCard
+            key={phase.title}
+            title={phase.title}
+            label={phase.label}
+            labelBg={phase.bg}
+            courseProgress={phase.progress}
+            locked={phase.locked}
+          />
+        ))}
       </section>
 
       {/* Quick Actions Section */}
@@ -130,12 +191,12 @@ export default function PortalPage() {
             <QuickActionCard
               icon={ResourcesIcon}
               label="Resources"
-              to="/resources"
+              to="/portal"
             />
             <QuickActionCard
               icon={AssessmentIcon}
               label="Assessments"
-              to="/assessments"
+              to="/portal"
             />
             <QuickActionCard
               icon={CurriculumIcon}

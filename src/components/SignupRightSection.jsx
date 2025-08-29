@@ -1,15 +1,10 @@
-/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { countryCodes } from "../constant/data";
 import Input from "./CustomInput";
-import { Facebook, google } from "../assets/icons";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase"; // adjust path as needed
-import axios from "axios";
-import { Link } from "react-router-dom";
-import { authenticateWithBackend } from "../constant/util";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { signupUser } from "../services/api";
 
 const SignupRightSection = () => {
   const [selectedCountry, setSelectedCountry] = useState(countryCodes[0]);
@@ -24,50 +19,62 @@ const SignupRightSection = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSelect = (country) => {
     setSelectedCountry(country);
     setShowDropdown(false);
   };
 
+
+  localStorage.removeItem("token");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const fullPhoneNumber = `${selectedCountry.dial_code}${formData.phone}`;
+    const { firstName, lastName, phone, email, password, confirmPassword } = formData;
+    const fullPhoneNumber = `${selectedCountry.dial_code}${phone}`.replace(/\s+/g, "");
+
+    // Basic validation
+    if (!firstName || !lastName || !phone || !email || !password || !confirmPassword) {
+      return toast.error("All fields are required.");
+    }
+    if (!/^\+\d{10,15}$/.test(fullPhoneNumber)) {
+      return toast.error("Invalid phone number format.");
+    }
+    if (password.length < 8) {
+      return toast.error("Password must be at least 8 characters.");
+    }
+    if (password !== confirmPassword) {
+      return toast.error("Passwords do not match.");
+    }
+
+    setSubmitting(true);
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
+      const payload = {
+        first_name: firstName,
+        last_name: lastName,
+        phone_number: fullPhoneNumber,
+        email,
+        password,
+      };
 
-      const idToken = await userCredential.user.getIdToken();
+      const res = await signupUser(payload); // No headers needed if backend doesn't require token
 
-      const user = await authenticateWithBackend(idToken);
-
-      localStorage.setItem("user", JSON.stringify(user));
-      console.log("User created and stored:", user);
-
-      toast.success("✅ Successfully signed up!");
-
-      setFormData({
-        firstName: "",
-        lastName: "",
-        phone: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-      });
+      toast.success("Account created successfully!");
+      navigate("/login");
     } catch (error) {
-      if (error.code === "auth/email-already-in-use") {
-        toast.error(
-          "This email is already registered. Please log in or use another email."
-        );
-      } else {
-        console.error("Signup error:", error);
-        toast.error("An unexpected error occurred. Please try again.");
-      }
+      console.error("Signup error:", error);
+      const msg =
+        error.response?.data?.detail ||
+        error.response?.data?.error ||
+        error.message;
+      toast.error(msg || "Signup failed. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -78,33 +85,18 @@ const SignupRightSection = () => {
         <p className="text-sm text-gray-600 mb-6">Let's set up your account</p>
 
         <form onSubmit={handleSubmit}>
+          {/* First + Last Name */}
           <div className="flex gap-2 mb-2">
-            <Input
-              type="text"
-              placeholder="First Name"
-              name="firstName"
-              value={formData.firstName}
-              onChange={(e) =>
-                setFormData({ ...formData, firstName: e.target.value })
-              }
-            />
-            <Input
-              type="text"
-              placeholder="Last Name"
-              name="lastName"
-              value={formData.lastName}
-              onChange={(e) =>
-                setFormData({ ...formData, lastName: e.target.value })
-              }
-            />
+            <Input type="text" placeholder="First Name" value={formData.firstName}
+              onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} required />
+            <Input type="text" placeholder="Last Name" value={formData.lastName}
+              onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} required />
           </div>
 
+          {/* Phone Number */}
           <div className="flex items-center gap-2 relative mb-2">
-            <div
-              tabIndex={0}
-              className="flex items-center border rounded-md px-3 py-2 text-sm cursor-pointer bg-white z-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              onClick={() => setShowDropdown((prev) => !prev)}
-            >
+            <div tabIndex={0} className="flex items-center border rounded-md px-3 py-2 text-sm cursor-pointer bg-white z-10"
+              onClick={() => setShowDropdown((prev) => !prev)}>
               <span>{selectedCountry.flag}</span>&nbsp;
               <span>{selectedCountry.dial_code}</span>
             </div>
@@ -112,11 +104,8 @@ const SignupRightSection = () => {
             {showDropdown && (
               <div className="absolute top-[110%] left-0 z-20 w-25 max-h-40 overflow-y-auto border bg-white rounded shadow-md">
                 {countryCodes.map((country) => (
-                  <div
-                    key={country.code}
-                    className="px-3 py-2 hover:bg-gray-100 cursor-pointer flex gap-2 text-sm"
-                    onClick={() => handleSelect(country)}
-                  >
+                  <div key={country.code} className="px-3 py-2 hover:bg-gray-100 cursor-pointer flex gap-2 text-sm"
+                    onClick={() => handleSelect(country)}>
                     <span>{country.flag}</span>
                     <span>{country.dial_code}</span>
                   </div>
@@ -124,99 +113,43 @@ const SignupRightSection = () => {
               </div>
             )}
 
-            <Input
-              type="tel"
-              placeholder="9067121412"
-              name="phone"
-              value={formData.phone}
-              onChange={(e) =>
-                setFormData({ ...formData, phone: e.target.value })
-              }
-            />
+            <Input type="tel" placeholder="9067121412" value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })} required />
           </div>
 
-          <Input
-            type="email"
-            placeholder="Email Address"
-            name="email"
-            value={formData.email}
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
-            className="mb-2"
-          />
+          {/* Email */}
+          <Input type="email" placeholder="Email Address" value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="mb-2" required />
 
+          {/* Password */}
           <div className="relative mb-2">
-            <Input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              name="password"
-              value={formData.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-            />
-            <div
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500"
-              onClick={() => setShowPassword((prev) => !prev)}
-            >
+            <Input type={showPassword ? "text" : "password"} placeholder="Password" value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })} required />
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500"
+              onClick={() => setShowPassword((prev) => !prev)}>
               {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </div>
           </div>
 
+          {/* Confirm Password */}
           <div className="relative mb-2">
-            <Input
-              type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirm Password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={(e) =>
-                setFormData({ ...formData, confirmPassword: e.target.value })
-              }
-            />
-            <div
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500"
-              onClick={() => setShowConfirmPassword((prev) => !prev)}
-            >
-              {showConfirmPassword ? (
-                <AiOutlineEyeInvisible />
-              ) : (
-                <AiOutlineEye />
-              )}
+            <Input type={showConfirmPassword ? "text" : "password"} placeholder="Confirm Password" value={formData.confirmPassword}
+              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })} required />
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500"
+              onClick={() => setShowConfirmPassword((prev) => !prev)}>
+              {showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-[#000F84] text-white py-2 rounded-md font-medium hover:bg-blue-900 transition cursor-pointer"
-          >
-            Get Started
+          <button type="submit" className="w-full bg-[#000F84] text-white py-2 rounded-md font-medium hover:bg-blue-900 transition cursor-pointer disabled:opacity-60"
+            disabled={submitting}>
+            {submitting ? "Creating account..." : "Get Started"}
           </button>
 
           <p className="text-sm text-center mt-4">
             Already a member?{" "}
-            <span className="text-blue-700 cursor-pointer font-medium">
-              <Link to="/login">Login</Link>
-            </span>
+            <Link to="/login" className="text-blue-700 font-medium">Login</Link>
           </p>
-
-          <div className="flex items-center my-4">
-            <div className="flex-grow h-px bg-gray-300"></div>
-            <span className="px-2 text-sm text-gray-500">Or</span>
-            <div className="flex-grow h-px bg-gray-300"></div>
-          </div>
-
-          <div className="space-y-3">
-            <button className="w-full border rounded-md py-2 flex items-center justify-center gap-2 text-sm hover:bg-gray-50">
-              <img src={google} alt="Google" className="w-4 h-4" />
-              Sign up with Google
-            </button>
-
-            <button className="w-full border rounded-md py-2 flex items-center justify-center gap-2 text-sm hover:bg-gray-50">
-              <img src={Facebook} alt="Facebook" className="w-4 h-4" />
-              Sign up with Facebook
-            </button>
-          </div>
         </form>
       </div>
     </div>

@@ -14,6 +14,8 @@
     - SideBar.jsx
     - Layout.jsx
     - ProtectedLayout.jsx
+  /context
+    - AuthContext.js  
   /constant
     - data.jsx
     - util.jsx
@@ -37,6 +39,7 @@
     - AppRoutes.jsx
     - ProtectedRoutes.jsx
   /services
+    - api.js
     - payments.js
   App.css  
   App.jsx

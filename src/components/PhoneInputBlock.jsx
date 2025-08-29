@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 
 export default function PhoneNumberField({ value, onChange }) {
-  // value = { country: "NG", code: "+234", number: "" }
+  const phoneInputRef = useRef(null);
 
   const handleCountryChange = (phoneValue, countryData) => {
     const callingCode = `+${countryData.dialCode}`;
@@ -15,30 +15,42 @@ export default function PhoneNumberField({ value, onChange }) {
   };
 
   const handleNumberChange = (e) => {
-    const cleaned = e.target.value.replace(/\D/g, ""); // keep only digits
+    const cleaned = e.target.value.replace(/\D/g, "");
     onChange({ ...value, number: cleaned });
   };
+
+  // Hide internal input after mount
+  useEffect(() => {
+    const input = phoneInputRef.current?.querySelector("input");
+    if (input) input.style.display = "none";
+  }, []);
 
   return (
     <div className="mb-4">
       <label className="block text-sm font-medium mb-2">
         Phone Number <span className="text-[#B30505]">*</span>
       </label>
-      <div className="flex gap-2">
-        {/* Country code selector */}
-        <PhoneInput
-          country={value.country.toLowerCase()}
-          value={value.code.replace("+", "")} // keep only the code
-          onChange={(val, countryData) => handleCountryChange(val, countryData)}
-          enableSearch
-          disableDropdown={false}
-          inputClass="!w-20 !py-2 !pl-10 !border !rounded !border-[#CBCBCB]"
-          buttonClass="!border-r !border-[#CBCBCB]"
-          containerClass="!w-20"
-          dropdownClass="custom-phone-dropdown"
-        />
 
-        {/* Main phone number field */}
+      <div className="flex gap-2 items-center">
+        {/* Flag + country code box */}
+        <div
+          ref={phoneInputRef}
+          className="flex items-center border border-[#CBCBCB] rounded px-2 py-2 bg-white"
+        >
+          <PhoneInput
+            country={value.country.toLowerCase()}
+            onChange={(val, countryData) => handleCountryChange(val, countryData)}
+            enableSearch
+            disableCountryCode
+            inputClass="hidden"
+            buttonClass="!border-none !bg-transparent !p-0"
+            containerClass="!flex !items-center !w-auto"
+            dropdownClass="custom-phone-dropdown"
+          />
+          <span className="ml-2 text-sm text-[#1A1A1A]">{value.code}</span>
+        </div>
+
+        {/* Local number input */}
         <input
           type="tel"
           placeholder="Enter phone number"

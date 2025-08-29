@@ -45,3 +45,16 @@ body {
 .animate-popIn {
   animation: popIn 0.35s ease-out 0.1s forwards;
 }
+
+
+
+.react-tel-input .flag-dropdown {
+  display: flex !important;
+  align-items: center !important;
+  flex-direction: row !important;
+}
+
+.react-tel-input .selected-flag {
+  display: flex !important;
+  align-items: center !important;
+}
