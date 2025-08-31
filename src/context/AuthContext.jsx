@@ -8,6 +8,8 @@ export function AuthProvider({ children }) {
   const [profileImage, setProfileImage] = useState(null);
   const [loading, setLoading] = useState(true); // while checking localStorage
 
+  
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");

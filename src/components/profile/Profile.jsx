@@ -1,118 +1,159 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
-import axios from "axios";
+import { getUserProfile, updateUserProfile } from "../../services/api";
+import { toast } from "react-toastify";
+import getInitials from "../../utils/getInitials";
+import formatDateJoinedWithId from "../../utils/getStudentId";
 
 export default function Profile() {
   const { user, profileImage, setProfileImage, login } = useAuth();
+  const studentId = formatDateJoinedWithId(user);
+  // console.log(user);
 
-  const [firstName, setFirstName] = useState(user?.first_name || "");
-  const [lastName, setLastName] = useState(user?.last_name || "");
-  const [phoneNumber, setPhoneNumber] = useState(user?.phone_number || "");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [dateJoined, setDateJoined] = useState("");
   const [cohort, setCohort] = useState("");
   const [saving, setSaving] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [showResetModal, setShowResetModal] = useState(false);
+  const [hasFetched, setHasFetched] = useState(false);
 
   useEffect(() => {
-    const savedDate = localStorage.getItem("dateJoined");
-    const savedCohort = localStorage.getItem("cohort");
+    const fetchProfile = async () => {
+      if (hasFetched) return;
 
-    if (savedDate) {
-      setDateJoined(savedDate);
-    } else {
-      const today = new Date().toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      });
-      localStorage.setItem("dateJoined", today);
-      setDateJoined(today);
-    }
+      try {
+        const res = await getUserProfile();
+        const profile = res.data.user;
 
-    if (savedCohort) {
-      setCohort(savedCohort);
-    } else {
-      const cohortDate = new Date().toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      });
-      localStorage.setItem("cohort", cohortDate);
-      setCohort(cohortDate);
-    }
-  }, []);
+        setFirstName(profile.first_name || "");
+        setLastName(profile.last_name || "");
+        setPhoneNumber(profile.phone_number || "");
+
+        login(profile, localStorage.getItem("token"));
+        setHasFetched(true);
+      } catch (err) {
+        toast.error("Failed to fetch profile.");
+      }
+    };
+
+    fetchProfile();
+
+    const today = new Date().toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+
+    const savedDate = localStorage.getItem("dateJoined") || today;
+    const savedCohort = localStorage.getItem("cohort") || today;
+
+    localStorage.setItem("dateJoined", savedDate);
+    localStorage.setItem("cohort", savedCohort);
+
+    setDateJoined(savedDate);
+    setCohort(savedCohort);
+  }, [hasFetched]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImage(reader.result);
-        localStorage.setItem("profileImage", reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setProfileImage(reader.result);
+      localStorage.setItem("profileImage", reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleProfileClick = () => {
     if (profileImage) {
-      const confirmReset = window.confirm("Reset profile image?");
-      if (confirmReset) {
-        setProfileImage(null);
-        localStorage.removeItem("profileImage");
-      }
+      setShowResetModal(true);
     } else {
       document.getElementById("upload-image").click();
     }
   };
 
+  const handleResetImage = () => {
+    setProfileImage(null);
+    localStorage.removeItem("profileImage");
+    setShowResetModal(false);
+  };
+
   const handleSave = async () => {
+    if (!hasChanges()) return;
+
     setSaving(true);
-    setSuccessMessage("");
+
+    const payload = {
+      first_name: firstName,
+      last_name: lastName,
+      phone_number: phoneNumber,
+    };
+
+    if (password.trim()) {
+      payload.password = password;
+    }
 
     try {
-      const payload = {
-        first_name: firstName,
-        last_name: lastName,
-        phone_number: phoneNumber,
-      };
-
-      if (password.trim()) {
-        payload.password = password;
-      }
-
-      const token = localStorage.getItem("token");
-      const res = await axios.put(
-        "https://your-backend.com/api/profile/update/",
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      login(res.data.user, token); // update context
-      setSuccessMessage("Profile updated successfully!");
-      setPassword(""); // clear password field
+      const res = await updateUserProfile(payload);
+      login(res.data.user, localStorage.getItem("token"));
+      toast.success("Profile updated successfully!");
+      setPassword("");
     } catch (err) {
-      console.error("Update failed:", err);
-      alert("Failed to update profile.");
+      toast.error("Failed to update profile.");
     } finally {
       setSaving(false);
     }
   };
 
-  const initials = `${firstName} ${lastName}`
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase();
+  const hasChanges = () => {
+    return (
+      firstName !== user?.first_name ||
+      lastName !== user?.last_name ||
+      phoneNumber !== user?.phone_number ||
+      password.trim() !== ""
+    );
+  };
+
+  const initials = getInitials(user);
+  const admissionStatus = user?.hasPaid ? "Student" : "Pending";
+  const applicationStatus = user?.hasPaid ? "Approved" : "Pending";
 
   return (
-    <div className="p-6 max-w-2xl mx-auto bg-[#FBFBFB] rounded-md shadow-sm">
-      <div className="flex flex-col items-start relative">
+    <div className="p-6 max-w-2xl mx-auto bg-[#FBFBFB] rounded-md shadow-sm relative">
+      {/* Modal */}
+      {showResetModal && (
+        <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-50">
+          <div className="bg-[#FBFBFB] rounded-lg shadow-lg p-6 w-80 text-center">
+            <h2 className="text-lg font-semibold mb-4 text-[#001299]">
+              Reset Profile Image?
+            </h2>
+            <p className="text-sm text-gray-600 mb-6">
+              This will remove your current profile image.
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={() => setShowResetModal(false)}
+                className="px-4 py-2 rounded-md bg-gray-300 hover:bg-gray-400 text-gray-800"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleResetImage}
+                className="px-4 py-2 rounded-md bg-[#001299] hover:bg-[#000e80] text-white"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="flex flex-col items-start">
         {/* Profile Image */}
         <div
           onClick={handleProfileClick}
@@ -177,25 +218,23 @@ export default function Profile() {
 
         <button
           onClick={handleSave}
-          disabled={saving}
-          className="bg-[#001299] text-white px-4 py-2 rounded-md hover:bg-[#000e80] transition disabled:opacity-60"
+          disabled={!hasChanges() || saving}
+          className={`px-4 py-2 rounded-md text-white transition ${
+            !hasChanges() || saving
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-[#001299] hover:bg-[#000e80]"
+          }`}
         >
           {saving ? "Saving..." : "Save Changes"}
         </button>
 
-        {successMessage && (
-          <p className="mt-3 text-green-600 text-sm font-medium">
-            {successMessage}
-          </p>
-        )}
-
-        {/* Profile Details */}
+        {/* Read-Only Profile Details */}
         <div className="mt-6 space-y-3 text-[#4D4D4D] w-full text-sm">
           <p>
             <strong>Email:</strong> {user?.email}
           </p>
           <p>
-            <strong>Student ID:</strong> {user?.studentId || "N/A"}
+            <strong>Student ID:</strong> {studentId || "N/A"}
           </p>
           <p>
             <strong>Current Phase:</strong> {user?.currentPhase || "Learning"}
@@ -208,14 +247,18 @@ export default function Profile() {
           </p>
           <p>
             <strong>Application Status:</strong>{" "}
-            <span className="text-green-600">
-              {user?.applicationStatus || "Approved"}
+            <span
+              className={user?.hasPaid ? "text-green-600" : "text-yellow-600"}
+            >
+              {applicationStatus}
             </span>
           </p>
           <p>
             <strong>Admission Status:</strong>{" "}
-            <span className="text-blue-600">
-              {user?.admissionStatus || "Student"}
+            <span
+              className={user?.hasPaid ? "text-blue-600" : "text-yellow-600"}
+            >
+              {admissionStatus}
             </span>
           </p>
         </div>

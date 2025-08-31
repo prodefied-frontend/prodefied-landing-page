@@ -26,7 +26,7 @@ export  default function HireSection() {
               top-notch talent and elevate your business to new heights.
             </p>
             <Link
-              to="/program-details"
+              to="/hire-our-talents"
               className="bg-[#000F84] text-white text-xs md:text-base px-4 py-2 md:px-6 md:py-3 rounded-lg inline-block"
             >
               Learn More

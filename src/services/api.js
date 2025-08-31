@@ -23,25 +23,42 @@ export const loginUser = (payload) => {
   return axios.post(`${API_BASE}/login/`, payload);
 };
 
+// GET User Profile
+export const getUserProfile = async () => {
+  const token = localStorage.getItem("token");
+  return axios.get(`${API_BASE}/profile/`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+
+// Update User Profile
+export const updateUserProfile = async (payload) => {
+  const token = localStorage.getItem("token");
+  return axios.put(`${API_BASE}/profile/update/`, payload, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 // LOGOUT
 export const logoutUser = () => {
-  return axios.get(`${API_BASE}/logout/`);
+  return axios.get(`${API_BASE}/logout/`, getAuthHeader());
 };
 
 // PAYMENT
-export const initializeUserPayment = (amount) => {
-  const token = localStorage.getItem("token");
+export const initializeUserPayment = (amount, redirect_url) => {
   return axios.post(
     `${API_BASE}/initialize_user/`,
-    { amount },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+    { amount, redirect_url },
+    getAuthHeader()
   );
 };
 
 export const verifyUserPayment = (reference) => {
   return axios.get(`${API_BASE}/verify_payment/?reference=${reference}`, getAuthHeader());
 };
+
