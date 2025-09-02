@@ -11,12 +11,16 @@ export default function HireTalentsForm() {
   });
 
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
+  // Handle text inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handle employment type (single choice)
   const handleEmploymentTypeChange = (e) => {
     const { value } = e.target;
     setFormData((prev) => ({
@@ -25,6 +29,7 @@ export default function HireTalentsForm() {
     }));
   };
 
+  // Handle location (single choice)
   const handleLocationChange = (e) => {
     const { value } = e.target;
     setFormData((prev) => ({
@@ -33,12 +38,21 @@ export default function HireTalentsForm() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  // Submit form
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // --- validation ---
     const newErrors = {};
     if (!formData.name) newErrors.name = "Name is required";
-    if (!formData.email) newErrors.email = "Email is required";
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        newErrors.email = "Please enter a valid email address";
+      }
+    }
     if (!formData.phone) newErrors.phone = "Phone Number is required";
     if (!formData.position) newErrors.position = "Position is required";
     if (!formData.employmentType)
@@ -48,10 +62,45 @@ export default function HireTalentsForm() {
 
     if (Object.keys(newErrors).length !== 0) {
       setErrors(newErrors);
-    } else {
-      setErrors({});
-      console.log("Form submitted", formData);
-      // Optionally reset form
+      return;
+    }
+
+    setErrors({});
+    setLoading(true);
+    setMessage("");
+
+    // ✅ Map frontend → backend fields
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      phonenumber: formData.phone,
+      position: formData.position,
+      employment_type: formData.employmentType.replace("-", "_"), // e.g. full-time → full_time
+      location_option: formData.location, // send directly: remote, hybrid, onsite
+    };
+
+    try {
+      const response = await fetch(
+        "https://prodefied-backend.onrender.com/api/hire-talent/",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("❌ Backend errors:", errorData);
+        setMessage("Submission failed: " + JSON.stringify(errorData));
+        return;
+      }
+
+      const data = await response.json();
+      console.log("✅ Success:", data);
+      setMessage("Form submitted successfully!");
+
+      // reset form
       setFormData({
         name: "",
         email: "",
@@ -60,52 +109,68 @@ export default function HireTalentsForm() {
         employmentType: "",
         location: "",
       });
+    } catch (error) {
+      console.error("❌ Error:", error);
+      setMessage("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="max-w-2xl mx-auto p-6">
       <form className="space-y-4" onSubmit={handleSubmit}>
-        {/* Basic Fields */}
+        {/* Name */}
         <label className="text-gray-700 font-medium">Name</label>
         <input
           type="text"
           name="name"
           placeholder="Full Name"
-          className="w-full mt-1 p-2 shadow rounded-md bg-white"
+          className={`w-full mt-1 p-2 shadow rounded-md bg-white ${
+            errors.name ? "border border-red-500" : ""
+          }`}
           value={formData.name}
           onChange={handleChange}
         />
         {errors.name && <p className="text-red-600 text-sm">{errors.name}</p>}
 
+        {/* Email */}
         <label className="text-gray-700 font-medium">Email</label>
         <input
           type="text"
           name="email"
           placeholder="name@example.com"
-          className="w-full mt-1 p-2 shadow rounded-md bg-white"
+          className={`w-full mt-1 p-2 shadow rounded-md bg-white ${
+            errors.email ? "border border-red-500" : ""
+          }`}
           value={formData.email}
           onChange={handleChange}
         />
         {errors.email && <p className="text-red-600 text-sm">{errors.email}</p>}
 
+        {/* Phone */}
         <label className="text-gray-700 font-medium">Phone Number</label>
         <input
           type="text"
           name="phone"
-          placeholder="Enter phone number"
-          className="w-full mt-1 p-2 shadow rounded-md bg-white"
+          placeholder="+2348123456789"
+          className={`w-full mt-1 p-2 shadow rounded-md bg-white ${
+            errors.phone ? "border border-red-500" : ""
+          }`}
           value={formData.phone}
           onChange={handleChange}
         />
         {errors.phone && <p className="text-red-600 text-sm">{errors.phone}</p>}
 
+        {/* Position */}
         <label className="text-gray-700 font-medium">Position</label>
         <input
           type="text"
           name="position"
-          placeholder="e.g. Junior PM, Associate PM"
-          className="w-full mt-1 p-2 shadow rounded-md bg-white"
+          placeholder="e.g. Backend Developer"
+          className={`w-full mt-1 p-2 shadow rounded-md bg-white ${
+            errors.position ? "border border-red-500" : ""
+          }`}
           value={formData.position}
           onChange={handleChange}
         />
@@ -113,11 +178,12 @@ export default function HireTalentsForm() {
           <p className="text-red-600 text-sm">{errors.position}</p>
         )}
 
+        {/* Employment Type */}
         <div>
           <label className="block text-sm text-gray-700 font-medium mb-1">
             Employment Type
           </label>
-          <div className="w-full bg-white p-2 shadow rounded-md flex gap-x-8 overflow-x-auto">
+          <div className="w-full bg-white p-2 shadow rounded-md flex flex-wrap gap-x-6 gap-y-3">
             {["full-time", "part-time", "internship", "contract"].map(
               (type) => (
                 <label
@@ -171,11 +237,22 @@ export default function HireTalentsForm() {
         <div className="text-left mt-4">
           <button
             type="submit"
-            className="bg-[#ff9d00] rounded-md px-6 py-3 text-white text-sm font-semibold hover:scale-105 hover:bg-[#000E73] transition"
+            disabled={loading}
+            className={`rounded-md px-6 py-3 text-white text-sm font-semibold transition ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-[#ff9d00] hover:scale-105 hover:bg-[#000E73]"
+            }`}
           >
-            Submit
+            {loading ? "Submitting..." : "Submit"}
           </button>
         </div>
+
+        {message && (
+          <p className="mt-3 text-sm font-medium text-center text-gray-700">
+            {message}
+          </p>
+        )}
       </form>
     </div>
   );
