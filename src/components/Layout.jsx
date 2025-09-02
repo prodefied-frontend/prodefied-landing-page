@@ -210,7 +210,7 @@ const Layout = () => {
         <div className="fixed inset-0 z-50 md:hidden flex justify-start">
           <div className="bg-white w-64 p-4 shadow-xl h-full transform -translate-x-0 transition-transform duration-300">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold">Profile</h3>
+              {/* <h3 className="text-lg font-semibold">Profile</h3> */}
               <button
                 onClick={() => setMobileSidebarOpen(false)}
                 aria-label="Close sidebar"

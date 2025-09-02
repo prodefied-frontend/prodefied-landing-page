@@ -1,7 +1,7 @@
 
-import HireATalentToday from "../components/hire-our-talents.jsx/HireATalentToday";
-import HireHeroSection from "../components/hire-our-talents.jsx/HireHeroSection";
-import HireTalentsForm from "../components/hire-our-talents.jsx/HireTalentsForm";
+import HireATalentToday from "../components/hire-our-talents/HireATalentToday";
+import HireHeroSection from "../components/hire-our-talents/HireHeroSection";
+import HireTalentsForm from "../components/hire-our-talents/HireTalentsForm";
 
 export default function HireOurTalentsPage() {
   return (

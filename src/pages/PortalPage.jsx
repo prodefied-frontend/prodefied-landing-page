@@ -6,6 +6,8 @@ import AssessmentIcon from "../assets/icons/portal-page/assessment.svg";
 import CurriculumIcon from "../assets/icons/portal-page/curriculum.svg";
 import StudentIcon from '../assets/icons/portal-page/student-icon.svg';
 import AlumniIcon from '../assets/icons/portal-page/alumni-icon.svg';
+import capitalize from "../utils/capitalize";
+import getStudentId from "../utils/getStudentId";
 
 // Reusable Phase Card
 const PhaseCard = ({ title, label, labelBg, courseProgress, locked }) => (
@@ -61,8 +63,8 @@ const QuickActionCard = ({ icon, label, to }) => (
 export default function PortalPage() {
   const { user } = useAuth();
 
-  const name = user?.first_name || "User";
-  const studentId = user?.id || "N/A";
+  const name = capitalize(user) || "User";
+  const studentId = getStudentId(user) || "N/A";
   const hasPaid = user?.hasPaid || false;
   const isGraduated = user?.isGraduated || false;
 
@@ -128,7 +130,7 @@ export default function PortalPage() {
   return (
     <main className="-m-4 bg-[#FBFBFB]">
       {/* Top Status Bar */}
-      <div className="px-8 mb-4 flex justify-between items-center">
+      <div className="px-4 md:px-8 mb-4 flex justify-between items-center">
         <div
           className="inline-flex gap-2 p-2 rounded"
           style={{ backgroundColor: statusBg }}
@@ -141,7 +143,7 @@ export default function PortalPage() {
             Application status: {applicationStatus}
           </span>
         </div>
-        <span className="text-sm font-semibold">ID: {studentId}</span>
+        <span className="text-sm font-semibold">Student ID: {studentId}</span>
       </div>
 
       {/* Welcome Section */}

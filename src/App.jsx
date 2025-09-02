@@ -1,11 +1,13 @@
 import AppRoutes from "./Routes/AppRoutes";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import ScrollToTop from "./components/ScrollToTop";
 
 
 function App() {
   return (
     <div>
+      <ScrollToTop />
       <AppRoutes />
       <ToastContainer
         position="top-right"

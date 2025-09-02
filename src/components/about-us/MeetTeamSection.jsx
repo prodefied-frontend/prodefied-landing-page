@@ -12,6 +12,7 @@ import EmmanuelImage from "../../assets/images/about-us/meet-team/emmanuel.jpg";
 import KelechiImage from "../../assets/images/about-us/meet-team/kelechi.jpg";
 import EbukaImage from "../../assets/images/about-us/meet-team/ebuka.jpg";
 import OlasunkanmiImage from "../../assets/images/about-us/meet-team/olasunkanmi.jpg";
+import PraiseImage from "../../assets/images/about-us/meet-team/praise.jpg";
 
 const teamDetails = [
   {
@@ -109,6 +110,14 @@ const teamDetails = [
     role: "Video Editor",
     portfolio: "",
   },
+    {
+    id: 14,
+    image: PraiseImage,
+    name: "Amadi Praise",
+    role: "Video Editor",
+    portfolio: "https://creatorapc.carrd.co",
+  },
+
 ];
 
 export default function MeetTeamSection() {

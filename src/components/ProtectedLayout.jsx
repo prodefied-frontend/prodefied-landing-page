@@ -152,15 +152,15 @@ export default function ProtectedLayout() {
       {mobileSidebarOpen && (
         <div className="fixed inset-0 z-50 md:hidden flex justify-start">
           <div className="bg-white w-64 p-4 shadow-xl h-full transform -translate-x-0 transition-transform duration-300">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold">Profile</h3>
+            <div className="flex items-end justify-end">
+              {/* <h3 className="text-lg font-semibold">Profile</h3> */}
               <button
                 onClick={() => setMobileSidebarOpen(false)}
                 aria-label="Close sidebar"
-                className="p-1"
+                className="p-1 text-right"
               >
                 <svg
-                  className="w-6 h-6 text-gray-700"
+                  className="w-8 h-8 text-gray-700 hover:text-red-500"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"

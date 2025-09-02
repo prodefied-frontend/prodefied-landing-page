@@ -11,11 +11,21 @@ export default function LearningPathSection() {
         </h2>
 
         <div className="rounded-lg shadow-md">
-          <img
+          {/* <img
             src={LearningPathImage2}
             alt="Prodefied Learners"
             className="w-full max-h-[500px] object-cover rounded-t-lg"
-          />
+          /> */}
+
+          <div className="w-full aspect-video rounded-t-lg overflow-hidden">
+            <iframe
+              src="https://www.youtube.com/embed/kV_LCajy5iQ"
+              title="Prodefied Learners"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full"
+            ></iframe>
+          </div>
 
           <div className="text-left mt-4 p-4 px-6">
             <p className="text-[#4D4D4D] font-medium mb-4">

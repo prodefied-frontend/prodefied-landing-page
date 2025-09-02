@@ -102,7 +102,7 @@ const WhatMakesUsUniqueSection = forwardRef(function WhatMakesUsUniqueSection(
           </div>
         ))}{" "}
       </div>{" "}
-      <a href="#" className=" text-[#0929FF] text-base md:text-2xl">
+      <a href="https://chat.whatsapp.com/Jstx0VkYxxbHdtkhypDFxz?mode=ac_t" className=" text-[#0929FF] text-base md:text-2xl">
         {" "}
         Join Our Community Here{" "}
       </a>{" "}

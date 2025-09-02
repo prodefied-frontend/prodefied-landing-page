@@ -27,6 +27,11 @@ export function AuthProvider({ children }) {
   const login = (userData, token) => {
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(userData));
+
+    const savedImage = localStorage.getItem("profileImage");
+    if (savedImage) {
+      setProfileImage(savedImage);
+    }
     setUser(userData);
   };
 
@@ -38,7 +43,7 @@ export function AuthProvider({ children }) {
     } finally {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      localStorage.removeItem("profileImage");
+      // localStorage.removeItem("profileImage");
       setUser(null);
       setProfileImage(null);
     }
