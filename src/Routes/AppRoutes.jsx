@@ -20,6 +20,7 @@ import TermsConditionsPage from "../pages/TermsConditionsPage";
 import HireOurTalentsPage from "../pages/HireOurTalentsPage";
 import RegistrationPage from "../pages/RegistrationPage";
 import PaymentSuccessPage from "../components/payment-registration/PaymentSuccessPage";
+import CurriculumPage from "../pages/CurriculumPage";
 
 export default function AppRoutes() {
   return (
@@ -49,6 +50,7 @@ export default function AppRoutes() {
             element={<PaymentRegistrationPage />}
           />
           <Route path="/payment-success" element={<PaymentSuccessPage />} />
+          <Route path="/curriculum" element={<CurriculumPage />} />
         </Route>
       </Route>
 

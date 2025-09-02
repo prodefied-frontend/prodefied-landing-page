@@ -70,10 +70,13 @@ export default function Profile() {
   };
 
   const handleProfileClick = () => {
+    const fileInput = document.getElementById("upload-image");
+
     if (profileImage) {
       setShowResetModal(true);
-    } else {
-      document.getElementById("upload-image").click();
+    } else if (fileInput) {
+      fileInput.value = null; // Clear previous file selection
+      fileInput.click(); // Trigger file picker
     }
   };
 
@@ -81,6 +84,12 @@ export default function Profile() {
     setProfileImage(null);
     localStorage.removeItem("profileImage");
     setShowResetModal(false);
+
+    // Reset file input so it can be reused immediately
+    const fileInput = document.getElementById("upload-image");
+    if (fileInput) {
+      fileInput.value = null;
+    }
   };
 
   const handleSave = async () => {

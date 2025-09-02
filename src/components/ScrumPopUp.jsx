@@ -72,14 +72,15 @@ export default function ScrumPopUp({ isOpen, onClose }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 href="https://simpli-web.app.link/e/7x9f12dtrVb"
-                className="px-4 py-2 bg-white text-[#000F84] rounded-lg hover:bg-[#001EFF] hover:text-white hover:border hover:border-white transition text-center"
+                className="px-4 py-2 bg-white text-[#000F84] border border-white rounded-lg hover:bg-[#001EFF] hover:text-white hover:border hover:border-white transition text-center"
                 onClick={onClose}
               >
                 Get Scrum Certificate
               </a>
               <button
                 onClick={onClose}
-                className="px-4 py-2 border border-white text-white rounded-lg hover:bg-white hover:text-[#000F84] transition cursor-pointer"
+                // className="px-4 py-2 border border-white text-white rounded-lg hover:bg-white hover:text-[#000F84] transition cursor-pointer"
+                className="px-4 py-2 bg-white text-[#000F84] border border-white rounded-lg hover:bg-[#001EFF] hover:text-white hover:border hover:border-white transition text-center cursor-pointer"
               >
                 Maybe later
               </button>

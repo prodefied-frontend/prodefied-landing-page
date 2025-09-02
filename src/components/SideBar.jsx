@@ -48,7 +48,7 @@ export default function Sidebar() {
         {/* Navigation links */}
         <nav className="space-y-3 my-8">
           <SidebarLink icon={EditIcon} text="Profile" to="/profile" currentPath={location.pathname} />
-          <SidebarLink icon={CurriCulumIcon} text="Curriculum" to="/portal" currentPath={location.pathname} />
+          <SidebarLink icon={CurriCulumIcon} text="Curriculum" to="/curriculum" currentPath={location.pathname} />
           <SidebarLink icon={CurriCulumIcon} text="Assessment" to="/portal" currentPath={location.pathname} />
           <SidebarLink icon={HelpCenterIcon} text="Help Center" to="/help-centre" currentPath={location.pathname} />
           <SidebarLink icon={SuggestionIcon} text="Suggestions" to="/suggestions" currentPath={location.pathname} />

@@ -122,7 +122,7 @@ export default function OurFounderSection() {
 
           {/* Meet the Team Link */}
           <Link
-            to="/about"
+            to="/about-us"
             className="text-[#000F84] font-semibold text-sm md:text-base px-4 py-2 border-[#000F84] border-[1px] rounded-md"
           >
             Meet the Team
