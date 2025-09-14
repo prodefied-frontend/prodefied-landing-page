@@ -9,10 +9,10 @@ const PartnershipPage = () => {
   return (
     <div>
       <Hero />
-      <Trusted />
+      {/* <Trusted /> */}
       <PartnerWith />
-      <WhyPartner />
       <WorkTogether />
+      <WhyPartner />
     </div>
   );
 };

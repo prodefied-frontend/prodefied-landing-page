@@ -40,7 +40,7 @@ export default function Typewriter({ texts, speed = 100, pause = 2000, className
   return (
     <span className={`whitespace-pre ${className}`}>
       {displayedText}
-      <span className="animate-pulse">|</span>
+      <span className="animate-pulse">!</span>
     </span>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Input from "../CustomInput";
-import { contactItems } from "../../constant/data";
+// import { contactItems } from "../../constant/data";
 
 const WorkTogether = () => {
   const [workTogetherForm, setWorkTogetherForm] = useState({
@@ -23,7 +23,7 @@ const WorkTogether = () => {
         </div>
       </div>
 
-      <div className="flex flex-col items-start lg:flex-row gap-8 mt-5">
+      <div className="flex flex-col items-center justify-center lg:flex-row gap-8 mt-5">
         {/* Form Section */}
         <form className="w-full lg:w-[65%] flex flex-col gap-4">
           <Input
@@ -69,7 +69,7 @@ const WorkTogether = () => {
             className="min-h-[200px] lg:min-h-[300px]"
           />
           <button
-            className="w-[60%] md:w-[30%] py-4 rounded-md mt-4 bg-[#ff9d00] text-white"
+            className="w-[60%] md:w-[30%] py-4 rounded-md mt-4 bg-[#ff9d00] text-white cursor-pointer"
             type="submit"
           >
             Let Hear From You
@@ -77,7 +77,7 @@ const WorkTogether = () => {
         </form>
 
         {/* Contact Info Section */}
-        <div className="w-full lg:w-[30%] p-6 rounded-lg bg-[#fff5e5] flex flex-col gap-6">
+        {/* <div className="w-full lg:w-[30%] p-6 rounded-lg bg-[#fff5e5] flex flex-col gap-6">
           {contactItems.map((link) => {
             const { id, img, title, text } = link;
             return (
@@ -90,7 +90,7 @@ const WorkTogether = () => {
               </div>
             );
           })}
-        </div>
+        </div> */}
       </div>
     </div>
   );

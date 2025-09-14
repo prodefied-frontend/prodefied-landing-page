@@ -13,6 +13,7 @@ import KelechiImage from "../../assets/images/about-us/meet-team/kelechi.jpg";
 import EbukaImage from "../../assets/images/about-us/meet-team/ebuka.jpg";
 import OlasunkanmiImage from "../../assets/images/about-us/meet-team/olasunkanmi.jpg";
 import PraiseImage from "../../assets/images/about-us/meet-team/praise.jpg";
+import OluebubeImage from "../../assets/images/about-us/meet-team/oluebube.jpg";
 
 const teamDetails = [
   {
@@ -116,6 +117,13 @@ const teamDetails = [
     name: "Amadi Praise",
     role: "Video Editor",
     portfolio: "https://creatorapc.carrd.co",
+  },
+    {
+    id: 15,
+    image: OluebubeImage,
+    name: "Udeze Oluebube Jacinta",
+    role: "Video Editor",
+    portfolio: "https://drive.google.com/drive/folders/1qht8RMS3VZ_jr5MV-rhsCZQahaTazDS0",
   },
 
 ];
