@@ -15,7 +15,7 @@ import PartnerWithUsSection from "../components/homepage/PartnerWithUsSection";
 import WhatMakesUsUniqueSection from "../components/homepage/WhatMakesUsUniqueSection";
 import WhoWeAreSection from "../components/homepage/WhoWeAreSection";
 import FaqSection from "../components/homepage/FaqSection";
-import SubscribeToOurNewsletter from "../components/homepage/SubscribeToOurNewsletter";
+// import SubscribeToOurNewsletter from "../components/homepage/SubscribeToOurNewsletter";
 
 import ScrumPopUp from "../components/ScrumPopUp";
 
@@ -107,7 +107,7 @@ export default function Homepage() {
       <HireSection />
       <OtherServicesSection />
       <FaqSection />
-      <SubscribeToOurNewsletter />
+      {/* <SubscribeToOurNewsletter /> */}
 
       {/* Scroll-safe Scrum popup */}
       <ScrumPopUp isOpen={showPopup} onClose={closeModal} />
