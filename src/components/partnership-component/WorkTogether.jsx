@@ -117,7 +117,12 @@ const WorkTogether = () => {
           />
 
           <button
-            className="w-[60%] md:w-[30%] py-4 rounded-md mt-4 bg-[#ff9d00] text-white cursor-pointer"
+            className="
+            w-[60%] md:w-[30%] py-4 rounded-md mt-4 
+            bg-[#ff9d00] text-white cursor-pointer
+            transition-all duration-300 ease-in-out
+            hover:bg-[#e68900] hover:scale-[1.02] active:scale-[0.98]
+          "
             type="submit"
             disabled={loading}
           >

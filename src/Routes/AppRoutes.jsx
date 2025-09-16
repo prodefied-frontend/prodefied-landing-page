@@ -21,6 +21,7 @@ import HireOurTalentsPage from "../pages/HireOurTalentsPage";
 import RegistrationPage from "../pages/RegistrationPage";
 import PaymentSuccessPage from "../components/payment-registration/PaymentSuccessPage";
 import CurriculumPage from "../pages/CurriculumPage";
+import PasswordResetPage from "../pages/PasswordResetPage";
 
 export default function AppRoutes() {
   return (
@@ -35,6 +36,8 @@ export default function AppRoutes() {
         <Route path="/terms-conditions" element={<TermsConditionsPage />} />
         <Route path="/hire-our-talents" element={<HireOurTalentsPage />} />
         <Route path="/registration" element={<RegistrationPage />} />
+        <Route path="/payment-registration" element={<PaymentRegistrationPage />} />
+        <Route path="/curriculum" element={<CurriculumPage />} />
       </Route>
 
       {/* Protected Pages with Sidebar */}
@@ -57,6 +60,7 @@ export default function AppRoutes() {
       {/* AUTH */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/sign-up" element={<SignupPage />} />
+      <Route path="/reset-password" element={<PasswordResetPage />} />
     </Routes>
   );
 }
