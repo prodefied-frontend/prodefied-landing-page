@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logoBlue from "/logo-blue.svg";
 import { useAuth } from "../context/AuthContext";
 import getInitials from "../utils/getInitials";
+import ContactUsPopUp from "./ContactUsPopUp";
 
 export default function NavBar({ onHamburgerClick, onAvatarClick }) {
   const { user, profileImage, logout } = useAuth();
@@ -10,12 +11,39 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // contact dropdown state + wrapper ref
+  const [isContactOpen, setIsContactOpen] = useState(false);
+  const contactWrapperRef = useRef(null);
+
   useEffect(() => {
+    // ensure normal body scroll on route change (keeps your prior behavior)
     document.body.style.overflow = "auto";
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [location.pathname]);
+
+  useEffect(() => {
+    // close dropdown on ESC or click outside
+    function onKey(e) {
+      if (e.key === "Escape") setIsContactOpen(false);
+    }
+    function onDocClick(e) {
+      if (
+        isContactOpen &&
+        contactWrapperRef.current &&
+        !contactWrapperRef.current.contains(e.target)
+      ) {
+        setIsContactOpen(false);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    document.addEventListener("mousedown", onDocClick);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.removeEventListener("mousedown", onDocClick);
+    };
+  }, [isContactOpen]);
 
   const navLinkClass =
     "text-sm md:text-base hover:text-[#000F84] transition whitespace-nowrap cursor-pointer";
@@ -93,7 +121,7 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
                 About Us
               </Link>
               <Link to="/program-details" className={navLinkClass}>
-                Program Details
+                Our Program
               </Link>
               <Link to="/blog" className={navLinkClass}>
                 Blog
@@ -101,20 +129,36 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
               <Link to="/partnership" className={navLinkClass}>
                 Partnership
               </Link>
+
+              {/* Contact wrapper: relative so popup is anchored here */}
+              <div ref={contactWrapperRef} className="relative">
+                <button
+                  onClick={() => setIsContactOpen((s) => !s)}
+                  className={navLinkClass}
+                  aria-expanded={isContactOpen}
+                  aria-haspopup="true"
+                >
+                  Contact Us
+                </button>
+
+                {/* Dropdown anchored under the button */}
+                {isContactOpen && (
+                  <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 z-50">
+                    <ContactUsPopUp onClose={() => setIsContactOpen(false)} />
+                  </div>
+                )}
+              </div>
             </>
           ) : (
             <>
-              <Link to="/portal" className={navLinkClass}>
-                Portal
-              </Link>
-              <Link to="/payment-registration" className={navLinkClass}>
-                Payment
-              </Link>
+              <button onClick={handleLogout} className={navLinkClass}>
+                Logout
+              </button>
               <Link to="/about-us" className={navLinkClass}>
                 About Us
               </Link>
               <Link to="/program-details" className={navLinkClass}>
-                Program Details
+                Our Program
               </Link>
               <Link to="/blog" className={navLinkClass}>
                 Blog
@@ -122,9 +166,28 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
               <Link to="/partnership" className={navLinkClass}>
                 Partnership
               </Link>
-              <button onClick={handleLogout} className={navLinkClass}>
-                Logout
-              </button>
+              <Link to="/portal" className={navLinkClass}>
+                Portal
+              </Link>
+
+              {/* Contact wrapper: relative so popup is anchored here */}
+              <div ref={contactWrapperRef} className="relative">
+                <button
+                  onClick={() => setIsContactOpen((s) => !s)}
+                  className={navLinkClass}
+                  aria-expanded={isContactOpen}
+                  aria-haspopup="true"
+                >
+                  Contact Us
+                </button>
+
+                {/* Dropdown anchored under the button */}
+                {isContactOpen && (
+                  <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 z-50">
+                    <ContactUsPopUp onClose={() => setIsContactOpen(false)} />
+                  </div>
+                )}
+              </div>
             </>
           )}
         </div>
@@ -184,3 +247,6 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
     </nav>
   );
 }
+
+// --------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------

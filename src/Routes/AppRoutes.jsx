@@ -42,7 +42,7 @@ export default function AppRoutes() {
 
       {/* Protected Pages with Sidebar */}
       <Route element={<ProtectedRoutes />}>
-        <Route element={<ProtectedLayout />}>
+        <Route element={<Layout protectedMode />}>
           <Route path="/portal" element={<PortalPage />} />
           {/* <Route path="/profile" element={<ProfilePage />} /> */}
           <Route path="/profile" element={<ProfilePage />} />

@@ -1,22 +1,24 @@
+// Layout.jsx
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import NavBar from "./NavBar";
+import Sidebar from "./SideBar";
 import Footer from "./Footer";
 import DraggableWhatsAppButton from "./DraggableWhatsappButon";
-import Sidebar from "./SideBar";
 
-const Layout = () => {
+export default function Layout({ protectedMode = false }) {
   const { user, logout } = useAuth();
   const isAuthenticated = !!user;
 
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true); // only matters if protectedMode
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  // lock body scroll when any drawer is open
+  // body scroll lock
   useEffect(() => {
     document.body.style.overflow =
       mobileNavOpen || mobileSidebarOpen ? "hidden" : "auto";
@@ -51,33 +53,56 @@ const Layout = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <NavBar
-        onHamburgerClick={() => setMobileNavOpen(true)}
-        onAvatarClick={() => {
-          // Match ProtectedLayout mobile behavior
-          if (window.innerWidth < 768) {
-            setMobileSidebarOpen(true);
-          } else {
-            // On desktop for public routes, no persistent sidebar.
-            // Take user to profile (keeps UX intuitive).
-            navigate("/profile");
-          }
-        }}
-      />
+    <div
+      className={`min-h-screen ${
+        protectedMode ? "flex bg-[#f9f9f9]" : "flex flex-col"
+      }`}
+    >
+      {/* Desktop Sidebar for protectedMode */}
+      {protectedMode && isAuthenticated && (
+        <aside
+          className={`hidden md:block fixed top-0 left-0 h-screen w-64 bg-[#FBFBFB] border-r border-gray-200 z-40 transform transition-transform duration-300 ${
+            sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <Sidebar />
+        </aside>
+      )}
 
-      <DraggableWhatsAppButton />
+      {/* Main content */}
+      <div
+        className={`flex-1 flex flex-col transition-all duration-300 ${
+          protectedMode && isAuthenticated && sidebarOpen ? "md:ml-64" : ""
+        }`}
+      >
+        <NavBar
+          onHamburgerClick={() => setMobileNavOpen(true)}
+          onAvatarClick={() => {
+            if (window.innerWidth < 768) {
+              setMobileSidebarOpen(true);
+            } else {
+              if (protectedMode) {
+                setSidebarOpen((prev) => !prev);
+              } else {
+                navigate("/profile");
+              }
+            }
+          }}
+        />
 
-      <main className="flex-1">
-        <Outlet />
-      </main>
+        <DraggableWhatsAppButton />
 
-      <Footer />
+        <main className={`flex-1 ${protectedMode ? "pt-[120px] p-4" : ""}`}>
+          <Outlet />
+        </main>
 
-      {/* Mobile Nav drawer (now shared, same pattern as ProtectedLayout) */}
+        <Footer />
+      </div>
+
+      {/* Mobile Nav Drawer */}
       {mobileNavOpen && (
         <div className="fixed inset-0 z-50 md:hidden flex justify-end">
-          <div className="bg-white w-3/4 max-w-xs p-4 shadow-xl h-full transform translate-x-0 transition-transform duration-300">
+          <div className="bg-white w-3/4 max-w-xs p-4 shadow-xl h-full">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold">Menu</h3>
               <button
@@ -97,90 +122,90 @@ const Layout = () => {
               </button>
             </div>
 
-            {/* If NOT authenticated -> show public links (previous content preserved) */}
             {!isAuthenticated ? (
               <nav className="mt-6 flex flex-col gap-4">
+                {/* Public links */}
                 <button
                   onClick={() => {
-                    setMobileNavOpen(false);
                     navigate("/sign-up");
+                    setMobileNavOpen(false);
                   }}
                 >
                   Sign Up
                 </button>
                 <button
                   onClick={() => {
-                    setMobileNavOpen(false);
                     navigate("/login");
+                    setMobileNavOpen(false);
                   }}
                 >
                   Log In
                 </button>
                 <button
                   onClick={() => {
-                    setMobileNavOpen(false);
                     navigate("/about-us");
+                    setMobileNavOpen(false);
                   }}
                 >
                   About Us
                 </button>
                 <button
                   onClick={() => {
-                    setMobileNavOpen(false);
                     navigate("/program-details");
+                    setMobileNavOpen(false);
                   }}
                 >
                   Program Details
                 </button>
                 <button
                   onClick={() => {
-                    setMobileNavOpen(false);
                     navigate("/blog");
+                    setMobileNavOpen(false);
                   }}
                 >
                   Blog
                 </button>
                 <button
                   onClick={() => {
-                    setMobileNavOpen(false);
                     navigate("/partnership");
+                    setMobileNavOpen(false);
                   }}
                 >
                   Partnership
                 </button>
                 <button
                   onClick={() => {
+                    navigate("/registration");
                     setMobileNavOpen(false);
-                    navigate("/payment-registration");
                   }}
-                  className="bg-[#000F84] text-white text-sm py-2 px-6 rounded-lg hover:bg-[#0018a8] mt-2 inline-block text-left"
+                  className="bg-[#000F84] text-white text-sm py-2 px-6 rounded-lg hover:bg-[#0018a8] mt-2"
                 >
                   Apply Now
                 </button>
               </nav>
             ) : (
-              // Authenticated -> mirror ProtectedLayout mobile nav items
               <nav className="mt-6 flex flex-col gap-4">
+                {/* Protected links */}
                 <button
                   onClick={() => {
-                    setMobileNavOpen(false);
                     navigate("/portal");
+                    setMobileNavOpen(false);
                   }}
                 >
-                  Dashboard
+                  Portal
                 </button>
                 <button
                   onClick={() => {
-                    setMobileNavOpen(false);
                     navigate("/profile");
+                    setMobileNavOpen(false);
                   }}
                 >
                   Profile
                 </button>
                 <button
                   onClick={() => {
-                    setMobileNavOpen(false);
                     navigate("/payment-registration");
+                    setMobileNavOpen(false);
                   }}
                 >
                   Payments
@@ -205,19 +230,18 @@ const Layout = () => {
         </div>
       )}
 
-      {/* Mobile Sidebar drawer (Profile/Sidebar) — same component and style as ProtectedLayout */}
+      {/* Mobile Sidebar Drawer */}
       {mobileSidebarOpen && (
         <div className="fixed inset-0 z-50 md:hidden flex justify-start">
-          <div className="bg-white w-64 p-4 shadow-xl h-full transform -translate-x-0 transition-transform duration-300">
-            <div className="flex items-center justify-between">
-              {/* <h3 className="text-lg font-semibold">Profile</h3> */}
+          <div className="bg-white w-64 p-4 shadow-xl h-full">
+            <div className="flex items-end justify-end">
               <button
                 onClick={() => setMobileSidebarOpen(false)}
                 aria-label="Close sidebar"
-                className="p-1"
+                className="p-1 text-right"
               >
                 <svg
-                  className="w-6 h-6 text-gray-700"
+                  className="w-8 h-8 text-gray-700 hover:text-red-500"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
@@ -239,6 +263,4 @@ const Layout = () => {
       )}
     </div>
   );
-};
-
-export default Layout;
+}

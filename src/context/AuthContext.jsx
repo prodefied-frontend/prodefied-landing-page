@@ -52,7 +52,7 @@ export function AuthProvider({ children }) {
   return (
     <AuthContext.Provider
       value={{
-        user,
+        user: true,
         profileImage,
         setProfileImage,
         loading,
