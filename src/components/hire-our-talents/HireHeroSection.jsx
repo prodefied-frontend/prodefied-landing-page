@@ -1,4 +1,3 @@
-
 import hire1 from "../../assets/images/hire-our-talents/hire1.jpg";
 import hire2 from "../../assets/images/hire-our-talents/hire2.jpg";
 import hire3 from "../../assets/images/hire-our-talents/hire3.jpg";
@@ -18,7 +17,7 @@ export default function HireHeroSection() {
           skills
         </p>
       </div>
-      
+
       {/* Image Grid */}
       <div className="my-10">
         {/* Mobile & Tablet: Grid 2x2 */}
@@ -28,7 +27,7 @@ export default function HireHeroSection() {
             <img
               src={hire1}
               alt="Hire 1"
-              className="w-full h-[150px] md:h-[260px] object-cover rounded-xl"
+              className="w-full h-[150px] md:h-[260px] object-cover object-top rounded-xl"
             />
             <img
               src={hire3}
@@ -46,7 +45,7 @@ export default function HireHeroSection() {
             />
             <img
               src={hire4}
-              alt="IHire 4"
+              alt="Hire 4"
               className="w-full h-[150px] md:h-[260px] object-cover rounded-xl"
             />
           </div>
@@ -57,7 +56,7 @@ export default function HireHeroSection() {
           <img
             src={hire1}
             alt="Hire 1"
-            className="w-[220px] h-[200px] object-cover rounded-xl"
+            className="w-[220px] h-[200px] object-cover object-top rounded-xl"
           />
           <img
             src={hire2}

@@ -100,7 +100,7 @@ export default function Homepage() {
       <WhatMakesUsUniqueSection ref={uniqueRef} />
 
       <EarnCertificate />
-      <IndustryProsSection />
+      {/* <IndustryProsSection /> */}
       <OurTalentsSection />
       <OurFounderSection />
       <PartnerWithUsSection />

@@ -47,11 +47,43 @@ export default function Sidebar() {
 
         {/* Navigation links */}
         <nav className="space-y-3 my-8">
-          <SidebarLink icon={EditIcon} text="Profile" to="/profile" currentPath={location.pathname} />
-          <SidebarLink icon={CurriCulumIcon} text="Curriculum" to="/curriculum" currentPath={location.pathname} />
-          <SidebarLink icon={CurriCulumIcon} text="Assessment" to="/portal" currentPath={location.pathname} />
-          <SidebarLink icon={HelpCenterIcon} text="Help Center" to="/help-centre" currentPath={location.pathname} />
-          <SidebarLink icon={SuggestionIcon} text="Suggestions" to="/suggestions" currentPath={location.pathname} />
+          <SidebarLink
+            icon={EditIcon}
+            text="Assessment"
+            to="/portal"
+            currentPath={location.pathname}
+          />
+          <SidebarLink
+            icon={CurriCulumIcon}
+            text="Resources"
+            to="/resources"
+            currentPath={location.pathname}
+          />
+          <SidebarLink
+            icon={EditIcon}
+            text="Profile"
+            to="/profile"
+            currentPath={location.pathname}
+          />
+          <SidebarLink
+            icon={CurriCulumIcon}
+            text="Curriculum"
+            to="/curriculum"
+            currentPath={location.pathname}
+          />
+
+          <SidebarLink
+            icon={HelpCenterIcon}
+            text="Help Center"
+            to="/help-centre"
+            currentPath={location.pathname}
+          />
+          <SidebarLink
+            icon={SuggestionIcon}
+            text="Suggestions"
+            to="/suggestions"
+            currentPath={location.pathname}
+          />
         </nav>
 
         {/* Bottom section */}
@@ -72,7 +104,8 @@ export default function Sidebar() {
 function SidebarLink({ icon, text, to, currentPath }) {
   const isActive = currentPath === to;
 
-  const baseClasses = "flex items-center gap-2 px-3 py-2 rounded-md transition-colors duration-200";
+  const baseClasses =
+    "flex items-center gap-2 px-3 py-2 rounded-md transition-colors duration-200";
   const activeClasses = "bg-[#001299] text-white";
   const inactiveClasses = "text-[#999999] hover:text-blue-500";
 

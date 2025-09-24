@@ -22,6 +22,7 @@ import RegistrationPage from "../pages/RegistrationPage";
 import PaymentSuccessPage from "../components/payment-registration/PaymentSuccessPage";
 import CurriculumPage from "../pages/CurriculumPage";
 import PasswordResetPage from "../pages/PasswordResetPage";
+import ResourcesPage from "../pages/ResourcesPage";
 
 export default function AppRoutes() {
   return (
@@ -36,7 +37,11 @@ export default function AppRoutes() {
         <Route path="/terms-conditions" element={<TermsConditionsPage />} />
         <Route path="/hire-our-talents" element={<HireOurTalentsPage />} />
         <Route path="/registration" element={<RegistrationPage />} />
-        <Route path="/payment-registration" element={<PaymentRegistrationPage />} />
+        <Route
+          path="/payment-registration"
+          element={<PaymentRegistrationPage />}
+        />
+        <Route path="/payment-success" element={<PaymentSuccessPage />} />
         <Route path="/curriculum" element={<CurriculumPage />} />
       </Route>
 
@@ -44,16 +49,11 @@ export default function AppRoutes() {
       <Route element={<ProtectedRoutes />}>
         <Route element={<Layout protectedMode />}>
           <Route path="/portal" element={<PortalPage />} />
-          {/* <Route path="/profile" element={<ProfilePage />} /> */}
+          <Route path="/portal/curriculum" element={<CurriculumPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/help-centre" element={<HelpCentrePage />} />
           <Route path="/suggestions" element={<SuggestionsPage />} />
-          <Route
-            path="/payment-registration"
-            element={<PaymentRegistrationPage />}
-          />
-          <Route path="/payment-success" element={<PaymentSuccessPage />} />
-          <Route path="/curriculum" element={<CurriculumPage />} />
+          <Route path="/resources" element={<ResourcesPage />} />
         </Route>
       </Route>
 

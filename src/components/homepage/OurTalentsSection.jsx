@@ -18,17 +18,17 @@ const testimonials = [
     avatar: Avatar2,
   },
   {
-    name: "Harry",
+    name: "Esther",
     message: "PM now makes sense. Big thanks to Prodefied!",
     avatar: Avatar3,
   },
   {
-    name: "Sandra",
+    name: "Obinna",
     message: "Best decision I made for my career switch.",
     avatar: Avatar4,
   },
   {
-    name: "Michael",
+    name: "Elijah",
     message: "Real-world projects, real growth.",
     avatar: Avatar5,
   },

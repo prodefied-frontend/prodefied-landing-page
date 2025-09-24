@@ -6,7 +6,10 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
-  const [loading, setLoading] = useState(true); // while checking localStorage
+  const [loading, setLoading] = useState(true);
+
+  // derived state → hasPaid is always based on user
+  const hasPaid = user?.hasPaid || false;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -16,7 +19,6 @@ export function AuthProvider({ children }) {
     if (token && storedUser) {
       setUser(JSON.parse(storedUser));
     }
-
     if (savedImage) {
       setProfileImage(savedImage);
     }
@@ -37,13 +39,12 @@ export function AuthProvider({ children }) {
 
   const logout = async () => {
     try {
-      await logoutUser(); // Call backend logout
+      await logoutUser();
     } catch (error) {
       console.error("Logout API error:", error);
     } finally {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      // localStorage.removeItem("profileImage");
       setUser(null);
       setProfileImage(null);
     }
@@ -53,6 +54,7 @@ export function AuthProvider({ children }) {
     <AuthContext.Provider
       value={{
         user: true,
+        hasPaid, // 🚀 now globally available
         profileImage,
         setProfileImage,
         loading,

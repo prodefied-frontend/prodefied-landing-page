@@ -3,7 +3,6 @@ import image1 from "../../assets/images/about-us/image1.jpg";
 import image2 from "../../assets/images/about-us/image2.jpg";
 import image3 from "../../assets/images/about-us/image3.jpg";
 import image4 from "../../assets/images/about-us/image4.jpg";
-import InterPulseIcon from "../../assets/icons/about-icons/intern-pulse-icon.svg";
 
 export default function AboutHeroSection() {
   return (
@@ -81,15 +80,6 @@ export default function AboutHeroSection() {
             alt="Image 4"
             className="w-[220px] h-[200px] object-cover rounded-xl"
           />
-        </div>
-      </div>
-
-      {/* Trusted by */}
-      <div className="bg-[#FF9D00] py-4 md:py-8">
-        <div className="flex items-center justify-center gap-2 text-white">
-          <span className="text-base md:text-2xl">Trusted by:</span>
-          <img src={InterPulseIcon} alt="InterPulse Logo" className="w-8 h-8" />
-          <span className="text-base text-[#004AAD] font-semibold md:text-2xl" >InternPulse</span>
         </div>
       </div>
     </main>
