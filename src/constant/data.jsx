@@ -311,3 +311,99 @@ export const curriculum = [
     ],
   },
 ];
+
+// =======================================================================================
+
+  // ✅ Final Phases Data (with highlightColor)
+  export const phases = [
+    {
+      phaseTitle: "Phase 1 Learning",
+      highlightColor: "#F5FBB8", // ✅ background for "Learning"
+      intro: "Welcome to your Learning",
+      introDetails:
+        "This is where your journey begins. In this stage, you'll build a strong foundation in Product Management concepts, tools, and practical skills. You'll also complete weekly assessments that help us track your progress",
+      schedule: ["Tuesday at 7pm", "Thursday at 7pm"],
+      howToJoin:
+        "Click the 'Start Learning' button on the Portal at the scheduled time to access your live session",
+      instructions: [
+        "You must complete your Learning Phase assessment and required tasks during this stage",
+        "Successful completion earns you a Learning Certificate",
+        "Your certificate unlocks the next phase - Internship Phase",
+      ],
+      encouragement:
+        "Stay consistent, participate actively, and enjoy the process, this is the first step towards your new career path",
+      assessmentLink: "https://forms.gle/NtoKwGLD9tLHpFvy7",
+    },
+    {
+      phaseTitle: "Phase 2 Internship",
+      highlightColor: "#CCF6FF", // ✅ background for "Internship"
+      intro: "Welcome to your Internship Phase",
+      introDetails:
+        "Now it's time to put everything you've learned into action. During this stage, you'll be assigned to real projects, collaborating with peers and gaining valuable hands-on experience. Details about your internship placement and group assignment will be shared with you directly via email. Check your inbox regularly to stay updated.",
+      instructions: [
+        "You must complete your Internship Assessment and submit all required deliverables",
+        "Successful completion earns you an Internship Certificate",
+        "Your certificate unlocks the Career Acceleration Phase",
+      ],
+      encouragement:
+        "This is your opportunity to shine and show what you've learned, treat it like your first real step into the industry.",
+      assessmentLink: "https://forms.gle/ugvsT6oUgx4UoCyx9",
+    },
+    {
+      phaseTitle: "Phase 3 Career",
+      highlightColor: "#EECCFF", // ✅ background for "Career"
+      intro: "Welcome to your Career Acceleration Phase",
+      introDetails:
+        "Congratulations on reaching the final stage of your journey. This phase is all about preparing you for job opportunities and helping you stand out in the market.",
+      moreDetails: [
+        "CV/Portfolio Revamp",
+        "LinkedIn Optimization",
+        "Mock Interview Practice",
+      ],
+      schedule: ["Tuesday at 7pm", "Thursday at 7pm"],
+      howToJoin:
+        "Click the 'Start Learning' button on the Portal at the scheduled time to access your live session",
+      instructions: [
+        "You must complete your Career Acceleration Assessment and submit all required deliverables",
+        "Successful completion earns you Product Management Certificate",
+        "This is your final certificate and proof that you are now job ready",
+      ],
+      encouragement:
+        "This is your opportunity to shine and show what you've learned, treat it like your first real step into the industry.",
+      assessmentLink: "https://forms.gle/3am5B7qjiwBviVHY6",
+    },
+  ];
+
+  // ======================================================================================================
+
+export const policies = [
+  {
+    title: "Privacy Policy",
+    description:
+      "We collect personal information such as email, CV, and LinkedIn profiles to facilitate the application process and program participation. This information is stored securely and used solely for program-related purposes. We comply with all relevant data protection laws and do not share your information with third parties without your consent."
+  },
+  {
+    title: "Terms and Conditions",
+    items: [
+      "Program Participation: By enrolling in Prodefied, you agree to actively participate in all program activities and complete assigned tasks.",
+      "Payment: All payments are non-refundable unless otherwise stated.",
+      "Code of Conduct: Participants are expected to maintain professionalism and respect towards mentors and peers.",
+      "Intellectual Property: All materials provided during the program are the property of Prodefied and are for personal use only."
+    ]
+  },
+  {
+    title: "Cookie Policy",
+    description:
+      "Our website uses cookies to enhance user experience and analyze site traffic. By using our site, you consent to our use of cookies in accordance with our Cookie Policy. You can manage your cookie preferences through your browser settings."
+  },
+  {
+    title: "Payment Policy",
+    items: [
+      "Payment Completion: All fees must be fully paid before the program starts, unless you’re on an approved payment plan.",
+      "Seat Reservation: An initial deposit of ₦100,000 is required to secure your spot.",
+      "Refunds and Deferrals: All payments are non-refundable. Deferrals are allowed only within the first week if the program and require team approval.",
+      "Late Payments: Payments made more than 7 days after the due date may result in suspension until settled.",
+      "Currency: All fees are in Naira and include program materials unless otherwise stated. For international participants, payments can be made in USD, GBP, or EUR. Exchange rates will be based on the prevailing market rate at the time of payment."
+    ]
+  }
+];

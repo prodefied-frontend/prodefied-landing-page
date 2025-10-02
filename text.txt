@@ -46,4 +46,3 @@
   firebase.js
   index.css
   main.jsx
-

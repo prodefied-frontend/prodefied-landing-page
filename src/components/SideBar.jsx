@@ -49,7 +49,7 @@ export default function Sidebar() {
         <nav className="space-y-3 my-8">
           <SidebarLink
             icon={EditIcon}
-            text="Assessment"
+            text="Home"
             to="/portal"
             currentPath={location.pathname}
           />
