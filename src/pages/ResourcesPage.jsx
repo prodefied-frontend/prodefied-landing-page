@@ -12,13 +12,21 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const iconMap = {
-  youtube: <FaYoutube className="text-red-500 text-2xl" />,
-  pdf: <FaFilePdf className="text-red-600 text-2xl" />,
-  image: <FaFileImage className="text-purple-500 text-2xl" />,
-  video: <FaFileVideo className="text-blue-500 text-2xl" />,
-  audio: <FaFileAudio className="text-indigo-500 text-2xl" />,
-  word: <FaFileWord className="text-blue-700 text-2xl" />,
-  link: <FaLink className="text-gray-600 text-2xl" />,
+  youtube: (
+    <FaYoutube className="text-red-500 text-lg sm:text-xl md:text-2xl" />
+  ),
+  pdf: <FaFilePdf className="text-red-600 text-lg sm:text-xl md:text-2xl" />,
+  image: (
+    <FaFileImage className="text-purple-500 text-lg sm:text-xl md:text-2xl" />
+  ),
+  video: (
+    <FaFileVideo className="text-blue-500 text-lg sm:text-xl md:text-2xl" />
+  ),
+  audio: (
+    <FaFileAudio className="text-indigo-500 text-lg sm:text-xl md:text-2xl" />
+  ),
+  word: <FaFileWord className="text-blue-700 text-lg sm:text-xl md:text-2xl" />,
+  link: <FaLink className="text-gray-600 text-lg sm:text-xl md:text-2xl" />,
 };
 
 // 🧠 Helper: auto-detect file type from link
@@ -60,7 +68,9 @@ export default function ResourcesPage() {
 
   return (
     <main className="px-4 sm:px-6 md:p-10 bg-gray-50 min-h-screen">
-      <h1 className="text-xl sm:text-2xl font-semibold mb-6">Resources</h1>
+      <h1 className="text-lg sm:text-xl md:text-2xl font-semibold mb-6 text-gray-800">
+        Resources
+      </h1>
 
       {/* Loading state */}
       {loading ? (
@@ -68,7 +78,7 @@ export default function ResourcesPage() {
       ) : resources.length === 0 ? (
         <p className="text-gray-500">No resources found.</p>
       ) : (
-        <ul className="space-y-4">
+        <ul className="space-y-3 sm:space-y-4">
           {resources.map((item) => {
             const type = detectType(item.link);
             const createdDate = new Date(item.created_at);
@@ -81,35 +91,40 @@ export default function ResourcesPage() {
             return (
               <li
                 key={item.id}
-                className="flex items-start sm:items-center gap-4 bg-white rounded-xl shadow-sm p-4 hover:shadow-md transition"
+                className="
+                  flex flex-col sm:flex-row sm:items-center 
+                  gap-3 sm:gap-4 
+                  bg-white rounded-xl shadow-sm 
+                  p-3 sm:p-4 hover:shadow-md transition-all
+                "
               >
                 {/* Icon */}
                 <div className="flex-shrink-0">{iconMap[type]}</div>
 
                 {/* Content */}
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-sm sm:text-base font-medium text-gray-800 truncate">
+                  <h2 className="text-sm sm:text-base font-medium text-gray-800 break-words">
                     {item.title}
                   </h2>
                   <a
                     href={item.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs sm:text-sm text-blue-600 truncate block"
+                    className="text-xs sm:text-sm text-blue-600 break-all block hover:underline"
                   >
                     {item.link}
                   </a>
                   {item.description && (
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs sm:text-sm text-gray-500 mt-1 break-words">
                       {item.description}
                     </p>
                   )}
                 </div>
 
                 {/* Timestamp */}
-                <div className="text-right">
-                  <p className="text-xs text-gray-500">{formattedDate}</p>
-                  <p className="text-xs text-gray-500">{formattedTime}</p>
+                <div className="sm:text-right mt-2 sm:mt-0 text-gray-500">
+                  <p className="text-[11px] sm:text-xs">{formattedDate}</p>
+                  <p className="text-[11px] sm:text-xs">{formattedTime}</p>
                 </div>
               </li>
             );
@@ -119,131 +134,3 @@ export default function ResourcesPage() {
     </main>
   );
 }
-
-// =================================================================================
-
-// import {
-//   FaYoutube,
-//   FaFilePdf,
-//   FaFileImage,
-//   FaFileVideo,
-//   FaFileAudio,
-//   FaFileWord,
-//   FaLink,
-// } from "react-icons/fa";
-
-// const linkDetails = [
-//   {
-//     id: 1,
-//     title: "YouTube",
-//     link: "https://youtu.be/jDgW5HVqb4I?si=-Gl6bY3A813JGg6C",
-//     type: "youtube",
-//     date: "Today",
-//     time: "4:30pm",
-//   },
-//   {
-//     id: 2,
-//     title: "Medium Article",
-//     link: "https://stephenanderson.medium.com/what-does-a-product-manager-actually-do-bee1d853f420",
-//     type: "link",
-//     date: "Today",
-//     time: "4:30pm",
-//   },
-//   {
-//     id: 3,
-//     title: "Image",
-//     link: "#",
-//     type: "image",
-//     size: "1.2 MB",
-//     date: "18/09/2025",
-//     time: "4:30pm",
-//   },
-//   {
-//     id: 4,
-//     title: "Free Product Guide Book - Peace Agoha",
-//     link: "#",
-//     type: "pdf",
-//     size: "250 KB",
-//     date: "18/09/2025",
-//     time: "4:30pm",
-//   },
-//   {
-//     id: 5,
-//     title: "Video",
-//     link: "#",
-//     type: "video",
-//     size: "250 KB",
-//     date: "18/09/2025",
-//     time: "4:30pm",
-//   },
-//   {
-//     id: 6,
-//     title: "Standard Curriculum",
-//     link: "#",
-//     type: "word",
-//     size: "250 KB",
-//     date: "18/09/2025",
-//     time: "4:30pm",
-//   },
-//   {
-//     id: 7,
-//     title: "Audio",
-//     link: "#",
-//     type: "audio",
-//     size: "4 MB",
-//     date: "18/09/2025",
-//     time: "4:30pm",
-//   },
-// ];
-
-// const iconMap = {
-//   youtube: <FaYoutube className="text-red-500 text-2xl" />,
-//   pdf: <FaFilePdf className="text-red-600 text-2xl" />,
-//   image: <FaFileImage className="text-purple-500 text-2xl" />,
-//   video: <FaFileVideo className="text-blue-500 text-2xl" />,
-//   audio: <FaFileAudio className="text-indigo-500 text-2xl" />,
-//   word: <FaFileWord className="text-blue-700 text-2xl" />,
-//   link: <FaLink className="text-gray-600 text-2xl" />,
-// };
-
-// export default function ResourcesPage() {
-//   return (
-//     <main className="px-4 sm:px-6 md:p-10 bg-gray-50 min-h-screen">
-//       <h1 className="text-xl sm:text-2xl font-semibold mb-6">Resources</h1>
-
-//       <ul className="space-y-4">
-//         {linkDetails.map((data) => (
-//           <li
-//             key={data.id}
-//             className="flex items-start sm:items-center gap-4 bg-white rounded-xl shadow-sm p-4 hover:shadow-md transition"
-//           >
-//             {/* Icon */}
-//             <div className="flex-shrink-0">{iconMap[data.type]}</div>
-
-//             {/* Content */}
-//             <div className="flex-1 min-w-0">
-//               <h2 className="text-sm sm:text-base font-medium text-gray-800 truncate">
-//                 {data.title}
-//               </h2>
-//               <a
-//                 href={data.link}
-//                 className="text-xs sm:text-sm text-blue-600 truncate block"
-//               >
-//                 {data.link}
-//               </a>
-//               {data.size && (
-//                 <p className="text-xs text-gray-500 mt-1">{data.size}</p>
-//               )}
-//             </div>
-
-//             {/* Timestamp */}
-//             <div className="text-right">
-//               <p className="text-xs text-gray-500">{data.date}</p>
-//               <p className="text-xs text-gray-500">{data.time}</p>
-//             </div>
-//           </li>
-//         ))}
-//       </ul>
-//     </main>
-//   );
-// }
