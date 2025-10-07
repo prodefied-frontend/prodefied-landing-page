@@ -98,7 +98,7 @@ export default function Sidebar({ isMobile = false, onClose }) {
           <button
             onClick={() => {
               onClose?.();
-              navigate("/payment-registration");
+              navigate("/registration");
             }}
             className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
           >
