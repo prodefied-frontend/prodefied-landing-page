@@ -4,20 +4,25 @@
 import { useEffect, useRef, useState } from "react";
 
 import HeroSection from "../components/homepage/HeroSection";
-import EarnCertificate from "../components/homepage/EarnCertificate";
 import HireSection from "../components/homepage/HireSection";
-import IndustryProsSection from "../components/homepage/IndustryProsSection";
+// import IndustryProsSection from "../components/homepage/IndustryProsSection";
 import LearningPathSection from "../components/homepage/LearningPathSection";
 import OtherServicesSection from "../components/homepage/OtherServicesSection";
-import OurFounderSection from "../components/homepage/OurFounderSection";
+// import OurFounderSection from "../components/homepage/OurFounderSection";
 import OurTalentsSection from "../components/homepage/OurTalentsSection";
 import PartnerWithUsSection from "../components/homepage/PartnerWithUsSection";
-import WhatMakesUsUniqueSection from "../components/homepage/WhatMakesUsUniqueSection";
-import WhoWeAreSection from "../components/homepage/WhoWeAreSection";
+// import WhatMakesUsUniqueSection from "../components/homepage/WhatMakesUsUniqueSection";
+// import WhoWeAreSection from "../components/homepage/WhoWeAreSection";
 import FaqSection from "../components/homepage/FaqSection";
 // import SubscribeToOurNewsletter from "../components/homepage/SubscribeToOurNewsletter";
 
 import ScrumPopUp from "../components/ScrumPopUp";
+import WhatMakesUsDifferent from "../components/homepage/WhatMakesUsDifferent";
+import EarnCertificateSection from "../components/homepage/EarnCertificate";
+import ProgramFeatureSection from "../components/homepage/ProgramFeatureSection";
+import CommunitySection from "../components/homepage/CommunitySection";
+import HowItWorksSection from "../components/HowItWorks";
+import InsightResourcesSection from "../components/homepage/InsightsResourcesSection";
 
 export default function Homepage() {
   const [showPopup, setShowPopup] = useState(false);
@@ -93,21 +98,26 @@ export default function Homepage() {
   return (
     <div className="pt-[120px]">
       <HeroSection />
-      <WhoWeAreSection />
+      {/* <WhoWeAreSection /> */}
+      <WhatMakesUsDifferent />
       <LearningPathSection />
+      <ProgramFeatureSection />
 
       {/* Attach ref for intersection observer */}
-      <WhatMakesUsUniqueSection ref={uniqueRef} />
+      {/* <WhatMakesUsUniqueSection ref={uniqueRef} /> */}
 
-      <EarnCertificate />
+      <CommunitySection />
+      <HowItWorksSection />
+
+      <EarnCertificateSection ref={uniqueRef} />
       {/* <IndustryProsSection /> */}
       <OurTalentsSection />
-      <OurFounderSection />
+      {/* <OurFounderSection /> */}
       <PartnerWithUsSection />
       <HireSection />
       <OtherServicesSection />
       <FaqSection />
-      {/* <SubscribeToOurNewsletter /> */}
+      <InsightResourcesSection />
 
       {/* Scroll-safe Scrum popup */}
       <ScrumPopUp isOpen={showPopup} onClose={closeModal} />

@@ -1,21 +1,15 @@
 import { Link } from "react-router-dom";
 import ArrowIcon from "../../assets/icons/arrow-right-blue.svg";
-import LearningPathImage2 from "../../assets/images/homepage/learning-path2.jpg";
 
 export default function LearningPathSection() {
   return (
     <section className="bg-white py-12 px-6 md:px-12">
       <div className="max-w-4xl mx-auto text-center space-y-6">
-        <h2 className="text-xl md:text-4xl font-semibold text-[#1A1A1A]">
+        <h2 className="text-2xl md:text-4xl font-semibold text-center text-[#1A1A1A]">
           Your Learning Path
         </h2>
 
         <div className="rounded-lg shadow-md">
-          {/* <img
-            src={LearningPathImage2}
-            alt="Prodefied Learners"
-            className="w-full max-h-[500px] object-cover rounded-t-lg"
-          /> */}
 
           <div className="w-full aspect-video rounded-t-lg overflow-hidden">
             <iframe

@@ -10,7 +10,7 @@ export default function PartnerWithUsSection() {
           Partner With Us
         </h2>
 
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 w-full max-w-6xl">
+        <div className="flex flex-col md:flex-row-reverse md:items-center md:justify-between gap-8 w-full max-w-6xl">
           {/* Image Grid */}
           <div className="flex gap-4 md:w-1/2 md:gap-6 justify-center">
             {[Image1, Image2].map((image, index) => (

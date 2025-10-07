@@ -1,8 +1,9 @@
+import { forwardRef } from "react";
 import CertificateImage from "/certificate.svg";
 
-export default function EarnCertificate() {
+const EarnCertificateSection = forwardRef(function EarnCertificate(_props, ref){
   return (
-    <section className="py-4 px-8">
+    <section ref={ref} className="py-12 px-8">
       <div className="flex flex-col items-center justify-center gap-4 md:gap-6">
         <h2 className="text-xl md:text-4xl font-semibold">Earn a Certificate That Matters</h2>
         <p className="text-center text-sm md:text-lg md:max-w-lg">
@@ -15,4 +16,6 @@ export default function EarnCertificate() {
       </div>
     </section>
   );
-}
+})
+
+export default EarnCertificateSection;

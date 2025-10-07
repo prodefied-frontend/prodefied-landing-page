@@ -5,7 +5,7 @@ import Curriculum from "../components/curriculum-page/Curriculum";
 export default function CurriculumPage() {
   return (
     <>
-      <main className="py-20 md:py-32 px-4">
+      <main >
         <Curriculum />
       </main>
     </>

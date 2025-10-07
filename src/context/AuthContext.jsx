@@ -8,6 +8,8 @@ export function AuthProvider({ children }) {
   const [profileImage, setProfileImage] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // console.log(user);
+
   // derived state → hasPaid is always based on user
   const hasPaid = user?.hasPaid || false;
 
@@ -27,6 +29,8 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = (userData, token) => {
+    // const updatedUser = { ...userData, hasPaid: true }; // toggle between true/false to test
+
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(userData));
 
@@ -53,7 +57,7 @@ export function AuthProvider({ children }) {
   return (
     <AuthContext.Provider
       value={{
-        user: true,
+        user,
         hasPaid, // 🚀 now globally available
         profileImage,
         setProfileImage,

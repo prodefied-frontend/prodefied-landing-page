@@ -1,6 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
-@import 'tailwindcss';
-
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
+@import "tailwindcss";
 
 html {
   scroll-behavior: smooth;
@@ -8,8 +7,8 @@ html {
 }
 
 body {
-    font-family: 'Manrope', sans-serif;
-    /* padding-block-start: 120px; */
+  font-family: "Manrope", sans-serif;
+  /* padding-block-start: 120px; */
 }
 
 .hide-scrollbar::-webkit-scrollbar {
@@ -21,10 +20,13 @@ body {
   scrollbar-width: none; /* Firefox */
 }
 
-
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes popIn {
@@ -46,7 +48,24 @@ body {
   animation: popIn 0.35s ease-out 0.1s forwards;
 }
 
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
 
+.animate-scroll {
+  display: flex;
+  width: max-content;
+  animation: scroll 25s linear infinite;
+}
+
+.animate-scroll:hover {
+  animation-play-state: paused; /* optional: pauses when hovered */
+}
 
 .react-tel-input .flag-dropdown {
   display: flex !important;
@@ -57,4 +76,42 @@ body {
 .react-tel-input .selected-flag {
   display: flex !important;
   align-items: center !important;
+}
+
+/* ========= AUTO SCROLL ANIMATION =============== */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scroll-right {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Base animations */
+.animate-scroll-left {
+  animation-name: scroll-left;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.animate-scroll-right {
+  animation-name: scroll-right;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* ✅ Pause on hover (group hover support for React) */
+.auto-scroll-container:hover .animate-scroll-left,
+.auto-scroll-container:hover .animate-scroll-right {
+  animation-play-state: paused;
 }
