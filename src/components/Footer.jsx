@@ -38,9 +38,9 @@ const linkSections = [
   {
     title: "Others",
     links: [
-      { label: "Terms Of Service", to: "/terms", external: false },
-      { label: "Privacy Policy", to: "/terms", external: false },
-      { label: "Payment Policy", to: "/terms", external: false },
+      { label: "Terms Of Service", to: "/terms-conditions", external: false },
+      { label: "Privacy Policy", to: "/terms-conditions", external: false },
+      { label: "Payment Policy", to: "/terms-conditions", external: false },
     ],
   },
 ];
