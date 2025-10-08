@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
   // console.log(user);
 
   // derived state → hasPaid is always based on user
-  const hasPaid = user?.hasPaid || false;
+  const hasPaid = user?.hasPaid || true;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
