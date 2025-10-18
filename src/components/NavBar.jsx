@@ -111,9 +111,9 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
         <div className="hidden md:flex flex-wrap flex-1 justify-center items-center gap-4 md:gap-5 lg:gap-6">
           {!isAuthenticated ? (
             <>
-              <Link to="/sign-up" className={navLinkClass}>
+              {/* <Link to="/sign-up" className={navLinkClass}>
                 Sign Up
-              </Link>
+              </Link> */}
               <Link to="/login" className={navLinkClass}>
                 Log In
               </Link>
@@ -158,7 +158,7 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
                 About Us
               </Link>
               <Link to="/program-details" className={navLinkClass}>
-                Our Program
+                Program Details
               </Link>
               <Link to="/blog" className={navLinkClass}>
                 Blog
@@ -247,6 +247,3 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
     </nav>
   );
 }
-
-// --------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------

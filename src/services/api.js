@@ -1,4 +1,4 @@
-// services/api.js
+// src/services/api.js
 import axios from "axios";
 
 const API_BASE = "https://prodefied-backend.onrender.com/api";
@@ -7,69 +7,60 @@ const API_BASE = "https://prodefied-backend.onrender.com/api";
 const getAuthHeader = () => {
   const token = localStorage.getItem("token");
   return {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
   };
 };
 
-// SIGN UP
+/* AUTH / USER */
 export const signupUser = (data, config) => {
   return axios.post(`${API_BASE}/signup/`, data, config);
 };
 
-// LOGIN
 export const loginUser = (payload) => {
   return axios.post(`${API_BASE}/login/`, payload);
 };
 
-// GOOGLE SIGNUP / LOGIN (backend docs call it authenticate-user)
 export const googleAuth = (payload) => {
-  // payload should be { token, first_name, last_name, photo_url }
   return axios.post(`${API_BASE}/authenticate/`, payload);
 };
 
-// GET User Profile
-export const getUserProfile = async () => {
-  const token = localStorage.getItem("token");
-  return axios.get(`${API_BASE}/profile/`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const getUserProfile = () => {
+  return axios.get(`${API_BASE}/profile/`, getAuthHeader());
 };
 
-
-// Update User Profile
-export const updateUserProfile = async (payload) => {
-  const token = localStorage.getItem("token");
-  return axios.put(`${API_BASE}/profile/update/`, payload, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const updateUserProfile = (payload) => {
+  return axios.put(`${API_BASE}/profile/update/`, payload, getAuthHeader());
 };
 
-// LOGOUT
 export const logoutUser = () => {
   return axios.get(`${API_BASE}/logout/`, getAuthHeader());
 };
 
-// RESET PASSWORD (send reset email)
 export const requestPasswordReset = (email) => {
   return axios.post(`${API_BASE}/reset-password/`, { email });
 };
 
-// PAYMENT
-export const initializeUserPayment = (amount, redirect_url) => {
-  return axios.post(
-    `${API_BASE}/initialize_user/`,
-    { amount, redirect_url },
-    getAuthHeader()
-  );
+/* PAYMENTS  */
+const PAY_BASE = `${API_BASE}/payments`;
+
+// 1) Register applicant
+export const registerApplicant = (payload) => {
+  // payload: { first_name, email }
+  return axios.post(`${PAY_BASE}/register/`, payload);
 };
 
-export const verifyUserPayment = (reference) => {
-  return axios.get(`${API_BASE}/verify_payment/?reference=${reference}`, getAuthHeader());
+// 2) Update applicant
+export const updateApplicant = (applicantId, payload) => {
+  return axios.patch(`${PAY_BASE}/applicant/${applicantId}/update/`, payload);
 };
 
+// 3) Initialize payment
+export const initializePayment = (payload) => {
+  // payload: { applicant_id, payment_type }
+  return axios.post(`${PAY_BASE}/initialize/`, payload);
+};
+
+// 4) Verify payment
+export const verifyPayment = (reference) => {
+  return axios.get(`${PAY_BASE}/verify/?reference=${encodeURIComponent(reference)}`);
+};

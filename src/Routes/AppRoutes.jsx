@@ -47,6 +47,7 @@ export default function AppRoutes() {
         <Route path="/payment-success" element={<PaymentSuccessPage />} />
         <Route path="/curriculum" element={<CurriculumPage />} />
         <Route path="/payment-required" element={<PaymentRequiredPage />} />
+        <Route path="/payment-success" element={<PaymentSuccessPage />} />
       </Route>
 
       {/* Protected Pages with Sidebar */}
