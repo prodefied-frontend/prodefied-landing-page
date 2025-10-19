@@ -6,7 +6,7 @@ import getInitials from "../utils/getInitials";
 import ContactUsPopUp from "./ContactUsPopUp";
 
 export default function NavBar({ onHamburgerClick, onAvatarClick }) {
-  const { user, profileImage, logout } = useAuth();
+  const { user, logout } = useAuth(); // removed profileImage
   const isAuthenticated = !!user;
   const location = useLocation();
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
   const contactWrapperRef = useRef(null);
 
   useEffect(() => {
-    // ensure normal body scroll on route change (keeps your prior behavior)
+    // ensure normal body scroll on route change
     document.body.style.overflow = "auto";
     return () => {
       document.body.style.overflow = "auto";
@@ -96,9 +96,7 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
 
           <Link
             to="/"
-            className={`items-center ${
-              isAuthenticated ? "hidden md:flex" : "flex"
-            }`}
+            className={`items-center ${isAuthenticated ? "hidden md:flex" : "flex"}`}
           >
             <img src={logoBlue} alt="Prodefied Logo" className="w-10 h-10" />
             <span className="text-lg font-semibold text-[#1B1A1A] -ml-1">
@@ -111,9 +109,6 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
         <div className="hidden md:flex flex-wrap flex-1 justify-center items-center gap-4 md:gap-5 lg:gap-6">
           {!isAuthenticated ? (
             <>
-              {/* <Link to="/sign-up" className={navLinkClass}>
-                Sign Up
-              </Link> */}
               <Link to="/login" className={navLinkClass}>
                 Log In
               </Link>
@@ -170,7 +165,7 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
                 Portal
               </Link>
 
-              {/* Contact wrapper: relative so popup is anchored here */}
+              {/* Contact wrapper */}
               <div ref={contactWrapperRef} className="relative">
                 <button
                   onClick={() => setIsContactOpen((s) => !s)}
@@ -181,7 +176,6 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
                   Contact Us
                 </button>
 
-                {/* Dropdown anchored under the button */}
                 {isContactOpen && (
                   <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 z-50">
                     <ContactUsPopUp onClose={() => setIsContactOpen(false)} />
@@ -209,15 +203,7 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
               aria-label="Open profile menu"
               className="w-8 h-8 flex items-center justify-center rounded-full bg-[#000F84] text-white font-bold overflow-hidden"
             >
-              {profileImage ? (
-                <img
-                  src={profileImage}
-                  alt="avatar"
-                  className="w-full h-full rounded-full object-cover"
-                />
-              ) : (
-                <span>{initials}</span>
-              )}
+              <span>{initials}</span>
             </button>
           )}
 

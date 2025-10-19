@@ -40,62 +40,118 @@ export default function PaymentRegistrationPage() {
   const applicantIdFromState =
     incoming.applicant_id || localStorage.getItem("applicantId");
 
-  const handleProceed = async (plan) => {
-    if (!agreed) {
-      toast.error("Click the checkbox first before proceeding");
-      return;
-    }
+const handleProceed = async (plan) => {
+  if (!agreed) {
+    toast.error("Click the checkbox first before proceeding");
+    return;
+  }
 
-    if (!applicantIdFromState) {
-      toast.error(
-        "Missing applicant id. Please complete registration form first."
-      );
-      setTimeout(() => navigate("/registration"), 1000);
-      return;
-    }
+  if (!applicantIdFromState) {
+    toast.error("Missing applicant id. Please complete registration form first.");
+    setTimeout(() => navigate("/registration"), 1000);
+    return;
+  }
 
-    setLoadingPlan(plan.id);
-    try {
-      // Optionally update applicant with phone/referral
-      const updatePayload = {};
-      if (incoming.phone) updatePayload.phone_number = incoming.phone;
-      if (incoming.referral) updatePayload.referral_code = incoming.referral;
-      if (Object.keys(updatePayload).length) {
-        await updateApplicant(applicantIdFromState, updatePayload);
+  setLoadingPlan(plan.id);
+  const applicantIdNum = Number(applicantIdFromState);
+
+  // broaden the fallback list with lowercase / plural / underscored variants
+  const base = plan.type || "";
+  const candidates = [
+    base,
+    base.toUpperCase(),
+    base.toLowerCase(),
+    base.replace(/\s+/g, "_").toUpperCase(),
+    base.replace(/\s+/g, "_").toLowerCase(),
+    base.replace(/\s+/g, "-").toUpperCase(),
+    base.replace(/\s+/g, "-").toLowerCase(),
+    `${base}s`.toUpperCase(),
+    `${base}s`.toLowerCase(),
+    "INSTALLMENTS",
+  ]
+    .filter(Boolean)
+    .map((v, i, arr) => (arr.indexOf(v) === i ? v : null))
+    .filter(Boolean);
+
+  let lastError = null;
+  try {
+    let initRes = null;
+    let usedType = null;
+
+    for (const paymentType of candidates) {
+      try {
+        const initPayload = {
+          applicant_id: applicantIdNum,
+          payment_type: paymentType,
+        };
+
+        // log the attempt so we can inspect Network tab
+        console.info("Attempting initializePayment with payload:", initPayload);
+
+        const res = await initializePayment(initPayload);
+        initRes = res;
+        usedType = paymentType;
+        console.info("initializePayment success for type=", paymentType, res?.data);
+        break;
+      } catch (err) {
+        lastError = err;
+        // log detailed server response (helps a lot)
+        console.warn(`initializePayment failed for type=${paymentType}`, {
+          status: err?.response?.status,
+          data: err?.response?.data,
+          message: err?.message,
+        });
+        // If it's not a 400, bail out — unexpected server error
+        if (err?.response?.status && err.response.status !== 400) {
+          throw err;
+        }
+        // continue to next candidate
       }
-
-      // initialize payment
-      const initPayload = {
-        applicant_id: applicantIdFromState,
-        payment_type: plan.type, // "FULL" or "PART"
-      };
-
-      const res = await initializePayment(initPayload);
-      const paymentUrl = res?.data?.payment_url;
-      const reference = res?.data?.reference;
-
-      if (!paymentUrl || !reference) {
-        throw new Error("Payment initialization failed");
-      }
-
-      // store reference and applicant for later verification
-      localStorage.setItem("paymentReference", String(reference));
-      localStorage.setItem("applicantId", String(applicantIdFromState));
-      setApplicant(applicantIdFromState);
-
-      // redirect to payment provider (Paystack)
-      window.location.href = paymentUrl;
-    } catch (err) {
-      console.error("Payment init error:", err);
-      const msg =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Could not start payment. Try again.";
-      toast.error(msg);
-    } finally {
-      setLoadingPlan(null);
     }
-  };
+
+    if (!initRes) {
+      // show server message if available
+      const serverMsg =
+        lastError?.response?.data?.message ||
+        lastError?.response?.data ||
+        lastError?.message ||
+        "Unknown error from payment init";
+      throw new Error(`Payment initialization failed for types: ${candidates.join(", ")} — server: ${serverMsg}`);
+    }
+
+    const paymentUrl = initRes?.data?.payment_url;
+    const reference = initRes?.data?.reference;
+
+    if (!paymentUrl || !reference) {
+      throw new Error("Payment initialization returned unexpected response (missing payment_url/reference).");
+    }
+
+    localStorage.setItem("paymentReference", String(reference));
+    localStorage.setItem("applicantId", String(applicantIdNum));
+    setApplicant(applicantIdNum);
+
+    // redirect to paystack
+    window.location.href = paymentUrl;
+  } catch (err) {
+    console.error("Payment init error:", err);
+
+    // If there's an axios response, surface it nicely
+    const serverData = lastError?.response?.data || err?.response?.data || null;
+    if (serverData) {
+      // print readable JSON to console (expand the `Object`)
+      console.error("Server response (full):", JSON.stringify(serverData, null, 2));
+      // show user-friendly message
+      const userMsg =
+        serverData?.message ||
+        (typeof serverData === "string" ? serverData : "Payment initialization failed. See console for details.");
+      toast.error(userMsg);
+    } else {
+      toast.error(err.message || "Could not start payment. Try again.");
+    }
+  } finally {
+    setLoadingPlan(null);
+  }
+};
 
   return (
     <main className="pt-[100px] px-6 md:px-16 pb-20 max-w-6xl mx-auto">

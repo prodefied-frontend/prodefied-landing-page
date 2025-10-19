@@ -1,10 +1,8 @@
-// src/components/SignupRightSection.jsx
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { countryCodes } from "../constant/data";
 import Input from "./CustomInput";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { signupUser, googleAuth } from "../services/api";
 import { FcGoogle } from "react-icons/fc";
@@ -13,6 +11,12 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../firebase";
 import { useAuth } from "../context/AuthContext";
 
+/**
+ * SignupRightSection
+ * - Guard: immediately redirect to /registration if no signup_token, applicant_id query, or applicantId in localStorage.
+ * - Submits signup payload to backend including either signup_token OR applicant_id (if available).
+ * - Handles backend 403/payment-block by redirecting to /registration (backend is authoritative).
+ */
 const SignupRightSection = () => {
   const [selectedCountry, setSelectedCountry] = useState(countryCodes[0]);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -29,18 +33,23 @@ const SignupRightSection = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
 
+  // Guard on mount — immediate redirect if sign-up is not allowed client-side.
   useEffect(() => {
-    // If user manually visits /sign-up without going through payment, redirect them to registration
-    const search = new URLSearchParams(window.location.search);
+    const search = new URLSearchParams(location.search);
     const signupToken = search.get("token");
     const applicantFromQuery = search.get("applicant_id");
     const storedApplicant = localStorage.getItem("applicantId");
 
-    if (!signupToken && !applicantFromQuery && !storedApplicant) {
-      toast.info("You need to register and pay before creating an account. Redirecting...");
-      setTimeout(() => navigate("/registration"), 1100);
+    const canSignUp = Boolean(
+      signupToken || applicantFromQuery || storedApplicant
+    );
+
+    if (!canSignUp) {
+      // hard redirect (no toast) — user must go through registration/payment first
+      navigate("/registration", { replace: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -84,14 +93,18 @@ const SignupRightSection = () => {
 
     try {
       // check for signup token or applicant id
-      const search = new URLSearchParams(window.location.search);
+      const search = new URLSearchParams(location.search);
       const signupToken = search.get("token");
       const applicantFromQuery = search.get("applicant_id");
-      const applicantId = applicantFromQuery || localStorage.getItem("applicantId");
+      const applicantId =
+        applicantFromQuery || localStorage.getItem("applicantId");
 
       if (!signupToken && !applicantId) {
-        toast.error("You must complete payment before creating an account. Redirecting...");
-        setTimeout(() => navigate("/registration"), 1200);
+        // defensive: if guard somehow missed, redirect user to registration
+        toast.error(
+          "You must complete payment before creating an account. Redirecting..."
+        );
+        setTimeout(() => navigate("/registration"), 800);
         setSubmitting(false);
         return;
       }
@@ -104,17 +117,19 @@ const SignupRightSection = () => {
         last_name: lastName,
         phone_number: fullPhoneNumber,
         ...(signupToken ? { signup_token: signupToken } : {}),
-        ...(applicantId && !signupToken ? { applicant_id: Number(applicantId) } : {}),
+        ...(applicantId && !signupToken
+          ? { applicant_id: Number(applicantId) }
+          : {}),
       };
 
       const res = await signupUser(payload);
 
       // success
       toast.success("Account created successfully!");
-      // optional: if backend returns user + token, login automatically
+
+      // canonicalize the backend response
       const data = res?.data || {};
       const userFromBackend = data.user || data;
-      // attempt to use tokens if returned
       const backendToken =
         data.tokens?.access ||
         data.tokens?.idToken ||
@@ -125,20 +140,33 @@ const SignupRightSection = () => {
 
       if (backendToken) {
         localStorage.setItem("token", backendToken);
-        if (userFromBackend) localStorage.setItem("user", JSON.stringify(userFromBackend));
-        login(userFromBackend, backendToken);
-        navigate("/portal");
-      } else {
-        navigate("/login");
       }
+      if (userFromBackend) {
+        localStorage.setItem("user", JSON.stringify(userFromBackend));
+        login(userFromBackend, backendToken || localStorage.getItem("token"));
+      }
+
+      // safe redirect to portal if logged in, otherwise send to login
+      if (backendToken) navigate("/portal");
+      else navigate("/login");
     } catch (error) {
       console.error("Signup error:", error);
       const status = error?.response?.status;
-      const msg = error?.response?.data?.detail || error?.response?.data?.message || error.message;
+      const msg =
+        error?.response?.data?.detail ||
+        error?.response?.data?.message ||
+        error.message;
 
-      if (status === 403 && typeof msg === "string" && msg.toLowerCase().includes("payment")) {
-        toast.error("Signup blocked: payment required. Redirecting to registration...");
-        setTimeout(() => navigate("/registration"), 1200);
+      // if backend blocks signup because payment isn't present/verified, redirect them to registration
+      if (
+        status === 403 &&
+        typeof msg === "string" &&
+        msg.toLowerCase().includes("payment")
+      ) {
+        toast.error(
+          "Signup blocked: payment required. Redirecting to registration..."
+        );
+        setTimeout(() => navigate("/registration"), 1000);
         setSubmitting(false);
         return;
       }
@@ -149,7 +177,7 @@ const SignupRightSection = () => {
     }
   };
 
-  // Google signup (unchanged)
+  // Google signup — still allowed, BUT backend must accept it; guard still applies
   const handleGoogleSignup = async () => {
     setSubmitting(true);
     try {
@@ -170,6 +198,7 @@ const SignupRightSection = () => {
       const res = await googleAuth(payload);
       const data = res.data || {};
       const userFromBackend = data.user || data;
+
       let backendToken =
         data.tokens?.access ||
         data.tokens?.idToken ||
@@ -184,7 +213,8 @@ const SignupRightSection = () => {
 
       if (backendToken) {
         localStorage.setItem("token", backendToken);
-        if (userFromBackend) localStorage.setItem("user", JSON.stringify(userFromBackend));
+        if (userFromBackend)
+          localStorage.setItem("user", JSON.stringify(userFromBackend));
         login(userFromBackend, backendToken);
       } else {
         login(userFromBackend, localStorage.getItem("token") || null);
@@ -194,12 +224,26 @@ const SignupRightSection = () => {
       navigate("/portal");
     } catch (err) {
       console.error("Google signup error:", err);
+      // If backend forbids google signup because of missing applicant/payment, redirect
+      const status = err?.response?.status;
       const msg =
-        err.response?.data?.detail ||
-        err.response?.data?.error ||
-        err.message ||
-        "Google signup failed.";
-      toast.error(msg);
+        err?.response?.data?.detail ||
+        err?.response?.data?.error ||
+        err?.message;
+      if (
+        status === 403 &&
+        typeof msg === "string" &&
+        msg.toLowerCase().includes("payment")
+      ) {
+        toast.error(
+          "Google signup blocked: payment required. Redirecting to registration..."
+        );
+        setTimeout(() => navigate("/registration"), 1000);
+        setSubmitting(false);
+        return;
+      }
+
+      toast.error(msg || "Google signup failed.");
     } finally {
       setSubmitting(false);
     }
@@ -312,7 +356,11 @@ const SignupRightSection = () => {
               className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500"
               onClick={() => setShowConfirmPassword((prev) => !prev)}
             >
-              {showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+              {showConfirmPassword ? (
+                <AiOutlineEyeInvisible />
+              ) : (
+                <AiOutlineEye />
+              )}
             </div>
           </div>
 
@@ -354,11 +402,10 @@ const SignupRightSection = () => {
 
 export default SignupRightSection;
 
-
-// =============================================================================================
-
+// =========================================================================================
 
 // // src/components/SignupRightSection.jsx
+// import React, { useEffect } from "react";
 // import { useState } from "react";
 // import { countryCodes } from "../constant/data";
 // import Input from "./CustomInput";
@@ -390,13 +437,24 @@ export default SignupRightSection;
 //   const navigate = useNavigate();
 //   const { login } = useAuth();
 
+//   useEffect(() => {
+//     // If user manually visits /sign-up without going through payment, redirect them to registration
+//     const search = new URLSearchParams(window.location.search);
+//     const signupToken = search.get("token");
+//     const applicantFromQuery = search.get("applicant_id");
+//     const storedApplicant = localStorage.getItem("applicantId");
+
+//     if (!signupToken && !applicantFromQuery && !storedApplicant) {
+//       toast.info("You need to register and pay before creating an account. Redirecting...");
+//       setTimeout(() => navigate("/registration"), 1100);
+//     }
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, []);
+
 //   const handleSelect = (country) => {
 //     setSelectedCountry(country);
 //     setShowDropdown(false);
 //   };
-
-//   // Optional: clear any previous token if you want
-//   // localStorage.removeItem("token");
 
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
@@ -408,7 +466,6 @@ export default SignupRightSection;
 //       ""
 //     );
 
-//     // Basic validation
 //     if (
 //       !firstName ||
 //       !lastName ||
@@ -432,44 +489,83 @@ export default SignupRightSection;
 //     setSubmitting(true);
 
 //     try {
+//       // check for signup token or applicant id
+//       const search = new URLSearchParams(window.location.search);
+//       const signupToken = search.get("token");
+//       const applicantFromQuery = search.get("applicant_id");
+//       const applicantId = applicantFromQuery || localStorage.getItem("applicantId");
+
+//       if (!signupToken && !applicantId) {
+//         toast.error("You must complete payment before creating an account. Redirecting...");
+//         setTimeout(() => navigate("/registration"), 1200);
+//         setSubmitting(false);
+//         return;
+//       }
+
+//       // Build payload expected by backend
 //       const payload = {
+//         email,
+//         password,
 //         first_name: firstName,
 //         last_name: lastName,
 //         phone_number: fullPhoneNumber,
-//         email,
-//         password,
+//         ...(signupToken ? { signup_token: signupToken } : {}),
+//         ...(applicantId && !signupToken ? { applicant_id: Number(applicantId) } : {}),
 //       };
 
-//       await signupUser(payload);
+//       const res = await signupUser(payload);
 
+//       // success
 //       toast.success("Account created successfully!");
-//       navigate("/login");
+//       // optional: if backend returns user + token, login automatically
+//       const data = res?.data || {};
+//       const userFromBackend = data.user || data;
+//       // attempt to use tokens if returned
+//       const backendToken =
+//         data.tokens?.access ||
+//         data.tokens?.idToken ||
+//         data.token ||
+//         data.access ||
+//         data.idToken ||
+//         null;
+
+//       if (backendToken) {
+//         localStorage.setItem("token", backendToken);
+//         if (userFromBackend) localStorage.setItem("user", JSON.stringify(userFromBackend));
+//         login(userFromBackend, backendToken);
+//         navigate("/portal");
+//       } else {
+//         navigate("/login");
+//       }
 //     } catch (error) {
 //       console.error("Signup error:", error);
-//       const msg =
-//         error.response?.data?.detail ||
-//         error.response?.data?.error ||
-//         error.message;
+//       const status = error?.response?.status;
+//       const msg = error?.response?.data?.detail || error?.response?.data?.message || error.message;
+
+//       if (status === 403 && typeof msg === "string" && msg.toLowerCase().includes("payment")) {
+//         toast.error("Signup blocked: payment required. Redirecting to registration...");
+//         setTimeout(() => navigate("/registration"), 1200);
+//         setSubmitting(false);
+//         return;
+//       }
+
 //       toast.error(msg || "Signup failed. Please try again.");
 //     } finally {
 //       setSubmitting(false);
 //     }
 //   };
 
-//   // ---------- Google Signup (full flow) ----------
+//   // Google signup (unchanged)
 //   const handleGoogleSignup = async () => {
 //     setSubmitting(true);
 //     try {
 //       const provider = new GoogleAuthProvider();
 //       const result = await signInWithPopup(auth, provider);
 //       const firebaseUser = result.user;
-
-//       // Get Firebase ID token
 //       const idToken = await firebaseUser.getIdToken();
 
-//       // Prepare payload for backend (follow backend doc)
 //       const payload = {
-//         token: idToken, // backend expects `token`
+//         token: idToken,
 //         first_name: firebaseUser.displayName?.split(" ")[0] || "",
 //         last_name: firebaseUser.displayName
 //           ? firebaseUser.displayName.split(" ").slice(1).join(" ")
@@ -478,11 +574,8 @@ export default SignupRightSection;
 //       };
 
 //       const res = await googleAuth(payload);
-
-//       // Backend response shape may vary; extract user + token defensively
 //       const data = res.data || {};
 //       const userFromBackend = data.user || data;
-//       // Try multiple token shapes
 //       let backendToken =
 //         data.tokens?.access ||
 //         data.tokens?.idToken ||
@@ -491,17 +584,15 @@ export default SignupRightSection;
 //         data.idToken ||
 //         null;
 
-//       // If backend did not return a token but returned user, we still login locally using existing token if present.
 //       if (!backendToken && data.tokens && typeof data.tokens === "string") {
 //         backendToken = data.tokens;
 //       }
 
-//       // If no token returned, we still set user (some backends rely on cookies)
 //       if (backendToken) {
-//         login(userFromBackend, backendToken);
 //         localStorage.setItem("token", backendToken);
+//         if (userFromBackend) localStorage.setItem("user", JSON.stringify(userFromBackend));
+//         login(userFromBackend, backendToken);
 //       } else {
-//         // fallback: save user, keep whatever token already exists
 //         login(userFromBackend, localStorage.getItem("token") || null);
 //       }
 
@@ -527,7 +618,6 @@ export default SignupRightSection;
 //         <p className="text-sm text-gray-600 mb-6">Let's set up your account</p>
 
 //         <form onSubmit={handleSubmit}>
-//           {/* First + Last Name */}
 //           <div className="flex gap-2 mb-2">
 //             <Input
 //               type="text"
@@ -549,7 +639,6 @@ export default SignupRightSection;
 //             />
 //           </div>
 
-//           {/* Phone Number with country code */}
 //           <div className="flex items-center gap-2 relative mb-2">
 //             <div
 //               tabIndex={0}
@@ -586,7 +675,6 @@ export default SignupRightSection;
 //             />
 //           </div>
 
-//           {/* Email */}
 //           <Input
 //             type="email"
 //             placeholder="Email Address"
@@ -598,7 +686,6 @@ export default SignupRightSection;
 //             required
 //           />
 
-//           {/* Password */}
 //           <div className="relative mb-2">
 //             <Input
 //               type={showPassword ? "text" : "password"}
@@ -617,7 +704,6 @@ export default SignupRightSection;
 //             </div>
 //           </div>
 
-//           {/* Confirm Password */}
 //           <div className="relative mb-4">
 //             <Input
 //               type={showConfirmPassword ? "text" : "password"}
@@ -632,15 +718,10 @@ export default SignupRightSection;
 //               className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500"
 //               onClick={() => setShowConfirmPassword((prev) => !prev)}
 //             >
-//               {showConfirmPassword ? (
-//                 <AiOutlineEyeInvisible />
-//               ) : (
-//                 <AiOutlineEye />
-//               )}
+//               {showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
 //             </div>
 //           </div>
 
-//           {/* Submit Button */}
 //           <button
 //             type="submit"
 //             className="w-full bg-[#000F84] text-white py-2 rounded-md font-medium hover:bg-blue-900 transition cursor-pointer disabled:opacity-60"
@@ -656,14 +737,12 @@ export default SignupRightSection;
 //             </Link>
 //           </p>
 
-//           {/* Divider */}
 //           <div className="flex items-center my-4">
 //             <div className="flex-grow h-px bg-gray-300"></div>
 //             <span className="px-2 text-sm text-gray-500">or</span>
 //             <div className="flex-grow h-px bg-gray-300"></div>
 //           </div>
 
-//           {/* Google Signup */}
 //           <button
 //             type="button"
 //             onClick={handleGoogleSignup}

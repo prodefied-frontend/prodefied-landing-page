@@ -25,7 +25,6 @@ import ResourcesPage from "../pages/ResourcesPage";
 // ✅ Import the reset-password pages correctly
 import PasswordResetRequest from "../pages/password-reset/PasswordResetRequest";
 import PasswordResetConfirm from "../pages/password-reset/PasswordResetConfirm";
-import PaymentRequiredPage from "../pages/PaymentRequiredPage";
 
 export default function AppRoutes() {
   return (
@@ -39,14 +38,13 @@ export default function AppRoutes() {
         <Route path="/program-details" element={<ProgramDetails />} />
         <Route path="/terms-conditions" element={<TermsConditionsPage />} />
         <Route path="/hire-our-talents" element={<HireOurTalentsPage />} />
+        <Route path="/curriculum" element={<CurriculumPage />} />
+
         <Route path="/registration" element={<RegistrationPage />} />
         <Route
           path="/payment-registration"
           element={<PaymentRegistrationPage />}
         />
-        <Route path="/payment-success" element={<PaymentSuccessPage />} />
-        <Route path="/curriculum" element={<CurriculumPage />} />
-        <Route path="/payment-required" element={<PaymentRequiredPage />} />
         <Route path="/payment-success" element={<PaymentSuccessPage />} />
       </Route>
 

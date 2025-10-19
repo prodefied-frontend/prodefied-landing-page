@@ -32,7 +32,6 @@ export default function ProtectedLayout() {
   };
 
   const isAuthenticated = !!user;
-  const hasPaid = user?.hasPaid ?? false;
 
   return (
     <div className="min-h-screen flex bg-[#f9f9f9]">
@@ -69,7 +68,7 @@ export default function ProtectedLayout() {
         <Footer />
       </div>
 
-      {/* ✅ Mobile Sidebar Drawer */}
+      {/* Mobile Sidebar Drawer */}
       {mobileSidebarOpen && (
         <div className="fixed inset-0 z-50 md:hidden flex justify-start">
           <div className="bg-white w-64 shadow-xl h-full transform translate-x-0 transition-transform duration-300">

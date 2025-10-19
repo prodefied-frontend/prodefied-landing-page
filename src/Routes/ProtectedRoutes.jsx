@@ -1,21 +1,20 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-export default function ProtectedRoute() {
-  const { user, hasPaid, loading } = useAuth();
+export default function ProtectedRoute({ redirectTo = "/login" }) {
+  const { user, loading } = useAuth();
 
   if (loading) return <div>Loading...</div>;
 
-  // ❌ Not logged in → send to login
-  if (!user) {
-    return <Navigate to="/login" replace />;
+  // Not logged in → send to login
+  if (!user) return <Navigate to={redirectTo} replace />;
+
+  // If user exists, check is_active if backend uses it
+  if (user && user.is_active === false) {
+    // option: send to a contact-support or inactive page; default to login
+    return <Navigate to={redirectTo} replace />;
   }
 
-  // 💳 Logged in but unpaid → send to payment page
-  if (!hasPaid) {
-    return <Navigate to="/payment-required" replace />;
-  }
-
-  // ✅ Logged in and paid → allow access
+  // Authenticated → allow access
   return <Outlet />;
 }

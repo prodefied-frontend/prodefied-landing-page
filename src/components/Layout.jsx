@@ -10,7 +10,6 @@ import DraggableWhatsAppButton from "./DraggableWhatsappButon";
 export default function Layout({ protectedMode = false }) {
   const { user, logout } = useAuth();
   const isAuthenticated = !!user;
-  const hasPaid = user?.hasPaid ?? false;
 
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -139,7 +138,6 @@ export default function Layout({ protectedMode = false }) {
           <nav className="flex-1 flex flex-col gap-5 justify-center items-center text-lg font-medium">
             {!isAuthenticated && (
               <>
-                <button onClick={() => navigate("/sign-up")}>Sign Up</button>
                 <button onClick={() => navigate("/login")}>Log In</button>
                 <button onClick={() => navigate("/about-us")}>About Us</button>
                 <button onClick={() => navigate("/program-details")}>
@@ -152,28 +150,7 @@ export default function Layout({ protectedMode = false }) {
               </>
             )}
 
-            {isAuthenticated && !hasPaid && (
-              <>
-                <button
-                  onClick={async () => {
-                    await handleLogout();
-                    setMobileNavOpen(false);
-                  }}
-                >
-                  Log Out
-                </button>
-                <button onClick={() => navigate("/about-us")}>About Us</button>
-                <button onClick={() => navigate("/program-details")}>
-                  Our Program
-                </button>
-                <button onClick={() => navigate("/blog")}>Blog Posts</button>
-                <button onClick={() => navigate("/partnership")}>
-                  Partnership
-                </button>
-              </>
-            )}
-
-            {isAuthenticated && hasPaid && (
+            {isAuthenticated && (
               <>
                 <button onClick={() => navigate("/portal")}>Portal</button>
                 <button onClick={() => navigate("/about-us")}>About Us</button>
@@ -184,31 +161,28 @@ export default function Layout({ protectedMode = false }) {
                 <button onClick={() => navigate("/partnership")}>
                   Partnership
                 </button>
+                <button
+                  onClick={async () => {
+                    await handleLogout();
+                    setMobileNavOpen(false);
+                  }}
+                >
+                  Log Out
+                </button>
               </>
             )}
           </nav>
 
           {/* Bottom button */}
           <div className="mt-6">
-            {!isAuthenticated && (
+            {!isAuthenticated ? (
               <button
                 onClick={() => navigate("/registration")}
                 className="w-full bg-[#FF9D00] text-white py-3 rounded-lg font-semibold"
               >
                 Apply Now
               </button>
-            )}
-
-            {isAuthenticated && !hasPaid && (
-              <button
-                onClick={() => navigate("/registration")}
-                className="w-full bg-[#FF9D00] text-white py-3 rounded-lg font-semibold"
-              >
-                Apply Now
-              </button>
-            )}
-
-            {isAuthenticated && hasPaid && (
+            ) : (
               <button
                 onClick={async () => {
                   await handleLogout();
@@ -223,44 +197,43 @@ export default function Layout({ protectedMode = false }) {
         </div>
       </div>
 
-{/* Mobile Sidebar Drawer */}
-<div
-  className={`fixed inset-0 z-50 md:hidden transform transition-transform duration-300 ease-in-out ${
-    mobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
-  }`}
->
-  {/* Sidebar panel */}
-  <div className="bg-white w-72 max-w-[80%] h-full shadow-2xl flex flex-col rounded-r-2xl overflow-y-auto relative">
-    {/* Close button */}
-    <button
-      onClick={() => setMobileSidebarOpen(false)}
-      aria-label="Close sidebar"
-      className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100"
-    >
-      <svg
-        className="w-6 h-6 text-gray-700"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        viewBox="0 0 24 24"
+      {/* Mobile Sidebar Drawer */}
+      <div
+        className={`fixed inset-0 z-50 md:hidden transform transition-transform duration-300 ease-in-out ${
+          mobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
-        <path d="M18 6L6 18M6 6l12 12" />
-      </svg>
-    </button>
+        {/* Sidebar panel */}
+        <div className="bg-white w-72 max-w-[80%] h-full shadow-2xl flex flex-col rounded-r-2xl overflow-y-auto relative">
+          {/* Close button */}
+          <button
+            onClick={() => setMobileSidebarOpen(false)}
+            aria-label="Close sidebar"
+            className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100"
+          >
+            <svg
+              className="w-6 h-6 text-gray-700"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
 
-    {/* ✅ Sidebar content */}
-    <div className="flex-1 overflow-y-auto p-4">
-      <Sidebar isMobile onClose={() => setMobileSidebarOpen(false)} />
-    </div>
-  </div>
+          {/* Sidebar content */}
+          <div className="flex-1 overflow-y-auto p-4">
+            <Sidebar isMobile onClose={() => setMobileSidebarOpen(false)} />
+          </div>
+        </div>
 
-  {/* Overlay */}
-  <div
-    className="flex-1 bg-black bg-opacity-50"
-    onClick={() => setMobileSidebarOpen(false)}
-  />
-</div>
-
+        {/* Overlay */}
+        <div
+          className="flex-1 bg-black bg-opacity-50"
+          onClick={() => setMobileSidebarOpen(false)}
+        />
+      </div>
     </div>
   );
 }
