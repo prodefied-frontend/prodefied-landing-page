@@ -319,7 +319,7 @@ export const curriculum = [
     {
       phaseTitle: "Phase 1 Learning",
       highlightColor: "#F5FBB8", // ✅ background for "Learning"
-      intro: "Welcome to your Learning",
+      intro: "Welcome to your Learning Phase",
       introDetails:
         "This is where your journey begins. In this stage, you'll build a strong foundation in Product Management concepts, tools, and practical skills. You'll also complete weekly assessments that help us track your progress",
       schedule: ["Tuesday at 7pm", "Thursday at 7pm"],

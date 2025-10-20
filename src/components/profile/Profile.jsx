@@ -6,6 +6,12 @@ import { toast } from "react-toastify";
 import getInitials from "../../utils/getInitials";
 import formatDateJoinedWithId from "../../utils/getStudentId";
 
+/**
+ * Profile page
+ * - Uses backend user.created_at as the canonical "Date Joined"
+ * - Cohort is set to "First Cohort" per the flow (users who reach sign-up are paid)
+ * - No UI gating on hasPaid
+ */
 export default function Profile() {
   const { user, login } = useAuth();
 
@@ -21,7 +27,7 @@ export default function Profile() {
 
   // ancillary UI state
   const [dateJoined, setDateJoined] = useState("");
-  const [cohort, setCohort] = useState("");
+  const [cohort, setCohort] = useState("First Cohort");
   const [saving, setSaving] = useState(false);
 
   // keep form in sync with context user changes (login / updates)
@@ -30,20 +36,38 @@ export default function Profile() {
     setLastName(user?.last_name || "");
     setPhoneNumber(user?.phone_number || "");
 
-    const today = new Date().toLocaleDateString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
+    // Use backend created_at when present (ISO 8601). Fallback to local today.
+    const rawCreated = user?.created_at || user?.date_joined || null;
+    let formattedDate = "";
 
-    const savedDate = localStorage.getItem("dateJoined") || today;
-    const savedCohort = localStorage.getItem("cohort") || today;
+    if (rawCreated) {
+      try {
+        const d = new Date(rawCreated);
+        // if invalid date, fallback
+        if (!isNaN(d.getTime())) {
+          formattedDate = d.toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          });
+        }
+      } catch (err) {
+        formattedDate = "";
+      }
+    }
 
-    localStorage.setItem("dateJoined", savedDate);
-    localStorage.setItem("cohort", savedCohort);
+    if (!formattedDate) {
+      formattedDate = new Date().toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
+    }
 
-    setDateJoined(savedDate);
-    setCohort(savedCohort);
+    setDateJoined(formattedDate);
+
+    // Keep cohort fixed to first cohort (per your flow)
+    setCohort("First Cohort");
   }, [user]);
 
   // detect local changes vs context
@@ -90,15 +114,9 @@ export default function Profile() {
     }
   };
 
-  // display flags (UI only)
-  const isPaid = !!(
-    user?.hasPaid ||
-    user?.isPaid ||
-    user?.has_paid ||
-    user?.is_paid
-  );
-  const admissionStatus = isPaid ? "Student" : "Pending";
-  const applicationStatus = isPaid ? "Approved" : "Pending";
+  // Display values — hard-coded per new flow (no hasPaid dependency)
+  const applicationStatus = "Approved";
+  const admissionStatus = "Student";
 
   return (
     <div className="p-6 max-w-2xl mx-auto bg-[#FBFBFB] rounded-md shadow-sm relative">
@@ -176,15 +194,11 @@ export default function Profile() {
           </p>
           <p>
             <strong>Application Status:</strong>{" "}
-            <span className={isPaid ? "text-green-600" : "text-yellow-600"}>
-              {applicationStatus}
-            </span>
+            <span className="text-green-600">{applicationStatus}</span>
           </p>
           <p>
             <strong>Admission Status:</strong>{" "}
-            <span className={isPaid ? "text-blue-600" : "text-yellow-600"}>
-              {admissionStatus}
-            </span>
+            <span className="text-blue-600">{admissionStatus}</span>
           </p>
         </div>
       </div>
