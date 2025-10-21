@@ -2,7 +2,7 @@ import CheckMarkIcon from "../../assets/icons/checkmark-circle.svg";
 import BgImage from "../../assets/images/homepage/bg-image.svg";
 
 const programFeatureDetails = [
-  "3 completed capstone projects",
+  "3 live projects",
   "Career coaching sessions",
   "Hands-on internship program",
   "Mastery of AI tools and PM processes",
@@ -17,7 +17,7 @@ export default function ProgramFeatureSection() {
       {/* HEADER */}
       <div className="px-6 py-12 md:px-16 lg:px-24 relative z-10">
         <h2 className="text-2xl md:text-4xl font-semibold text-center text-[#001196] mb-10">
-          Program <span className="text-[#FFB236]">Features</span>
+          Program <span className="text-[#FFB236]">Benefits</span>
         </h2>
 
         {/* GRID */}

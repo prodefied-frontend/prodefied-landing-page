@@ -1,6 +1,3 @@
-
-
-
 import { useEffect, useRef, useState } from "react";
 
 import HeroSection from "../components/homepage/HeroSection";
@@ -93,6 +90,20 @@ export default function Homepage() {
     window.addEventListener("scroll", onScrollFallback, { passive: true });
     onScrollFallback(); // immediate check
     return () => window.removeEventListener("scroll", onScrollFallback);
+  }, []);
+
+  useEffect(() => {
+    if (sessionStorage.getItem("scrollToInsights") === "true") {
+      sessionStorage.removeItem("scrollToInsights");
+
+      // Wait for the DOM to render
+      setTimeout(() => {
+        const section = document.getElementById("insight-resources");
+        if (section) {
+          section.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 300); // Adjust timeout if needed for slower renders
+    }
   }, []);
 
   return (

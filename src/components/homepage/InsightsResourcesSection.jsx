@@ -1,6 +1,6 @@
-import InsightResources1 from '../../assets/images/homepage/insight-resources/insight-resource1.jpg';
-import InsightResources2 from '../../assets/images/homepage/insight-resources/insight-resource2.jpg';
-import InsightResources3 from '../../assets/images/homepage/insight-resources/insight-resource3.jpg';
+import InsightResources1 from "../../assets/images/homepage/insight-resources/insight-resource1.jpg";
+import InsightResources2 from "../../assets/images/homepage/insight-resources/insight-resource2.jpg";
+import InsightResources3 from "../../assets/images/homepage/insight-resources/insight-resource3.jpg";
 
 const resources = [
   {
@@ -9,7 +9,7 @@ const resources = [
     title: "5 essential skills for aspiring Product Managers",
     description:
       "Learn the key competencies that will set you apart in the competitive PM job market",
-    link: "#",
+    link: "https://medium.com/@prodefied",
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ const resources = [
     title: "How AI is Transforming Product Management",
     description:
       "Discover the latest AI tools that are revolutionizing the way products are built and managed.",
-    link: "#",
+    link: "https://medium.com/@prodefied",
   },
   {
     id: 3,
@@ -25,13 +25,16 @@ const resources = [
     title: "Building Your First Product Portfolio",
     description:
       "A step-by-step guide to creating a portfolio that showcases your PM skills effectively",
-    link: "#",
+    link: "https://medium.com/@prodefied",
   },
 ];
 
 export default function InsightResourcesSection() {
   return (
-    <section className="py-16 px-4 md:px-12 bg-[#F9FAFF]">
+    <section
+      id="insight-resources"
+      className="py-16 px-4 md:px-12 bg-[#F9FAFF]"
+    >
       <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-12">
         Insights and Resources
       </h2>

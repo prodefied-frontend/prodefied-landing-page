@@ -7,9 +7,14 @@ import Typewriter from "./Typewriter";
 
 export default function HeroSection() {
   const messages = [
-    "Hands-on training",
-    "Real-world experience",
-    "Career accelerator program",
+    "Real trainings",
+    "Hands-on projects",
+    "Real internship exposure",
+    "CV writing",
+    "Portfolio building",
+    "Brand positioning",
+    "Brand differentiation",
+    "Brand visibility",
   ];
 
   return (
@@ -26,7 +31,7 @@ export default function HeroSection() {
 
             <div className="mt-2 md:mt-4">
               <p className="text-base md:text-lg text-[#4D4D4D]">
-                Get job-ready in 20 weeks with
+                Build real results with
               </p>
               <p className="text-base md:text-xl text-[#3427FD]">
                 <Typewriter texts={messages} speed={100} pause={2200} />

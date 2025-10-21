@@ -3,6 +3,7 @@ import WhatsappIcon from "../assets/icons/contact-us/whatsapp.svg";
 import InstagramIcon from "../assets/icons/contact-us/instagram.svg";
 import XIcon from "../assets/icons/contact-us/x.svg";
 import LinkedInIcon from "../assets/icons/contact-us/linkedin.svg";
+import TiktokIcon from "../assets/icons/footer/tiktok.svg";
 
 const linkDatas = [
   { id: 1, name: "Gmail", icon: GmailIcon, link: "mailto:hello@prodefied.com" },
@@ -29,6 +30,12 @@ const linkDatas = [
     name: "LinkedIn",
     icon: LinkedInIcon,
     link: "https://www.linkedin.com/company/prodefied.com/",
+  },
+  {
+    id: 6,
+    name: "TikTok",
+    icon: TiktokIcon,
+    link: "https://www.tiktok.com/@prodefiedng?_t=ZS-90iCjt5UJT0&_r=1",
   },
 ];
 

@@ -65,7 +65,7 @@ const socialLinks = [
   {
     icon: TiktokIcon,
     alt: "TikTok Icon",
-    href: "https://www.tiktok.com/@prodefied?_t=ZM-8xAVuQj6Uem&_r=1",
+    href: "https://www.tiktok.com/@prodefiedng?_t=ZS-90iCjt5UJT0&_r=1",
   },
 ];
 

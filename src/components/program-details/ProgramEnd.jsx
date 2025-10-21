@@ -9,7 +9,7 @@ const ProgramEnd = () => {
           By the end of the program, You'll be:
         </h2>
         <ul className="list-disc list-inside text-[#4D4D4D] text-[14px] sm:text-[16px] md:text-[20px] lg:text-[24px] font-normal space-y-2 sm:space-y-3">
-          <li>70% job-ready and rising fast</li>
+          <li>100% job-ready and rising fast</li>
           <li>Confident in your skills and your story</li>
           <li>Fluent in the tools and language of product teams</li>
           <li>Ready to enter any product interview with confidence</li>

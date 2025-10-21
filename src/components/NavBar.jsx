@@ -15,6 +15,23 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
   const [isContactOpen, setIsContactOpen] = useState(false);
   const contactWrapperRef = useRef(null);
 
+  function handleBlogClick() {
+    const isHome = location.pathname === "/";
+    const scrollToInsights = () => {
+      const section = document.getElementById("insight-resources");
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+    };
+
+    if (isHome) {
+      scrollToInsights();
+    } else {
+      sessionStorage.setItem("scrollToInsights", "true");
+      navigate("/");
+    }
+  }
+
   useEffect(() => {
     // ensure normal body scroll on route change
     document.body.style.overflow = "auto";
@@ -96,7 +113,9 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
 
           <Link
             to="/"
-            className={`items-center ${isAuthenticated ? "hidden md:flex" : "flex"}`}
+            className={`items-center ${
+              isAuthenticated ? "hidden md:flex" : "flex"
+            }`}
           >
             <img src={logoBlue} alt="Prodefied Logo" className="w-10 h-10" />
             <span className="text-lg font-semibold text-[#1B1A1A] -ml-1">
@@ -155,9 +174,9 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
               <Link to="/program-details" className={navLinkClass}>
                 Program Details
               </Link>
-              <Link to="/blog" className={navLinkClass}>
+              <button onClick={handleBlogClick} className={navLinkClass}>
                 Blog
-              </Link>
+              </button>
               <Link to="/partnership" className={navLinkClass}>
                 Partnership
               </Link>

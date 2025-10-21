@@ -7,11 +7,21 @@ import TwoPartIcon from "../assets/icons/registration/half-pay-icon.svg";
 import { initializePayment, updateApplicant } from "../services/api";
 import { useAuth } from "../context/AuthContext";
 
+/**
+ * PaymentRegistrationPage
+ *
+ * UX: Both payment options are visible. Buttons look disabled until user checks the
+ * consent checkbox. Clicking a disabled-looking button will show a toast instructing
+ * the user to check the checkbox — per your request.
+ *
+ * Note: we guard against duplicate starts via loadingPlan state.
+ */
+
 const paymentPlanData = [
   {
     id: 1,
     backgroundColor: "#026D15",
-    type: "FULL",
+    type: "FULL", // backend canonical
     title: "Full Payment",
     icon: FullIcon,
     details:
@@ -20,7 +30,7 @@ const paymentPlanData = [
   {
     id: 2,
     backgroundColor: "#64026D",
-    type: "PART",
+    type: "INSTALLMENTS", // backend canonical
     title: "Two-Part Installment",
     icon: TwoPartIcon,
     details:
@@ -40,118 +50,76 @@ export default function PaymentRegistrationPage() {
   const applicantIdFromState =
     incoming.applicant_id || localStorage.getItem("applicantId");
 
-const handleProceed = async (plan) => {
-  if (!agreed) {
-    toast.error("Click the checkbox first before proceeding");
-    return;
-  }
+  const handleProceed = async (plan) => {
+    // prevent double clicks while starting
+    if (loadingPlan) return;
 
-  if (!applicantIdFromState) {
-    toast.error("Missing applicant id. Please complete registration form first.");
-    setTimeout(() => navigate("/registration"), 1000);
-    return;
-  }
+    // if user hasn't agreed, show toast instructing them to tick the checkbox
+    if (!agreed) {
+      toast.info("Please confirm that you agree to the terms by checking the box above before proceeding.");
+      return;
+    }
 
-  setLoadingPlan(plan.id);
-  const applicantIdNum = Number(applicantIdFromState);
+    if (!applicantIdFromState) {
+      toast.error("Missing applicant id. Please complete the registration form first.");
+      setTimeout(() => navigate("/registration"), 1000);
+      return;
+    }
 
-  // broaden the fallback list with lowercase / plural / underscored variants
-  const base = plan.type || "";
-  const candidates = [
-    base,
-    base.toUpperCase(),
-    base.toLowerCase(),
-    base.replace(/\s+/g, "_").toUpperCase(),
-    base.replace(/\s+/g, "_").toLowerCase(),
-    base.replace(/\s+/g, "-").toUpperCase(),
-    base.replace(/\s+/g, "-").toLowerCase(),
-    `${base}s`.toUpperCase(),
-    `${base}s`.toLowerCase(),
-    "INSTALLMENTS",
-  ]
-    .filter(Boolean)
-    .map((v, i, arr) => (arr.indexOf(v) === i ? v : null))
-    .filter(Boolean);
+    setLoadingPlan(plan.id);
+    const applicantIdNum = Number(applicantIdFromState);
 
-  let lastError = null;
-  try {
-    let initRes = null;
-    let usedType = null;
-
-    for (const paymentType of candidates) {
-      try {
-        const initPayload = {
-          applicant_id: applicantIdNum,
-          payment_type: paymentType,
-        };
-
-        // log the attempt so we can inspect Network tab
-        console.info("Attempting initializePayment with payload:", initPayload);
-
-        const res = await initializePayment(initPayload);
-        initRes = res;
-        usedType = paymentType;
-        console.info("initializePayment success for type=", paymentType, res?.data);
-        break;
-      } catch (err) {
-        lastError = err;
-        // log detailed server response (helps a lot)
-        console.warn(`initializePayment failed for type=${paymentType}`, {
-          status: err?.response?.status,
-          data: err?.response?.data,
-          message: err?.message,
-        });
-        // If it's not a 400, bail out — unexpected server error
-        if (err?.response?.status && err.response.status !== 400) {
-          throw err;
-        }
-        // continue to next candidate
+    try {
+      // optionally update applicant with phone/referral (if provided via incoming state)
+      const updatePayload = {};
+      if (incoming.phone) updatePayload.phone_number = incoming.phone;
+      if (incoming.referral) updatePayload.referral_code = incoming.referral;
+      if (Object.keys(updatePayload).length) {
+        // fire and wait — backend expects PATCH
+        await updateApplicant(applicantIdNum, updatePayload);
       }
+
+      // initialize payment with canonical type (backend confirmed FULL / INSTALLMENTS)
+      const initPayload = {
+        applicant_id: applicantIdNum,
+        payment_type: plan.type,
+      };
+
+      console.info("Initializing payment with payload:", initPayload);
+      const res = await initializePayment(initPayload);
+
+      const paymentUrl = res?.data?.payment_url;
+      const reference = res?.data?.reference;
+
+      if (!paymentUrl || !reference) {
+        throw new Error("Payment initialization returned unexpected response (missing payment_url/reference).");
+      }
+
+      // persist for later verification
+      localStorage.setItem("paymentReference", String(reference));
+      localStorage.setItem("applicantId", String(applicantIdNum));
+      setApplicant(applicantIdNum);
+
+      // redirect to payment provider (full-page redirect)
+      window.location.href = paymentUrl;
+    } catch (err) {
+      console.error("Payment init error:", err);
+
+      // try to surface server message
+      const serverData = err?.response?.data || null;
+      if (serverData) {
+        const userMsg =
+          serverData?.message ||
+          serverData?.detail ||
+          (typeof serverData === "string" ? serverData : "Payment initialization failed. See console for details.");
+        toast.error(userMsg);
+      } else {
+        toast.error(err.message || "Could not start payment. Try again.");
+      }
+    } finally {
+      setLoadingPlan(null);
     }
-
-    if (!initRes) {
-      // show server message if available
-      const serverMsg =
-        lastError?.response?.data?.message ||
-        lastError?.response?.data ||
-        lastError?.message ||
-        "Unknown error from payment init";
-      throw new Error(`Payment initialization failed for types: ${candidates.join(", ")} — server: ${serverMsg}`);
-    }
-
-    const paymentUrl = initRes?.data?.payment_url;
-    const reference = initRes?.data?.reference;
-
-    if (!paymentUrl || !reference) {
-      throw new Error("Payment initialization returned unexpected response (missing payment_url/reference).");
-    }
-
-    localStorage.setItem("paymentReference", String(reference));
-    localStorage.setItem("applicantId", String(applicantIdNum));
-    setApplicant(applicantIdNum);
-
-    // redirect to paystack
-    window.location.href = paymentUrl;
-  } catch (err) {
-    console.error("Payment init error:", err);
-
-    // If there's an axios response, surface it nicely
-    const serverData = lastError?.response?.data || err?.response?.data || null;
-    if (serverData) {
-      // print readable JSON to console (expand the `Object`)
-      console.error("Server response (full):", JSON.stringify(serverData, null, 2));
-      // show user-friendly message
-      const userMsg =
-        serverData?.message ||
-        (typeof serverData === "string" ? serverData : "Payment initialization failed. See console for details.");
-      toast.error(userMsg);
-    } else {
-      toast.error(err.message || "Could not start payment. Try again.");
-    }
-  } finally {
-    setLoadingPlan(null);
-  }
-};
+  };
 
   return (
     <main className="pt-[100px] px-6 md:px-16 pb-20 max-w-6xl mx-auto">
@@ -165,20 +133,19 @@ const handleProceed = async (plan) => {
         flexible options designed to fit your budget and timeline.
       </p>
 
+      {/* Consent checkbox */}
       <div className="flex items-start gap-2 py-4">
         <input
-          type="checkbox"
           id="agree"
+          type="checkbox"
           className="mt-1 h-4 w-4 rounded border-gray-300 focus:ring-[#000F84]"
           checked={agreed}
           onChange={(e) => setAgreed(e.target.checked)}
+          aria-describedby="agree-desc"
         />
-        <label htmlFor="agree" className="text-sm md:text-base text-gray-700">
+        <label htmlFor="agree" className="text-sm md:text-base text-gray-700" id="agree-desc">
           By clicking the checkbox, you have read and agree to our{" "}
-          <Link
-            to="/terms-conditions"
-            className="text-[#0929FF] hover:underline"
-          >
+          <Link to="/terms-conditions" className="text-[#0929FF] hover:underline">
             terms and conditions
           </Link>{" "}
           and payment policy.
@@ -191,166 +158,40 @@ const handleProceed = async (plan) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-        {paymentPlanData.map((c) => (
-          <div
-            key={c.id}
-            className="flex flex-col justify-between text-white shadow-md rounded-lg p-6 hover:shadow-lg transition"
-            style={{ backgroundColor: c.backgroundColor }}
-          >
-            <p className="text-lg font-semibold mb-4">{c.title}</p>
-
-            <div className="flex md:items-start gap-4 mb-6">
-              <p className="text-sm md:text-base text-white leading-relaxed">
-                {c.details}
-              </p>
-              <img
-                src={c.icon}
-                alt={c.title}
-                className="w-20 h-20 object-contain"
-              />
-            </div>
-
-            <button
-              onClick={() => handleProceed(c)}
-              disabled={!agreed || loadingPlan}
-              className={`py-3 rounded-md font-medium transition
-                ${
-                  agreed
-                    ? "cursor-pointer text-black bg-white hover:bg-[#e7e7e7]"
-                    : "cursor-not-allowed bg-gray-300 text-gray-500"
-                }`}
+        {paymentPlanData.map((c) => {
+          const isBusy = loadingPlan !== null;
+          const looksDisabled = !agreed || isBusy; // visual disabled state
+          return (
+            <div
+              key={c.id}
+              className="flex flex-col justify-between text-white shadow-md rounded-lg p-6 hover:shadow-lg transition"
+              style={{ backgroundColor: c.backgroundColor }}
             >
-              {loadingPlan === c.id ? "Starting payment..." : "Proceed"}
-            </button>
-          </div>
-        ))}
+              <p className="text-lg font-semibold mb-4">{c.title}</p>
+
+              <div className="flex md:items-start gap-4 mb-6">
+                <p className="text-sm md:text-base text-white leading-relaxed">{c.details}</p>
+                <img src={c.icon} alt={c.title} className="w-20 h-20 object-contain" />
+              </div>
+
+              {/* NOTE: we intentionally DO NOT set native `disabled` so clicks still fire and show toast
+                  when checkbox is unchecked. We guard inside handleProceed to avoid network calls. */}
+              <button
+                onClick={() => handleProceed(c)}
+                aria-disabled={looksDisabled}
+                aria-describedby={!agreed ? "agree-desc" : undefined}
+                className={`py-3 rounded-md font-medium transition
+                  ${looksDisabled
+                    ? "cursor-not-allowed bg-gray-300 text-gray-500 opacity-80"
+                    : "cursor-pointer text-black bg-white hover:bg-[#e7e7e7]"}
+                `}
+              >
+                {loadingPlan === c.id ? "Starting payment..." : "Proceed"}
+              </button>
+            </div>
+          );
+        })}
       </div>
     </main>
   );
 }
-
-// ====================================================================================
-
-// import { useState } from "react";
-// import { Link } from "react-router-dom";
-// import { toast } from "react-toastify";
-// import FullIcon from "../assets/icons/registration/full-icon.svg";
-// import TwoPartIcon from "../assets/icons/registration/half-pay-icon.svg";
-
-// const paymentPlanData = [
-//   {
-//     id: 1,
-//     backgroundColor: "#026D15",
-//     type: "Full Payment",
-//     icon: FullIcon,
-//     details:
-//       "Pay the full program fee of N200,000 upfront and focus fully on your learning",
-//   },
-//   {
-//     id: 2,
-//     backgroundColor: "#64026D",
-//     type: "Two-Part Installment",
-//     icon: TwoPartIcon,
-//     details:
-//       "Secure your spot with a N100,000 deposit and pay the balance within 8 weeks (with weekly reminders from our team)",
-//   },
-// ];
-
-// export default function PaymentRegistrationPage() {
-//   // ✅ Track if the user agreed to terms
-//   const [agreed, setAgreed] = useState(false);
-
-//   // ✅ This will be called when user clicks Proceed
-//   const handleProceed = (plan) => {
-//     if (!agreed) {
-//       toast.error("Click the checkbox first before proceeding");
-//       return;
-//     }
-
-//     // 🔒 For now, backend API isn’t ready
-//     // Later: call your payment initialization logic here
-//     toast.success(`Proceeding with ${plan.type} plan...`);
-//   };
-
-//   return (
-//     <main className="pt-[100px] px-6 md:px-16 pb-20 max-w-6xl mx-auto">
-//       {/* Header */}
-//       <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">
-//         Choose a payment plan
-//       </h1>
-
-//       <p className="py-6 text-sm md:text-base text-gray-600 leading-relaxed">
-//         At Prodefied, we believe nothing should stop you from starting your
-//         career in product management — not even payment. That's why we offer
-//         flexible options designed to fit your budget and timeline.
-//       </p>
-
-//       {/* Terms agreement */}
-//       <div className="flex items-start gap-2 py-4">
-//         <input
-//           type="checkbox"
-//           id="agree"
-//           className="mt-1 h-4 w-4 rounded border-gray-300 focus:ring-[#000F84]"
-//           checked={agreed}
-//           onChange={(e) => setAgreed(e.target.checked)}
-//         />
-//         <label htmlFor="agree" className="text-sm md:text-base text-gray-700">
-//           By clicking the checkbox, you have read and agree to our{" "}
-//           <Link
-//             to="/terms-conditions"
-//             className="text-[#0929FF] hover:underline"
-//           >
-//             terms and conditions
-//           </Link>{" "}
-//           and payment policy.
-//         </label>
-//       </div>
-
-//       {/* Fee */}
-//       <div className="flex justify-between py-4 border-b border-gray-200 text-gray-800 font-medium">
-//         <span>Registration fee:</span>
-//         <span className="text-lg md:text-xl font-semibold">N200,000</span>
-//       </div>
-
-//       {/* Payment Plans */}
-//       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-//         {paymentPlanData.map((c) => (
-//           <div
-//             key={c.id}
-//             className="flex flex-col justify-between text-white shadow-md rounded-lg p-6 hover:shadow-lg transition"
-//             style={{ backgroundColor: c.backgroundColor }}
-//           >
-//             {/* Title */}
-//             <p className="text-lg font-semibold mb-4">{c.type}</p>
-
-//             {/* Details */}
-//             <div className="flex md:items-start gap-4 mb-6">
-//               <p className="text-sm md:text-base text-white leading-relaxed">
-//                 {c.details}
-//               </p>
-//               <img
-//                 src={c.icon}
-//                 alt={c.type}
-//                 className="w-20 h-20 object-contain"
-//               />
-//             </div>
-
-//             {/* CTA Button */}
-//             <button
-//               onClick={() => handleProceed(c)}
-//               disabled={!agreed} // ✅ disabled until checkbox is ticked
-//               className={`py-3 rounded-md font-medium transition
-//                 ${
-//                   agreed
-//                     ? "cursor-pointer text-black bg-white hover:bg-[#e7e7e7]"
-//                     : "cursor-not-allowed bg-gray-300 text-gray-500"
-//                 }`}
-//             >
-//               Proceed
-//             </button>
-//           </div>
-//         ))}
-//       </div>
-//     </main>
-//   );
-// }

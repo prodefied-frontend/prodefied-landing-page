@@ -9,6 +9,9 @@ import Avatar2 from "../../assets/images/homepage/our-talents/toby.jpg";
 import Avatar3 from "../../assets/images/homepage/our-talents/harry.jpg";
 import Avatar4 from "../../assets/images/homepage/our-talents/esther.jpg";
 import Avatar5 from "../../assets/images/homepage/our-talents/obinna.jpg";
+import EmmanuelImage from "../../assets/images/about-us/meet-team/emmanuel.jpg";
+import UgommaImage from "../../assets/images/about-us/meet-team/ugomma.jpg";
+
 
 import PaystackLogo from "../../assets/images/homepage/our-talents/companies/paystack.svg";
 import MazeranceLogo from "../../assets/images/homepage/our-talents/companies/mazerance.svg";
@@ -26,9 +29,9 @@ const testimonials = [
     avatar: Avatar1,
   },
   {
-    name: "Toby",
+    name: "Emma",
     message: "It felt like I was working at a real company.",
-    avatar: Avatar2,
+    avatar: EmmanuelImage,
   },
   {
     name: "Esther",
@@ -41,9 +44,9 @@ const testimonials = [
     avatar: Avatar5,
   },
   {
-    name: "Elijah",
+    name: "Ugomma",
     message: "The career coaching helped me negotiate a 40% higher salary for my first PM position.",
-    avatar: Avatar3,
+    avatar: UgommaImage,
   },
 ];
 
