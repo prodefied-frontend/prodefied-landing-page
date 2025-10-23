@@ -137,9 +137,9 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
               <Link to="/program-details" className={navLinkClass}>
                 Our Program
               </Link>
-              <Link to="/blog" className={navLinkClass}>
+              <button onClick={handleBlogClick} className={navLinkClass}>
                 Blog
-              </Link>
+              </button>
               <Link to="/partnership" className={navLinkClass}>
                 Partnership
               </Link>
