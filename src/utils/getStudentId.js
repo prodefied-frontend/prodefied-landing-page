@@ -1,4 +1,4 @@
-export default function formatDateJoinedWithId(user) {
+export default function getStudentId(user) {
     const studentId = user?.id;
     const savedDate = localStorage.getItem("dateJoined");
 

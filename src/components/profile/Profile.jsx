@@ -4,7 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { updateUserProfile } from "../../services/api";
 import { toast } from "react-toastify";
 import getInitials from "../../utils/getInitials";
-import formatDateJoinedWithId from "../../utils/getStudentId";
+import getStudentId from "../../utils/getStudentId";
 
 /**
  * Profile page
@@ -16,7 +16,7 @@ export default function Profile() {
   const { user, login } = useAuth();
 
   // derived read-only values
-  const studentId = formatDateJoinedWithId(user);
+  const studentId = getStudentId(user);
   const initials = getInitials(user);
 
   // local form state (initialized from context user)
