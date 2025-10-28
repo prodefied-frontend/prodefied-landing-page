@@ -225,7 +225,7 @@ export default function NavBar({ onHamburgerClick, onAvatarClick }) {
             <button
               onClick={handleAvatar}
               aria-label="Open profile menu"
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-[#000F84] text-white font-bold overflow-hidden"
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-[#000F84] text-white font-bold overflow-hidden cursor-pointer"
             >
               <span>{initials}</span>
             </button>
