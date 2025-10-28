@@ -1,6 +1,5 @@
 // src/components/LoginRightSection.jsx
 import { useState } from "react";
-import Input from "./CustomInput";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -26,7 +25,7 @@ const LoginRightSection = () => {
     const { email, password, confirmPassword } = formData;
 
     if (!email || !password || !confirmPassword) {
-      return toast.error("All fields are required.");
+      return toast.error("Email, password and confirm password are required.");
     }
 
     if (password !== confirmPassword) {
@@ -56,9 +55,9 @@ const LoginRightSection = () => {
     } catch (error) {
       console.error("Login error:", error);
       const msg =
-        error.response?.data?.detail ||
-        error.response?.data?.error ||
-        error.message;
+        error?.response?.data?.detail ||
+        error?.response?.data?.error ||
+        error?.message;
       toast.error(msg || "Login failed. Please try again.");
     } finally {
       setSubmitting(false);
@@ -111,9 +110,9 @@ const LoginRightSection = () => {
     } catch (error) {
       console.error("Google login error:", error);
       const msg =
-        error.response?.data?.detail ||
-        error.response?.data?.error ||
-        error.message ||
+        error?.response?.data?.detail ||
+        error?.response?.data?.error ||
+        error?.message ||
         "Google login failed.";
       toast.error(msg);
     } finally {
@@ -128,34 +127,39 @@ const LoginRightSection = () => {
         <p className="text-sm text-gray-600 mb-6">Login to your account</p>
 
         <form onSubmit={handleSubmit}>
-          {/* Email */}
-          <Input
+          {/* Email (native input to avoid CustomInput forwarding issues) */}
+          <input
             type="email"
-            placeholder="Email Address"
             name="email"
+            placeholder="Email Address"
             value={formData.email}
             onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
+              setFormData((f) => ({ ...f, email: e.target.value }))
             }
-            className="mb-2"
+            className="mb-2 w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#000F84]"
             required
+            autoComplete="email"
           />
 
           {/* Password */}
           <div className="relative mb-2">
-            <Input
+            <input
               type={showPassword ? "text" : "password"}
-              placeholder="Password"
               name="password"
+              placeholder="Password"
               value={formData.password}
               onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
+                setFormData((f) => ({ ...f, password: e.target.value }))
               }
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#000F84]"
               required
+              autoComplete="current-password"
             />
             <div
               className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500"
               onClick={() => setShowPassword((prev) => !prev)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              role="button"
             >
               {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </div>
@@ -163,16 +167,27 @@ const LoginRightSection = () => {
 
           {/* Confirm Password */}
           <div className="relative mb-4">
-            <Input
+            <input
               type={showPassword ? "text" : "password"}
-              placeholder="Confirm Password"
               name="confirmPassword"
+              placeholder="Confirm Password"
               value={formData.confirmPassword}
               onChange={(e) =>
-                setFormData({ ...formData, confirmPassword: e.target.value })
+                setFormData((f) => ({ ...f, confirmPassword: e.target.value }))
               }
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#000F84]"
               required
+              autoComplete="new-password"
             />
+            {/* reuse the same toggle to affect both fields */}
+            <div
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500"
+              onClick={() => setShowPassword((prev) => !prev)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              role="button"
+            >
+              {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+            </div>
           </div>
 
           {/* Submit */}

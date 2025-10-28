@@ -10,18 +10,19 @@ import { useAuth } from "../context/AuthContext";
 /**
  * PaymentRegistrationPage
  *
- * UX: Both payment options are visible. Buttons look disabled until user checks the
- * consent checkbox. Clicking a disabled-looking button will show a toast instructing
- * the user to check the checkbox — per your request.
- *
- * Note: we guard against duplicate starts via loadingPlan state.
+ * UX:
+ * - Short consent sentence (no checkbox).
+ * - Buttons are clickable immediately. While a plan is being started:
+ *   - the initiating card shows "Starting payment..." on its button and has aria-busy.
+ *   - all other cards are visually faded and pointer-events disabled.
+ * - Preserves backend update/init/redirect flow with clear logs & user-facing toasts.
  */
 
 const paymentPlanData = [
   {
     id: 1,
     backgroundColor: "#026D15",
-    type: "FULL", // backend canonical
+    type: "FULL",
     title: "Full Payment",
     icon: FullIcon,
     details:
@@ -30,7 +31,7 @@ const paymentPlanData = [
   {
     id: 2,
     backgroundColor: "#64026D",
-    type: "INSTALLMENTS", // backend canonical
+    type: "INSTALLMENTS",
     title: "Two-Part Installment",
     icon: TwoPartIcon,
     details:
@@ -39,26 +40,19 @@ const paymentPlanData = [
 ];
 
 export default function PaymentRegistrationPage() {
-  const [agreed, setAgreed] = useState(false);
-  const [loadingPlan, setLoadingPlan] = useState(null);
+  const [loadingPlan, setLoadingPlan] = useState(null); // id of plan being started (or null)
   const location = useLocation();
   const navigate = useNavigate();
   const { setApplicant } = useAuth();
 
-  // incoming state from RegistrationPage (may contain applicant_id)
+  // incoming state from RegistrationPage (may contain applicant_id / phone / referral)
   const incoming = location.state || {};
   const applicantIdFromState =
     incoming.applicant_id || localStorage.getItem("applicantId");
 
   const handleProceed = async (plan) => {
-    // prevent double clicks while starting
+    // Prevent duplicate starts
     if (loadingPlan) return;
-
-    // if user hasn't agreed, show toast instructing them to tick the checkbox
-    if (!agreed) {
-      toast.info("Please confirm that you agree to the terms by checking the box above before proceeding.");
-      return;
-    }
 
     if (!applicantIdFromState) {
       toast.error("Missing applicant id. Please complete the registration form first.");
@@ -70,12 +64,12 @@ export default function PaymentRegistrationPage() {
     const applicantIdNum = Number(applicantIdFromState);
 
     try {
-      // optionally update applicant with phone/referral (if provided via incoming state)
+      // Optionally update applicant with phone/referral (if provided via incoming state)
       const updatePayload = {};
       if (incoming.phone) updatePayload.phone_number = incoming.phone;
       if (incoming.referral) updatePayload.referral_code = incoming.referral;
       if (Object.keys(updatePayload).length) {
-        // fire and wait — backend expects PATCH
+        // backend expects PATCH
         await updateApplicant(applicantIdNum, updatePayload);
       }
 
@@ -117,7 +111,8 @@ export default function PaymentRegistrationPage() {
         toast.error(err.message || "Could not start payment. Try again.");
       }
     } finally {
-      setLoadingPlan(null);
+      // brief delay to allow user to see "Starting payment..." before UI resets if an error occurred
+      setTimeout(() => setLoadingPlan(null), 300);
     }
   };
 
@@ -133,38 +128,33 @@ export default function PaymentRegistrationPage() {
         flexible options designed to fit your budget and timeline.
       </p>
 
-      {/* Consent checkbox */}
-      <div className="flex items-start gap-2 py-4">
-        <input
-          id="agree"
-          type="checkbox"
-          className="mt-1 h-4 w-4 rounded border-gray-300 focus:ring-[#000F84]"
-          checked={agreed}
-          onChange={(e) => setAgreed(e.target.checked)}
-          aria-describedby="agree-desc"
-        />
-        <label htmlFor="agree" className="text-sm md:text-base text-gray-700" id="agree-desc">
-          By clicking the checkbox, you have read and agree to our{" "}
+      {/* Consent paragraph (no checkbox) */}
+      <div className="py-4">
+        <p className="text-sm md:text-lg text-gray-700">
+          By selecting a payment plan, you hereby accept to have read and agreed to our{" "}
           <Link to="/terms-conditions" className="text-[#0929FF] hover:underline">
-            terms and conditions
-          </Link>{" "}
-          and payment policy.
-        </label>
+            terms and conditions and payment policy.
+          </Link>
+        </p>
       </div>
 
       <div className="flex justify-between py-4 border-b border-gray-200 text-gray-800 font-medium">
         <span>Registration fee:</span>
-        <span className="text-lg md:text-xl font-semibold">N200,000</span>
+        <span className="text-lg md:text-2xl font-bold">N200,000</span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
         {paymentPlanData.map((c) => {
           const isBusy = loadingPlan !== null;
-          const looksDisabled = !agreed || isBusy; // visual disabled state
+          const isThisBusy = loadingPlan === c.id;
+          // Fade and disable other cards while a plan is starting
+          const cardDisabled = isBusy && !isThisBusy;
+
           return (
             <div
               key={c.id}
-              className="flex flex-col justify-between text-white shadow-md rounded-lg p-6 hover:shadow-lg transition"
+              className={`flex flex-col justify-between text-white shadow-md rounded-lg p-6 hover:shadow-lg transition
+                ${cardDisabled ? "opacity-60 pointer-events-none" : ""}`}
               style={{ backgroundColor: c.backgroundColor }}
             >
               <p className="text-lg font-semibold mb-4">{c.title}</p>
@@ -174,19 +164,17 @@ export default function PaymentRegistrationPage() {
                 <img src={c.icon} alt={c.title} className="w-20 h-20 object-contain" />
               </div>
 
-              {/* NOTE: we intentionally DO NOT set native `disabled` so clicks still fire and show toast
-                  when checkbox is unchecked. We guard inside handleProceed to avoid network calls. */}
               <button
                 onClick={() => handleProceed(c)}
-                aria-disabled={looksDisabled}
-                aria-describedby={!agreed ? "agree-desc" : undefined}
+                aria-disabled={cardDisabled}
+                aria-busy={isThisBusy}
                 className={`py-3 rounded-md font-medium transition
-                  ${looksDisabled
-                    ? "cursor-not-allowed bg-gray-300 text-gray-500 opacity-80"
+                  ${isThisBusy
+                    ? "cursor-wait bg-white text-black"
                     : "cursor-pointer text-black bg-white hover:bg-[#e7e7e7]"}
                 `}
               >
-                {loadingPlan === c.id ? "Starting payment..." : "Proceed"}
+                {isThisBusy ? "Starting payment..." : "Proceed"}
               </button>
             </div>
           );

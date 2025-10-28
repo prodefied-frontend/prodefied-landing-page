@@ -46,6 +46,7 @@ export default function AppRoutes() {
           element={<PaymentRegistrationPage />}
         />
         <Route path="/payment-success" element={<PaymentSuccessPage />} />
+
       </Route>
 
       {/* Protected Pages with Sidebar */}

@@ -26,7 +26,12 @@ export default function RegistrationPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.email || !formData.firstName || !formData.lastName || !formData.phone) {
+    if (
+      !formData.email ||
+      !formData.firstName ||
+      !formData.lastName ||
+      !formData.phone
+    ) {
       toast.error("Please fill in all required fields.");
       return;
     }
@@ -40,7 +45,8 @@ export default function RegistrationPage() {
       };
 
       const res = await registerApplicant(payload);
-      const applicant_id = res?.data?.applicant_id || res?.data?.id || res?.data?.applicantId;
+      const applicant_id =
+        res?.data?.applicant_id || res?.data?.id || res?.data?.applicantId;
 
       if (!applicant_id) {
         throw new Error("No applicant_id returned from backend");
@@ -50,10 +56,15 @@ export default function RegistrationPage() {
       setApplicant(applicant_id);
 
       // pass applicant data to payment-registration (so it can update phone/referral)
-      navigate("/payment-registration", { state: { ...formData, applicant_id } });
+      navigate("/payment-registration", {
+        state: { ...formData, applicant_id },
+      });
     } catch (err) {
       console.error("Register applicant error:", err);
-      const msg = err?.response?.data?.message || err?.response?.data?.detail || err.message;
+      const msg =
+        err?.response?.data?.message ||
+        err?.response?.data?.detail ||
+        err.message;
       toast.error(msg || "Could not register applicant. Try again.");
     } finally {
       setLoading(false);
@@ -69,7 +80,8 @@ export default function RegistrationPage() {
         <h1 className="text-2xl font-bold text-center">Registration</h1>
 
         <p>
-          Please enter your personal information to proceed<span className="text-red-500">*</span>
+          Please enter your personal information to proceed
+          <span className="text-red-500">*</span>
         </p>
 
         <div>

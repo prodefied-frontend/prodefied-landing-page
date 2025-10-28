@@ -2,6 +2,7 @@ import AppRoutes from "./Routes/AppRoutes";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import ScrollToTop from "./components/ScrollToTop";
+import "react-phone-number-input/style.css";
 
 
 function App() {
