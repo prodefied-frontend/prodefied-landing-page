@@ -298,7 +298,7 @@ export default function PortalPage() {
         <div className="mt-4 mb-2">
           <div className="text-white text-sm mb-4">{phases[0].phaseTitle}</div>
           <a
-            href="https://meet.zoho.com/oswz-wse-czg"
+            href="https://meet.zoho.com/koeg-yct-ivq"
             target="_blank"
             rel="noopener noreferrer"
             className="group inline-flex items-center gap-2 bg-[#FF9D00] text-white text-sm py-2 px-4 rounded-md 

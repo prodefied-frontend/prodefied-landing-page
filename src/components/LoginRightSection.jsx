@@ -13,7 +13,6 @@ const LoginRightSection = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -22,14 +21,10 @@ const LoginRightSection = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { email, password, confirmPassword } = formData;
+    const { email, password } = formData;
 
-    if (!email || !password || !confirmPassword) {
-      return toast.error("Email, password and confirm password are required.");
-    }
-
-    if (password !== confirmPassword) {
-      return toast.error("Passwords do not match.");
+    if (!email || !password) {
+      return toast.error("Email and password are required.");
     }
 
     setSubmitting(true);
@@ -142,7 +137,7 @@ const LoginRightSection = () => {
           />
 
           {/* Password */}
-          <div className="relative mb-2">
+          <div className="relative mb-4">
             <input
               type={showPassword ? "text" : "password"}
               name="password"
@@ -155,31 +150,6 @@ const LoginRightSection = () => {
               required
               autoComplete="current-password"
             />
-            <div
-              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500"
-              onClick={() => setShowPassword((prev) => !prev)}
-              aria-label={showPassword ? "Hide password" : "Show password"}
-              role="button"
-            >
-              {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-            </div>
-          </div>
-
-          {/* Confirm Password */}
-          <div className="relative mb-4">
-            <input
-              type={showPassword ? "text" : "password"}
-              name="confirmPassword"
-              placeholder="Confirm Password"
-              value={formData.confirmPassword}
-              onChange={(e) =>
-                setFormData((f) => ({ ...f, confirmPassword: e.target.value }))
-              }
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#000F84]"
-              required
-              autoComplete="new-password"
-            />
-            {/* reuse the same toggle to affect both fields */}
             <div
               className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500"
               onClick={() => setShowPassword((prev) => !prev)}
